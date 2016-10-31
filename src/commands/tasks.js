@@ -3,12 +3,14 @@ import path from 'path'
 import * as helper from '../helper.js'
 import taskApi from '../task-api.js'
 import config from '../config.js'
+import chalk from 'chalk'
 
 async function runTasks(taskHandlers, taskNames, opts) {
   opts.taskApi = taskApi
   for (let i = 0; i < taskHandlers.length; i++) {
     console.log(`[Running task ${taskNames[i]}]`)
     await taskHandlers[i](opts)
+    console.log(chalk.green(`[${taskNames[i]} finished successfully]`))
   }
 }
 
@@ -43,5 +45,5 @@ export default async function tasks({ options, args:tasks }) {
     },
   })
 
-  console.log(`All done!`)
+  console.log(chalk.green(`All done!`))
 }

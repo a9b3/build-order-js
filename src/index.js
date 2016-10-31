@@ -2,6 +2,7 @@ import CommanderShepard from 'commander-shepard'
 import tasks from './commands/tasks.js'
 import * as helper from './helper.js'
 import npmClientAdapter from './npm-client-adapter.js'
+import chalk from 'chalk'
 
 async function initialize() {
   await helper.areCommandsInstalled([['yarn', 'npm'], 'git'])
@@ -41,5 +42,5 @@ async function main() {
 
 main()
 .catch(e => {
-  console.log(e.message)
+  console.log(chalk.red(e.message))
 })

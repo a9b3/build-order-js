@@ -16,21 +16,21 @@ export default async function babel({
     dev: true,
   })
 
-  // await taskApi.addDirectory({
-  //   dest: path.resolve(projectRootPath, 'test'),
-  // })
-  //
-  // await taskApi.addFile({
-  //   src: './index.js',
-  //   dest: path.resolve(projectRootPath, 'test', 'index.js'),
-  // })
-  //
-  // await taskApi.addToPackageJson({
-  //   json: {
-  //     scripts: {
-  //       'test': 'asodp',
-  //     },
-  //   },
-  // })
+  await taskApi.addDirectory({
+    dest: path.resolve(projectRootPath, 'test'),
+  })
+
+  await taskApi.addFile({
+    src: './index.js',
+    dest: path.resolve(projectRootPath, 'test', 'index.js'),
+  })
+
+  await taskApi.addToPackageJson({
+    json: {
+      scripts: {
+        'test': 'asodp',
+      },
+    },
+  })
 
 }

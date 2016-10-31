@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "chalk": "^1.1.3",
-    "commander-shepard": "1.1.12",
+    "commander-shepard": "1.1.13",
     "fs-extra": "^0.30.0",
     "invariant": "^2.2.1"
   },
