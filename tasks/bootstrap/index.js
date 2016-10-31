@@ -1,6 +1,6 @@
 import path from 'path'
 
-export default async function babel({
+export default async function bootstrap({
   env: {
     cwd,
     projectRootPath,

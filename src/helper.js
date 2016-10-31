@@ -74,3 +74,40 @@ export async function areCommandsInstalled(commands) {
 
   return false
 }
+
+function _deepMergeJson(a, b, c, opts = {}) {
+  if (a.constructor === Object) {
+    for (let key in b) {
+      if (!c[key]) {
+        c[key] = b[key]
+      } else {
+        c[key] = _deepMergeJson(a[key], b[key], c[key], opts)
+      }
+    }
+  } else if (a.constructor === Array) {
+    if (b.constructor !== Array) {
+      throw new Error(`Cannot merge ${a} with ${b} not the same type`)
+    }
+
+    /* IMPORTANT: this is not allowing arr dupes */
+    for (let i = 0; i < b.length; i++) {
+      if (a.indexOf(b[i]) === -1) {
+        a = a.concat(b)
+      }
+    }
+    return a
+  } else {
+    return opts.override ? b : a
+  }
+
+  return c
+}
+
+export function deepMergeJson(a, b, opts) {
+  let c = a
+  return _deepMergeJson(a, b, c, opts)
+}
+
+export function requireJson(path) {
+  return JSON.parse(fs.readFileSync(path, 'utf8'))
+}
