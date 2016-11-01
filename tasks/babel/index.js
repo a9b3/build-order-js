@@ -14,6 +14,7 @@ export default async function babel({
       'babel-plugin-transform-decorators-legacy',
       'babel-preset-es2015',
       'babel-preset-stage-0',
+      'babel-cli',
     ],
     dev: true,
   })
@@ -26,7 +27,8 @@ export default async function babel({
         "es2015"
       ],
       "plugins": [
-        "transform-decorators-legacy"
+        "transform-decorators-legacy",
+        "transform-class-properties"
       ],
     },
   })
@@ -34,7 +36,7 @@ export default async function babel({
   await taskApi.addToPackageJson({
     json: {
       scripts: {
-        'test': 'ahsid',
+        'babel-build': 'rm -rf build && ./node_modules/babel-cli/bin/babel.js src --out-dir build',
       },
     },
   })

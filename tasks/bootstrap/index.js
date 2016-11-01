@@ -8,35 +8,25 @@ export default async function bootstrap({
   taskApi,
 }) {
 
-  await taskApi.addPackages({
-    packages: [
-      'babel-plugin-transform-class-properties',
-      'babel-plugin-transform-decorators-legacy',
-      'babel-preset-es2015',
-      'babel-preset-stage-0',
-    ],
-    dev: true,
+  await taskApi.shell('git init')
+
+  await taskApi.addFile({
+    fileContent: '',
+    dest: path.resolve(await taskApi.getProjectRootPath(), '.gitignore'),
   })
 
-  await taskApi.addToJsonFile({
-    src: path.resolve(projectRootPath, '.babelrc'),
-    json: {
-      "presets": [
-        "stage-0",
-        "es2015"
-      ],
-      "plugins": [
-        "transform-decorators-legacy"
-      ],
-    },
+  await taskApi.addFile({
+    src: path.resolve(__dirname, './templates/package.json.tpl'),
+    dest: path.resolve(await taskApi.getProjectRootPath(), 'package.json'),
   })
 
-  await taskApi.addToPackageJson({
-    json: {
-      scripts: {
-        'test': 'ahsid',
-      },
-    },
+  await taskApi.addFile({
+    dest: path.resolve(await taskApi.getProjectRootPath(), 'index.js'),
+    fileContent: '',
+  })
+
+  await taskApi.addDirectory({
+    dest: path.resolve(await taskApi.getProjectRootPath(), 'src'),
   })
 
 }

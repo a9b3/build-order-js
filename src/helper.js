@@ -40,8 +40,12 @@ export function fileExists(filePath) {
  * returns project root based on where .git is located in the ancestor nodes
  */
 export async function getProjectRootPath() {
-  const res = await execPromise('git rev-parse --show-toplevel')
-  return res.trim()
+  try {
+    const res = await execPromise('git rev-parse --show-toplevel')
+    return res.trim()
+  } catch (e) {
+    return ''
+  }
 }
 
 // TODO this might need to be improved on to not use 'which'

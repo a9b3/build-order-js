@@ -6,6 +6,16 @@ import invariant from 'invariant'
 import path from 'path'
 
 const taskApi = {
+  async shell(command) {
+    console.log(chalk.yellow(`[Shell command]`))
+    await helper.execPromise(command, { log: true })
+    console.log(chalk.yellow(`[Successfully ran shell command]\n`))
+  },
+
+  getProjectRootPath() {
+    return helper.getProjectRootPath()
+  },
+
   async addPackages({
     packages,
     dev,
@@ -16,14 +26,15 @@ const taskApi = {
     console.log(chalk.yellow(`[Successfully added packages]\n`))
   },
 
-  addFile({ src, dest, override }) {
+  addFile({ src, fileContent, dest, override }) {
     console.log(chalk.yellow(`[Add file]`))
-    console.log('\n  ', 'adding', chalk.yellow(`${path.basename(src)} -> ${dest}`, '\n'))
 
-    invariant(helper.fileExists(src), `'${src}' is not a file`)
+    invariant(!fileContent || helper.fileExists(src), `'${src}' is not a file`)
 
-    const fileContent = fs.readFileSync(src, { encoding: 'utf8' })
-    if (!override) {
+    fileContent = [null, undefined].indexOf(fileContent) === -1 ? fileContent : fs.readFileSync(src, { encoding: 'utf8' })
+    console.log('\nadding', chalk.yellow(`${fileContent} -> ${dest}`, '\n'))
+
+    if (helper.fileExists(dest) && !override) {
       console.log(`[File already exists]\n`)
       return
     }
@@ -53,7 +64,7 @@ const taskApi = {
 
     await this.mergeToJsonFile({ json, src })
 
-    console.log(chalk.yellow(`[Successfully added JSON file]`))
+    console.log(chalk.yellow(`[Successfully added JSON file]\n`))
   },
 
   async addToPackageJson({ json }) {
