@@ -14,31 +14,31 @@ async function runTasks(taskHandlers, taskNames, opts) {
   }
 }
 
-export default async function tasks({ options, args:tasks }) {
+export default async function tasks({ options, args:taskNames }) {
   const cwd = process.cwd()
   // check tasks validity first
-  const taskHandlers = tasks.map(task => {
-    // check if path exists else check in default tasks directory
+  const taskHandlers = taskNames.map(taskName => {
+    // check if path exists else check in default taskNames directory
     let taskPath
-    if (helper.fileExists(path.resolve(cwd, task))) {
-      taskPath = path.resolve(cwd, task)
-    } else if (helper.fileExists(path.resolve(config.defaultTaskDir, task))) {
-      taskPath = path.resolve(config.defaultTaskDir, task)
+    if (helper.fileExists(path.resolve(cwd, taskName))) {
+      taskPath = path.resolve(cwd, taskName)
+    } else if (helper.fileExists(path.resolve(config.defaultTaskDir, taskName))) {
+      taskPath = path.resolve(config.defaultTaskDir, taskName)
     }
     if (!taskPath) {
-      throw new Error(`'${task}' is not a file or a default task`)
+      throw new Error(`'${taskName}' is not a file or a default task`)
     }
 
     // check if taskPath exports a function
     const taskHandler = require(taskPath).default || require(taskPath)
     if (!taskHandler || typeof taskHandler !== 'function') {
-      throw new Error(`'${task}' must export a function`)
+      throw new Error(`'${taskName}' must export a function`)
     }
     return taskHandler
   })
 
   const projectRootPath = await helper.getProjectRootPath()
-  await runTasks(taskHandlers, tasks, {
+  await runTasks(taskHandlers, taskNames, {
     env: {
       cwd,
       projectRootPath,

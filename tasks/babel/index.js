@@ -35,6 +35,7 @@ export default async function babel({
 
   await taskApi.addToPackageJson({
     json: {
+      main: 'build/index.js',
       scripts: {
         'babel-build': 'rm -rf build && ./node_modules/babel-cli/bin/babel.js src --out-dir build',
       },
