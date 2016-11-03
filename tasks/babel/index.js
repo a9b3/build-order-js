@@ -13,11 +13,11 @@ export default async function babel({
     dest: './foo',
   })
 
-  // await taskApi.templateFile({
-  //   src: path.resolve(__dirname, 'templates/foo'),
-  //   args: options,
-  //   dest: 'foo/coo',
-  // })
+  await taskApi.templateFile({
+    src: path.resolve(__dirname, 'templates/foo'),
+    args: options,
+    dest: 'foo/coo',
+  })
 
   await taskApi.addPackages({
     packages: [

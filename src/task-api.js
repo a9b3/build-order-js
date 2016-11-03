@@ -4,6 +4,7 @@ import chalk from 'chalk'
 import * as helper from './helper.js'
 import invariant from 'invariant'
 import path from 'path'
+import handlebars from 'handlebars'
 
 /**
  * @param {Object} opts
@@ -151,7 +152,21 @@ const taskApi = {
   async templateFile({ src, args, dest, override, showHeader = true } = {}) {
     if (showHeader) { helper.taskApiLogHeader('TASK', 'Template File') }
 
+    if (helper.fileExists(dest) && !override) {
+      console.log(chalk.gray(`\n  File already exists ${dest}\n`))
+      return
+    }
 
+    const template = handlebars.compile(fs.readFileSync(src, { encoding: 'utf8' }))
+    const rendered = template(args)
+
+    console.log(chalk.yellow(`\n  From ${src} with args`))
+    console.log(chalk.yellow(helper.leftPad(JSON.stringify(args, null, '  '), ' ', 2)))
+    console.log(chalk.yellow(`\n  Copying to -> ${dest}\n`))
+    const paddedRendered = helper.leftPad(rendered, ' ', 2)
+    console.log(chalk.yellow(paddedRendered))
+
+    fs.writeFileSync(dest, rendered, { encoding: 'utf8' })
   },
 
 }
