@@ -115,3 +115,17 @@ export function deepMergeJson(a, b, opts) {
 export function requireJson(path) {
   return JSON.parse(fs.readFileSync(path, 'utf8'))
 }
+
+export function padString(str, char, limit) {
+  const diff = limit - str.length
+  return str + ' ' + char.repeat(diff-1)
+}
+
+export function leftPad(str, char = '', leftPadAmt = 0) {
+  return str.split('\n').map(line => char.repeat(leftPadAmt) + line).join('\n')
+}
+
+export function taskApiLogHeader(taskName, color) {
+  const str = padString(`TASK: [${taskName}]`, '*', 80)
+  color ? console.log(chalk[color](str)) : console.log(str)
+}
