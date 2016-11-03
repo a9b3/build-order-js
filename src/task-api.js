@@ -11,7 +11,7 @@ async function mergeToJsonFile({ json:jsonToMerge, dest }) {
   // log out the merging json
   const jsonStr = JSON.stringify(jsonToMerge, null, '  ')
   const paddedJsonStr = helper.leftPad(jsonStr, ' ', 2)
-  console.log(chalk.yellow(`\n  Merging`))
+  console.log(chalk.yellow(`\n  Merging -> ${dest}`))
   console.log(chalk.yellow(paddedJsonStr))
   console.log(``)
 
