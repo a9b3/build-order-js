@@ -20,7 +20,7 @@ export default async function babel({
   })
 
   await taskApi.addToJsonFile({
-    src: path.resolve(projectRootPath, '.babelrc'),
+    dest: path.resolve(projectRootPath, '.babelrc'),
     json: {
       "presets": [
         "stage-0",
