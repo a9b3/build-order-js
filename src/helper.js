@@ -1,6 +1,7 @@
 import fs from 'fs-extra'
 import chalk from 'chalk'
 import { exec } from 'child_process'
+import path from 'path'
 
 /*
  * const text = await execPromise('echo hi')
@@ -128,4 +129,17 @@ export function leftPad(str, char = '', leftPadAmt = 0) {
 export function taskApiLogHeader(taskName, color) {
   const str = padString(`TASK: [${taskName}]`, '*', 80)
   color ? console.log(chalk[color](str)) : console.log(str)
+}
+
+export function relativeDest(v, key, desc) {
+  const old = desc.value
+
+  desc.value = async function(opts, ...args) {
+    const projectRootPath = await getProjectRootPath()
+    opts.dest = path.resolve(projectRootPath, opts.dest)
+
+    return old.call(this, opts, ...args)
+  }
+
+  return desc
 }

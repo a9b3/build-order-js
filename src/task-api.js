@@ -49,7 +49,8 @@ const taskApi = {
    * @param {String} dest          - Destination of file to add
    * @param {Boolean} override     - Override file if doesn't exist
    */
-  addFile({ src, fileContent, dest, override, showHeader = true } = {}) {
+  @helper.relativeDest
+  async addFile({ src, fileContent, dest, override, showHeader = true } = {}) {
     if (showHeader) { helper.taskApiLogHeader('Add File') }
 
     invariant(!fileContent || helper.fileExists(src), `'${src}' is not a file`)
@@ -68,6 +69,7 @@ const taskApi = {
   },
 
   // if src does not exists, create the file
+  @helper.relativeDest
   async addToJsonFile({ json, dest, showHeader = true } = {}) {
     if (showHeader) { helper.taskApiLogHeader('Add JSON File') }
 
@@ -90,6 +92,7 @@ const taskApi = {
     await mergeToJsonFile({ json, dest: packageJsonFilePath })
   },
 
+  @helper.relativeDest
   addDirectory({ dest, showHeader = true } = {}) {
     if (showHeader) { helper.taskApiLogHeader('Add Directory') }
 

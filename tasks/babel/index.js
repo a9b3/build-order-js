@@ -8,6 +8,10 @@ export default async function babel({
   taskApi,
 }) {
 
+  await taskApi.addDirectory({
+    dest: './foo',
+  })
+
   await taskApi.addPackages({
     packages: [
       'babel-plugin-transform-class-properties',
@@ -20,7 +24,7 @@ export default async function babel({
   })
 
   await taskApi.addToJsonFile({
-    dest: path.resolve(projectRootPath, '.babelrc'),
+    dest: '.babelrc',
     json: {
       "presets": [
         "stage-0",
