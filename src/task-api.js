@@ -5,33 +5,58 @@ import * as helper from './helper.js'
 import invariant from 'invariant'
 import path from 'path'
 
-const taskApi = {
-  async shell(command) {
-    console.log(chalk.yellow(`[Shell command]`))
-    await helper.execPromise(command, { log: true })
-    console.log(chalk.yellow(`[Successfully ran shell command]\n`))
-  },
+async function mergeToJsonFile({ json:jsonToMerge, dest }) {
+  const json = helper.requireJson(dest)
 
+  // log out the merging json
+  const jsonStr = JSON.stringify(jsonToMerge, null, '  ')
+  const paddedJsonStr = helper.leftPad(jsonStr, ' ', 2)
+  console.log(chalk.yellow(`\n  Merging`))
+  console.log(chalk.yellow(paddedJsonStr))
+  console.log(``)
+
+  const mergedJson = helper.deepMergeJson(json, jsonToMerge)
+  fs.writeFileSync(dest, JSON.stringify(mergedJson, null, '  '))
+}
+
+const taskApi = {
   getProjectRootPath() {
     return helper.getProjectRootPath()
   },
 
-  async addPackages({
-    packages,
-    dev,
-  }) {
-    console.log(chalk.yellow(`[Add packages]`))
-    console.log('\n  ', 'adding', chalk.yellow(`${packages}`, '\n'))
-    await npmClientAdapter.add(packages, { dev })
-    console.log(chalk.yellow(`[Successfully added packages]\n`))
+  async shell(command, { showHeader = true } = {}) {
+    if (showHeader) { helper.taskApiLogHeader('Shell') }
+
+    await helper.execPromise(command, { log: true })
   },
 
-  addFile({ src, fileContent, dest, override }) {
-    console.log(chalk.yellow(`[Add file]`))
+  /**
+   * @param {Object} opts
+   * @param {Array.<String>} packages - Npm packages to add
+   * @param {Boolean} [dev]           - Use --save-dev or not
+   */
+  async addPackages({ packages, dev, showHeader = true } = {}) {
+    if (showHeader) { helper.taskApiLogHeader('Add Package') }
+
+    console.log(`\n  Adding ${chalk.yellow(`${packages}`)}\n`)
+    await npmClientAdapter.add(packages, { dev })
+  },
+
+  /**
+   * @param {Object} opts
+   * @param {String} src           - File path
+   * @param {String} [fileContent] - Contents of file to add
+   * @param {String} dest          - Destination of file to add
+   * @param {Boolean} override     - Override file if doesn't exist
+   */
+  addFile({ src, fileContent, dest, override, showHeader = true } = {}) {
+    if (showHeader) { helper.taskApiLogHeader('Add File') }
 
     invariant(!fileContent || helper.fileExists(src), `'${src}' is not a file`)
 
-    fileContent = [null, undefined].indexOf(fileContent) === -1 ? fileContent : fs.readFileSync(src, { encoding: 'utf8' })
+    fileContent = [null, undefined].indexOf(fileContent) === -1
+      ? fileContent
+      : fs.readFileSync(src, { encoding: 'utf8' })
     console.log('\nadding', chalk.yellow(`${fileContent} -> ${dest}`, '\n'))
 
     if (helper.fileExists(dest) && !override) {
@@ -40,57 +65,43 @@ const taskApi = {
     }
 
     fs.writeFileSync(dest, fileContent, { encoding: 'utf8' })
-
-    console.log(chalk.yellow(`[Successfully added file]\n`))
-  },
-
-  async mergeToJsonFile({ json, src }) {
-    const pkg = helper.requireJson(src)
-
-    console.log(chalk.yellow('\n  ', 'Merging'))
-    console.log(chalk.yellow(JSON.stringify(json, null, '  ')), '\n')
-
-    const mergedJson = helper.deepMergeJson(pkg, json)
-    fs.writeFileSync(src, JSON.stringify(mergedJson, null, '  '))
   },
 
   // if src does not exists, create the file
-  async addToJsonFile({ json, src }) {
-    console.log(chalk.yellow(`[Add JSON file]`))
+  async addToJsonFile({ json, dest, showHeader = true } = {}) {
+    if (showHeader) { helper.taskApiLogHeader('Add JSON File') }
 
-    if (!helper.fileExists(src)) {
-      fs.writeFileSync(src, '{}', { encoding: 'utf8' })
+    if (!helper.fileExists(dest)) {
+      fs.writeFileSync(dest, '{}', { encoding: 'utf8' })
     }
 
-    await this.mergeToJsonFile({ json, src })
-
-    console.log(chalk.yellow(`[Successfully added JSON file]\n`))
+    await mergeToJsonFile({ json, dest })
   },
 
-  async addToPackageJson({ json }) {
-    console.log(chalk.yellow(`[Add to package.json]`))
+  async addToPackageJson({ json, showHeader = true } = {}) {
+    if (showHeader) { helper.taskApiLogHeader('Add to package.json') }
 
     const projectRootPath = await helper.getProjectRootPath()
     const packageJsonFilePath = path.resolve(projectRootPath, 'package.json')
     if (!helper.fileExists(packageJsonFilePath)) {
-      throw new Error(`${packageJsonFilePath} does not exist`)
+      fs.writeFileSync(packageJsonFilePath, '{}', { encoding: 'utf8' })
     }
 
-    await this.mergeToJsonFile({ json, src: packageJsonFilePath })
-
-    console.log(chalk.yellow(`[Successfully added to package.json]\n`))
+    await mergeToJsonFile({ json, dest: packageJsonFilePath })
   },
 
-  addDirectory({ dest }) {
-    console.log(chalk.yellow(`[Add directory]`))
-    console.log(`\n  `, 'adding', chalk.yellow(dest), '\n')
+  addDirectory({ dest, showHeader = true } = {}) {
+    if (showHeader) { helper.taskApiLogHeader('Add Directory') }
 
+    console.log(chalk.yellow(`\n  adding ${dest}\n`))
+
+    // dir already exists early return
     if (helper.fileExists(dest)) {
-      console.log(chalk.yellow(`[Directory already exists]\n`))
+      console.log(chalk.yellow(`Directory already exists`))
       return
     }
+
     fs.mkdirSync(dest)
-    console.log(chalk.yellow(`[Successfully added directory]\n`))
   },
 }
 
