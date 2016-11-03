@@ -126,8 +126,8 @@ export function leftPad(str, char = '', leftPadAmt = 0) {
   return str.split('\n').map(line => char.repeat(leftPadAmt) + line).join('\n')
 }
 
-export function taskApiLogHeader(taskName, color) {
-  const str = padString(`TASK: [${taskName}]`, '*', 80)
+export function taskApiLogHeader(header, taskName, color) {
+  const str = padString(`${header}: [${taskName}]`, '*', 80)
   color ? console.log(chalk[color](str)) : console.log(str)
 }
 

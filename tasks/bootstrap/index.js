@@ -11,22 +11,25 @@ export default async function bootstrap({
   await taskApi.shell('git init')
 
   await taskApi.addFile({
-    fileContent: '',
-    dest: path.resolve(await taskApi.getProjectRootPath(), '.gitignore'),
+    fileContent: [
+      'node_modules/',
+      '*.log',
+    ].join('\n'),
+    dest: '.gitignore',
   })
 
   await taskApi.addFile({
     src: path.resolve(__dirname, './templates/package.json.tpl'),
-    dest: path.resolve(await taskApi.getProjectRootPath(), 'package.json'),
+    dest: 'package.json',
   })
 
   await taskApi.addFile({
-    dest: path.resolve(await taskApi.getProjectRootPath(), 'index.js'),
-    fileContent: '',
+    dest: 'index.js',
+    fileContent: `console.log('hi')`,
   })
 
   await taskApi.addDirectory({
-    dest: path.resolve(await taskApi.getProjectRootPath(), 'src'),
+    dest: 'src',
   })
 
 }

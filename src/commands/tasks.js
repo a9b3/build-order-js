@@ -8,13 +8,16 @@ import chalk from 'chalk'
 async function runTasks(taskHandlers, taskNames, opts) {
   opts.taskApi = taskApi
   for (let i = 0; i < taskHandlers.length; i++) {
-    console.log(`[Running task ${taskNames[i]}]`)
+    helper.taskApiLogHeader('START TASKLIST', taskNames[i])
+    console.log(``)
     await taskHandlers[i](opts)
-    console.log(chalk.green(`[${taskNames[i]} finished successfully]`))
+    helper.taskApiLogHeader('END TASKLIST', taskNames[i])
+    console.log(``)
   }
 }
 
 export default async function tasks({ options, args:taskNames }) {
+
   const cwd = process.cwd()
   // check tasks validity first
   const taskHandlers = taskNames.map(taskName => {
@@ -39,6 +42,7 @@ export default async function tasks({ options, args:taskNames }) {
 
   const projectRootPath = await helper.getProjectRootPath()
   await runTasks(taskHandlers, taskNames, {
+    options,
     env: {
       cwd,
       projectRootPath,
@@ -46,4 +50,5 @@ export default async function tasks({ options, args:taskNames }) {
   })
 
   console.log(chalk.green(`All done!`))
+
 }
