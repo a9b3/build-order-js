@@ -20,10 +20,6 @@ async function mergeToJsonFile({ json:jsonToMerge, dest }) {
 }
 
 const taskApi = {
-  getProjectRootPath() {
-    return helper.getProjectRootPath()
-  },
-
   async shell(command, { showHeader = true } = {}) {
     if (showHeader) { helper.taskApiLogHeader('Shell') }
 
@@ -40,32 +36,6 @@ const taskApi = {
 
     console.log(`\n  Adding ${chalk.yellow(`${packages}`)}\n`)
     await npmClientAdapter.add(packages, { dev })
-  },
-
-  /**
-   * @param {Object} opts
-   * @param {String} src           - File path
-   * @param {String} [fileContent] - Contents of file to add
-   * @param {String} dest          - Destination of file to add
-   * @param {Boolean} override     - Override file if doesn't exist
-   */
-  @helper.relativeDest
-  async addFile({ src, fileContent, dest, override, showHeader = true } = {}) {
-    if (showHeader) { helper.taskApiLogHeader('Add File') }
-
-    invariant(!fileContent || helper.fileExists(src), `'${src}' is not a file`)
-
-    fileContent = [null, undefined].indexOf(fileContent) === -1
-      ? fileContent
-      : fs.readFileSync(src, { encoding: 'utf8' })
-    console.log('\nadding', chalk.yellow(`${fileContent} -> ${dest}`, '\n'))
-
-    if (helper.fileExists(dest) && !override) {
-      console.log(`[File already exists]\n`)
-      return
-    }
-
-    fs.writeFileSync(dest, fileContent, { encoding: 'utf8' })
   },
 
   // if src does not exists, create the file
@@ -96,16 +66,43 @@ const taskApi = {
   addDirectory({ dest, showHeader = true } = {}) {
     if (showHeader) { helper.taskApiLogHeader('Add Directory') }
 
-    console.log(chalk.yellow(`\n  adding ${dest}\n`))
+    console.log(chalk.yellow(`\n  Adding ${dest}\n`))
 
     // dir already exists early return
     if (helper.fileExists(dest)) {
-      console.log(chalk.yellow(`Directory already exists`))
+      console.log(chalk.yellow(`  Directory already exists\n`))
       return
     }
 
     fs.mkdirSync(dest)
   },
+
+  /**
+   * @param {Object} opts
+   * @param {String} src           - File path
+   * @param {String} [fileContent] - Contents of file to add
+   * @param {String} dest          - Destination of file to add
+   * @param {Boolean} override     - Override file if doesn't exist
+   */
+  @helper.relativeDest
+  async addFile({ src, fileContent, dest, override, showHeader = true } = {}) {
+    if (showHeader) { helper.taskApiLogHeader('Add File') }
+
+    invariant(!fileContent || helper.fileExists(src), `'${src}' is not a file`)
+
+    fileContent = [null, undefined].indexOf(fileContent) === -1
+      ? fileContent
+      : fs.readFileSync(src, { encoding: 'utf8' })
+    console.log('\nadding', chalk.yellow(`${fileContent} -> ${dest}`, '\n'))
+
+    if (helper.fileExists(dest) && !override) {
+      console.log(`[File already exists]\n`)
+      return
+    }
+
+    fs.writeFileSync(dest, fileContent, { encoding: 'utf8' })
+  },
+
 }
 
 export default taskApi
