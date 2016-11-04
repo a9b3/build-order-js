@@ -1,6 +1,12 @@
 import path from 'path'
 import * as tasks from '../../tasks/index.js'
 
+/*
+ * refer to commands/index.js for the opts passed into this function
+ *
+ * args used
+ * --git
+ */
 export default async function express(opts) {
   const taskApi = opts.taskApi
 
@@ -34,5 +40,7 @@ export default async function express(opts) {
     dest: './src',
   })
 
-  await taskApi.gitInit()
+  if (opts.options.git) {
+    await taskApi.gitInit()
+  }
 }
