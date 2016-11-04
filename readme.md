@@ -114,6 +114,17 @@ await taskApi.addDirectory({
 })
 ```
 
+#####`copyDirectory`
+
+Add `src` directory to `dest`.
+
+```js
+await taskApi.copyDirectory({
+	src: path.resolve(__dirname, './foo'),
+	dest: './foo',
+})
+```
+
 #####`addFile`
 
 Add file either by providing a `src` file to copy from or the `fileContent` to put into the `dest` file.
