@@ -1,9 +1,8 @@
 import CommanderShepard from 'commander-shepard'
-import tasks from './commands/tasks.js'
-import buildorders from './commands/buildorders.js'
 import * as helper from './helper.js'
 import npmClientAdapter from './npm-client-adapter.js'
 import chalk from 'chalk'
+import * as commands from './commands/index.js'
 
 async function initialize() {
   await helper.areCommandsInstalled([['yarn', 'npm'], 'git'])
@@ -28,14 +27,14 @@ function setupCommanderShepard() {
     name: 'tasks',
     usage: `${binName} tasks [tasks]`,
     help: 'apply tasks to the current project',
-    command: tasks,
+    command: commands.tasks,
   })
 
   c.add({
     name: 'buildorders',
     usage: `${binName} buildorders [names]`,
     help: 'apply build orders to the current project',
-    command: buildorders,
+    command: commands.buildorders,
   })
 
   npmClientAdapter.setAdapter(c.options.npm || 'npm')

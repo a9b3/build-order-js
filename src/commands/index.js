@@ -4,18 +4,18 @@ import taskApi from '../task-api.js'
 import config from '../config.js'
 import chalk from 'chalk'
 
-export default async function buildorders({ options, args:buildOrderNames }) {
+async function commandRunner({ options, args, defaultDir, name }) {
 
   const cwd = process.cwd()
   const handlers = helper.extractHandlers({
     cwd,
-    names: buildOrderNames,
-    defaultDir: config.defaultBuildOrdersDir,
+    names: args,
+    defaultDir,
   })
 
   const projectRootPath = await helper.getProjectRootPath()
   await helper.mapAsync(handlers, async (fn, i) => {
-    helper.taskApiLogHeader('BUILD ORDER', buildOrderNames[i])
+    helper.taskApiLogHeader(name, args[i])
     console.log(``)
 
     await fn({
@@ -27,10 +27,18 @@ export default async function buildorders({ options, args:buildOrderNames }) {
       taskApi,
     })
 
-    helper.taskApiLogHeader('END BUILD ORDER', buildOrderNames[i])
+    helper.taskApiLogHeader(`END ${name}`, args[i])
     console.log(``)
   })
 
   console.log(chalk.green(`All done!`))
 
+}
+
+export function tasks({ options, args }) {
+  return commandRunner({ options, args, defaultDir: config.defaultTaskDir, name: 'TASKS' })
+}
+
+export function buildorders({ options, args }) {
+  return commandRunner({ options, args, defaultDir: config.defaultBuildOrdersDir, name: 'BUILD ORDER' })
 }
