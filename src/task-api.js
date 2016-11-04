@@ -142,6 +142,27 @@ const taskApi = {
 
   /**
    * @param {Object} opts
+   * @param {String} src           - File path
+   * @param {String} dest          - Destination of file to add
+   * @param {Boolean} [override]   - Override file if doesn't exist
+   */
+  @helper.relativeDest
+  async copyDirectory({ src, dest, override, showHeader = true } = {}) {
+    if (showHeader) { helper.taskApiLogHeader('TASK', 'Copy Directory') }
+
+    // dir already exists early return
+    if (helper.fileExists(dest)) {
+      console.log(chalk.gray(`\n  Directory already exists ${dest}\n`))
+      return
+    }
+
+    console.log(chalk.yellow(`\n  Copying dir -> ${dest}\n`))
+
+    helper.copy(src, dest, override)
+  },
+
+  /**
+   * @param {Object} opts
    * @param {String} src           - File path to source handlebars template
    * @param {Object} args          - Arguments to pass into template
    * @param {String} dest          - Destination file path
