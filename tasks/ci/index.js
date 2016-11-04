@@ -7,13 +7,19 @@ export default async function ci({
   },
   options: {
     ciType = 'travis',
+    ciTarget = 'default',
   } = {},
   taskApi,
 }) {
 
   if (ciType === 'travis') {
-    await taskApi.addFile({
+    const args = {}
+    if (ciTarget === 'frontend') {
+      args.ciTargetFrontend = true
+    }
+    await taskApi.templateFile({
       src: path.resolve(__dirname, './templates/travis.yml'),
+      args,
       dest: '.travis.yml',
     })
   }

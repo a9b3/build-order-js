@@ -2,10 +2,10 @@ language: node_js
 node_js:
   - "6.7"
 
-# sudo: required
-#
-# services:
-#   - docker
+sudo: required
+
+services:
+  - docker
 #   - redis-server
 
 # env:
@@ -27,6 +27,12 @@ cache:
 
 install:
   - npm install
+
+{{#if ciTargetFrontend}}
+before_script:
+  - npm install karma-phantomjs-launcher --save-dev
+  - export CONTINUOUS_INTEGRATION=true
+{{/if}}
 
 script:
   - npm test
