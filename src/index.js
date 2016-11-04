@@ -1,5 +1,6 @@
 import CommanderShepard from 'commander-shepard'
 import tasks from './commands/tasks.js'
+import buildorders from './commands/buildorders.js'
 import * as helper from './helper.js'
 import npmClientAdapter from './npm-client-adapter.js'
 import chalk from 'chalk'
@@ -28,6 +29,13 @@ function setupCommanderShepard() {
     usage: `${binName} tasks [tasks]`,
     help: 'apply tasks to the current project',
     command: tasks,
+  })
+
+  c.add({
+    name: 'buildorders',
+    usage: `${binName} buildorders [names]`,
+    help: 'apply build orders to the current project',
+    command: buildorders,
   })
 
   npmClientAdapter.setAdapter(c.options.npm || 'npm')

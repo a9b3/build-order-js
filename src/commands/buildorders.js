@@ -15,7 +15,7 @@ export default async function buildorders({ options, args:buildOrderNames }) {
 
   const projectRootPath = await helper.getProjectRootPath()
   await helper.mapAsync(handlers, async (fn, i) => {
-    helper.taskApiLogHeader('BUILD ORDER', taskNames[i])
+    helper.taskApiLogHeader('BUILD ORDER', buildOrderNames[i])
     console.log(``)
 
     await fn({
@@ -27,7 +27,7 @@ export default async function buildorders({ options, args:buildOrderNames }) {
       taskApi,
     })
 
-    helper.taskApiLogHeader('END BUILD ORDER', taskNames[i])
+    helper.taskApiLogHeader('END BUILD ORDER', buildOrderNames[i])
     console.log(``)
   })
 
