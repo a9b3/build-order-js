@@ -5,6 +5,7 @@ export default async function bootstrap({
     cwd,
     projectRootPath,
   },
+  options,
   taskApi,
 }) {
 
