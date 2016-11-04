@@ -1,3 +1,4 @@
+import invariant from 'invariant'
 import fs from 'fs-extra'
 import chalk from 'chalk'
 import { exec } from 'child_process'
@@ -142,4 +143,52 @@ export function relativeDest(v, key, desc) {
   }
 
   return desc
+}
+
+// names is an array of
+// - filepaths relative to cwd
+// or
+// - default dir folder
+export function extractHandlers({
+  names,
+  cwd,
+  defaultDir,
+}) {
+  return names.map(name => {
+    const cwdFilePath = path.resolve(cwd, name)
+    const defaultFilePath = path.resolve(defaultDir, name)
+
+    const handlerPath = fileExists(cwdFilePath)
+      ? cwdFilePath
+      : fileExists(defaultFilePath) ? defaultFilePath : null
+    invariant(handlerPath, `${name} is not a file or a default`)
+
+    const handler = require(handlerPath).default || require(handlerPath)
+    invariant(handler || typeof handler === 'function', `${name} must export a function`)
+    return handler
+  })
+}
+
+/**
+ * Array.map for async functions
+ *
+ * async/await style
+ * const res = await mapAsync([asyncFn, asyncFn], async (fn) => await fn())
+ *
+ * promise style
+ * mapAsync([foo, foo], fn => fn())
+ * .then(res => {
+ *   console.log(res)
+ * })
+ *
+ * @param {Array.<Promise>} arr - Array of async functions/promises
+ * @param {Function} callback - Accepts async function as argument
+ * @returns {Promise}
+ */
+export async function mapAsync(arr, callback) {
+  const results = []
+  for (let i = 0; i < arr.length; i++) {
+    results.push(await callback(arr[i], i))
+  }
+  return results
 }
