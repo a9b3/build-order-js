@@ -43,7 +43,7 @@ export default async function babel({
     json: {
       main: 'build/index.js',
       scripts: {
-        'babel-build': 'rm -rf build && ./node_modules/babel-cli/bin/babel.js src --out-dir build',
+        'babel-build': 'rm -rf lib && ./node_modules/babel-cli/bin/babel.js src --out-dir lib',
       },
     },
   })
