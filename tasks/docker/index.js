@@ -1,5 +1,8 @@
 import path from 'path'
 
+/*
+ * dockerType 'frontend'
+ */
 export default async function docker({
   env: {
     cwd,
@@ -11,8 +14,18 @@ export default async function docker({
   taskApi,
 }) {
 
-  await taskApi.addFile({
+  const args = {}
+  if (dockerType === 'frontend') {
+    args.dockerTypeFrontend = true
+
+    await taskApi.copyDirectory({
+      src: path.resolve(__dirname, './templates/nginx'),
+      dest: 'nginx',
+    })
+  }
+  await taskApi.templateFile({
     src: path.resolve(__dirname, './templates/Dockerfile'),
+    args,
     dest: 'Dockerfile',
   })
 

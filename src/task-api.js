@@ -180,7 +180,7 @@ const taskApi = {
    * @param {Boolean} [showHeader] - show task api console logs
    */
   @helper.relativeDest
-  async templateFile({ src, args, dest, override, showHeader = true } = {}) {
+  async templateFile({ src, args = {}, dest, override, showHeader = true } = {}) {
     if (showHeader) { helper.taskApiLogHeader('TASK', 'Template File') }
 
     if (helper.fileExists(dest) && !override) {
