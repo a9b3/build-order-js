@@ -250,7 +250,7 @@ export function copy(src, dest, { overwrite = false } = {}) {
   const stat = fs.lstatSync(src)
   if (stat.isDirectory()) {
     if (fs.existsSync(dest) && overwrite) {
-      fs.rmdirSync(dest)
+      rmdir(dest)
     }
     fs.mkdirSync(dest)
 

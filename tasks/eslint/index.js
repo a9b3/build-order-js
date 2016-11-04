@@ -1,23 +1,23 @@
 import path from 'path'
 
-// TODO (sam) make this more generic, currently using my specific settings
+// eslintType 'react'
 export default async function babel({
   env: {
     cwd,
     projectRootPath,
   },
-  options,
+  options: {
+    eslintType = 'default',
+  } = {},
   taskApi,
 }) {
 
-  await taskApi.addPackages({
-    packages: [
-      'babel-eslint',
-      'eslint',
-      'eslint-config-esayemm',
-      'eslint-plugin-react',
-    ],
-    dev: true,
+  await taskApi.addToPackageJson({
+    json: {
+      scripts: {
+        'eslint': './node_modules/eslint/bin/eslint.js .',
+      },
+    },
   })
 
   await taskApi.addFile({
@@ -28,20 +28,22 @@ export default async function babel({
     dest: '.eslintignore',
   })
 
+  await taskApi.addPackages({
+    packages: [
+      'babel-eslint',
+      'eslint',
+      'eslint-config-esayemm',
+      eslintType === 'react' && 'eslint-plugin-react',
+    ].filter(a => a),
+    dev: true,
+  })
+
   await taskApi.addToJsonFile({
     dest: '.eslintrc',
     json: {
       "extends": [
-        "esayemm/lib/react",
-      ],
-    },
-  })
-
-  await taskApi.addToPackageJson({
-    json: {
-      scripts: {
-        'eslint': './node_modules/eslint/bin/eslint.js .',
-      },
+        eslintType === 'react' ? "esayemm/lib/react" : "esayemm",
+      ].filter(a => a),
     },
   })
 

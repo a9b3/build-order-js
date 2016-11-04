@@ -151,14 +151,14 @@ const taskApi = {
     if (showHeader) { helper.taskApiLogHeader('TASK', 'Copy Directory') }
 
     // dir already exists early return
-    if (helper.fileExists(dest)) {
+    if (helper.fileExists(dest) && !override) {
       console.log(chalk.gray(`\n  Directory already exists ${dest}\n`))
       return
     }
 
     console.log(chalk.yellow(`\n  Copying dir -> ${dest}\n`))
 
-    helper.copy(src, dest, override)
+    helper.copy(src, dest, { overwrite: override })
   },
 
   /**

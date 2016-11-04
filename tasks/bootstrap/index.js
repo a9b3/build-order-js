@@ -24,13 +24,4 @@ export default async function bootstrap({
     dest: 'package.json',
   })
 
-  await taskApi.addFile({
-    dest: 'index.js',
-    fileContent: `console.log('hi')`,
-  })
-
-  await taskApi.addDirectory({
-    dest: 'src',
-  })
-
 }
