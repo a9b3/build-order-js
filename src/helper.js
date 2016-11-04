@@ -192,3 +192,75 @@ export async function mapAsync(arr, callback) {
   }
   return results
 }
+
+/**
+ * Recursively walk a file tree starting at src
+ *
+ * @param {String} src - file path
+ * @param {Function} callback - Will be passed (file, stat)
+ * @returns {Array.<Any>} Array of returns from callback
+ */
+export function walk(src, callback, results = []) {
+  if (!fs.existsSync(src)) {
+    return results
+  }
+
+  const stat = fs.lstatSync(src)
+  if (stat.isDirectory()) {
+    fs.readdirSync(src).forEach(file => {
+      const filepath = path.resolve(src, file)
+      results.concat(walk(filepath, callback, results))
+    })
+    results.push(callback(src, stat))
+  } else {
+    results.push(callback(src, stat))
+  }
+  return results
+}
+
+/**
+ * @param {String} src - file path
+ * @returns{Array.<String>} Array of filepaths deleted
+ */
+export function rmdir(src) {
+  return walk(src, (file, stat) => {
+    stat.isDirectory() ? fs.rmdirSync(file) : fs.unlinkSync(file)
+    return file
+  })
+}
+
+/**
+ * Copy src to dest
+ *
+ * @param {String} src - file path
+ * @param {String} dest - file path
+ */
+export function copyFile(src, dest, opts = { encoding: 'utf8' }) {
+  const fileContent = fs.readFileSync(src, opts)
+  fs.writeFileSync(dest, fileContent, opts)
+}
+
+/**
+ * Copy src to dest recursively
+ *
+ * @param {String} src - file path
+ * @param {String} dest - file path
+ */
+export function copy(src, dest, { overwrite = false } = {}) {
+  const stat = fs.lstatSync(src)
+  if (stat.isDirectory()) {
+    if (fs.existsSync(dest) && overwrite) {
+      fs.rmdirSync(dest)
+    }
+    fs.mkdirSync(dest)
+
+    const files = fs.readdirSync(src)
+    files.forEach(file => {
+      const filePath = path.resolve(src, file)
+      const destFilePath = path.resolve(dest, file)
+      copy(filePath, destFilePath)
+    })
+  } else {
+    copyFile(src, dest)
+  }
+}
