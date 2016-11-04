@@ -33,4 +33,6 @@ export default async function express(opts) {
     src: path.resolve(__dirname, './templates/src'),
     dest: './src',
   })
+
+  await taskApi.gitInit()
 }

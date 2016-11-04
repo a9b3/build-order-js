@@ -41,6 +41,16 @@ const taskApi = {
   },
 
   /**
+   * @param {String} [initMessage] - git init message
+   */
+  async gitInit({ initMessage = `ಠ_ಠ`, showHeader = true } = {}) {
+    if (showHeader) { helper.taskApiLogHeader('TASK', 'Git Init') }
+
+    await helper.execPromise('git add .', { log: true })
+    await helper.execPromise(`git commit -m '${initMessage}'`, { log: true })
+  },
+
+  /**
    * @param {Object} opts
    * @param {Array.<String>} packages - Npm packages to add
    * @param {Boolean} [dev]           - Use --save-dev or not
