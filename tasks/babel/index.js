@@ -1,4 +1,5 @@
 import path from 'path'
+import * as helper from '../../src/helper.js'
 
 /*
  * babelType 'default' 'react'
@@ -10,66 +11,83 @@ export default async function babel({
   },
   options: {
     babelType = 'default',
+    babelOutdir = 'lib',
   } = {},
   taskApi,
 }) {
 
-  await taskApi.addPackages({
-    packages: [
+  /*
+   * npm packages
+   */
+  const npmPackages = {
+    base: [
       'babel-plugin-transform-class-properties',
       'babel-plugin-transform-decorators-legacy',
       'babel-preset-es2015',
       'babel-preset-stage-0',
       'babel-cli',
     ],
+    react: [
+      'babel-plugin-react-transform',
+      'babel-plugin-transform-runtime',
+      'babel-preset-airbnb',
+      'babel-preset-react',
+      'babel-runtime',
+    ],
+  }
+
+  await taskApi.addPackages({
+    packages: helper.concatMappedArrays(['base', babelType], npmPackages),
     dev: true,
   })
 
-  await taskApi.addToJsonFile({
-    dest: '.babelrc',
-    json: {
-      "presets": [
-        "stage-0",
-        "es2015"
-      ],
-      "plugins": [
-        "transform-decorators-legacy",
-        "transform-class-properties"
-      ],
-    },
-  })
-
+  /*
+   * package.json
+   */
   await taskApi.addToPackageJson({
     json: {
-      main: 'build/index.js',
       scripts: {
-        'babel-build': 'rm -rf lib && ./node_modules/babel-cli/bin/babel.js src --out-dir lib',
+        'babel': `rm -rf ${babelOutdir} && ./node_modules/babel-cli/bin/babel.js src --out-dir ${babelOutdir}`,
       },
     },
   })
 
-  if (babelType === 'react') {
-    await taskApi.addPackages({
-      packages: [
-        'babel-plugin-react-transform',
-        'babel-plugin-transform-runtime',
-        'babel-preset-airbnb',
-        'babel-preset-react',
-        'babel-runtime',
-      ],
-      dev: true,
-    })
+  /*
+   * .babelrc
+   */
+  const babelRcPresets = {
+    base: [
+      "stage-0",
+      "es2015",
+    ],
+    react: [
+      'react',
+    ],
+  }
 
+  const babelRcPlugins = {
+    base: [
+      "transform-decorators-legacy",
+      "transform-class-properties",
+    ],
+    react: [
+      "transform-runtime",
+      "react-hot-loader/babel",
+    ],
+  }
+
+  await taskApi.addToJsonFile({
+    dest: '.babelrc',
+    json: {
+      "presets": helper.concatMappedArrays(['base', babelType], babelRcPresets),
+      "plugins": helper.concatMappedArrays(['base', babelType], babelRcPlugins),
+    },
+  })
+
+  if (babelType === 'react') {
     await taskApi.addToJsonFile({
       dest: '.babelrc',
       json: {
-        "presets": [
-          "react",
-        ],
-        "plugins": [
-          "transform-runtime",
-          "react-hot-loader/babel",
-        ],
         "env": {
           "test": {
             "presets": [
@@ -84,4 +102,3 @@ export default async function babel({
     })
   }
 
-}
