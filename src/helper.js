@@ -264,3 +264,24 @@ export function copy(src, dest, { overwrite = false } = {}) {
     copyFile(src, dest)
   }
 }
+
+/**
+ * concatMappedArrays(['one', 'two'], {
+ *   one: [1],
+ *   two: [2],
+ *   three: [3],
+ * })
+ * => [1,2]
+ */
+export function concatMappedArrays(keys, mappedArrays) {
+  return keys.reduce((arr, key) => {
+    if (!mappedArrays[key]) {
+      return arr
+    }
+    if (mappedArrays[key].constructor !== Array) {
+      return arr
+    }
+
+    return arr.concat(mappedArrays[key])
+  }, [])
+}
