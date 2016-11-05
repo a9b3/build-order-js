@@ -12,6 +12,22 @@ export default async function babel({
   taskApi,
 }) {
 
+  /*
+   * npm packages
+   */
+  await taskApi.addPackages({
+    packages: [
+      'babel-eslint',
+      'eslint',
+      'eslint-config-esayemm',
+      eslintType === 'react' && 'eslint-plugin-react',
+    ].filter(a => a),
+    dev: true,
+  })
+
+  /*
+   * package.json
+   */
   await taskApi.addToPackageJson({
     json: {
       scripts: {
@@ -23,19 +39,10 @@ export default async function babel({
   await taskApi.addFile({
     fileContent: [
       'build/',
+      'lib/',
       'node_modules/',
     ].join('\n'),
     dest: '.eslintignore',
-  })
-
-  await taskApi.addPackages({
-    packages: [
-      'babel-eslint',
-      'eslint',
-      'eslint-config-esayemm',
-      eslintType === 'react' && 'eslint-plugin-react',
-    ].filter(a => a),
-    dev: true,
   })
 
   await taskApi.addToJsonFile({
