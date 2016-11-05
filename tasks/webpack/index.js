@@ -35,7 +35,10 @@ export default async function webpack({
   const webpackConfigFileName = getWebpackConfigFileName(webpackType)
   await taskApi.addToPackageJson({
     json: {
+      main: 'build/index.js',
       scripts: {
+        'version': 'npm run webpack && git add .',
+        'postversion': 'git push && git push --tags && npm publish',
         'webpack': `rm -rf build && ./node_modules/webpack/bin/webpack.js --config ${webpackConfigFileName}`,
       },
     },
