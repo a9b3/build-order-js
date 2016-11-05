@@ -28,15 +28,14 @@ cache:
 install:
   - npm install
 
-{{#if ciTargetFrontend}}
+<% if (ciTarget === 'frontend') { %>
 before_script:
   - npm install karma-phantomjs-launcher --save-dev
   - export CONTINUOUS_INTEGRATION=true
-{{/if}}
+<% } %>
 
 script:
   - npm test
 
 after_success:
-  - test $TRAVIS_BRANCH = "prod" && npm run deploy
   - test $TRAVIS_BRANCH = "production" && npm run deploy

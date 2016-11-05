@@ -4,7 +4,7 @@ import chalk from 'chalk'
 import * as helper from './helper.js'
 import invariant from 'invariant'
 import path from 'path'
-import handlebars from 'handlebars'
+import _ from 'lodash'
 
 /**
  * @param {Object} opts
@@ -188,8 +188,8 @@ const taskApi = {
       return
     }
 
-    const template = handlebars.compile(fs.readFileSync(src, { encoding: 'utf8' }))
-    const rendered = template(args)
+    const compiled = _.template(fs.readFileSync(src, { encoding: 'utf8' }))
+    const rendered = compiled(args)
 
     console.log(chalk.yellow(`\n  From ${src} with args`))
     console.log(chalk.yellow(helper.leftPad(JSON.stringify(args, null, '  '), ' ', 2)))
