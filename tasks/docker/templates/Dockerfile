@@ -1,4 +1,4 @@
-{{#if dockerTypeFrontend}}
+<% if (dockerType === 'frontend') { %>
 FROM ubuntu
 
 MAINTAINER Sam L. <esayemm@gmail.com>
@@ -38,14 +38,12 @@ RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 EXPOSE 80
 
 CMD service nginx start
-{{else}}
+<% } else { %>
 FROM mhart/alpine-node
 
 WORKDIR /src
 ADD . .
 
-RUN npm install -g forever
-
 EXPOSE 8080
-CMD forever index.js
-{{/if}}
+CMD node index.js
+<% } %>

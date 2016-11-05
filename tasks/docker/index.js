@@ -14,18 +14,18 @@ export default async function docker({
   taskApi,
 }) {
 
-  const args = {}
   if (dockerType === 'frontend') {
-    args.dockerTypeFrontend = true
-
     await taskApi.copyDirectory({
       src: path.resolve(__dirname, './templates/nginx'),
       dest: 'nginx',
     })
   }
+
   await taskApi.templateFile({
     src: path.resolve(__dirname, './templates/Dockerfile'),
-    args,
+    args: {
+      dockerType,
+    },
     dest: 'Dockerfile',
   })
 

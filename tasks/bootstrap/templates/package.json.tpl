@@ -5,6 +5,5 @@
   "license": "MIT",
   "scripts": {
     "postversion": "git push && git push --tags",
-    "deploy": "echo add deploy script here"
   }
 }
