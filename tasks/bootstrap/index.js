@@ -25,6 +25,13 @@ export default async function bootstrap({
   })
 
   await taskApi.addFile({
+    dest: 'readme.md',
+    fileContent: [
+      '# Readme',
+    ].join('\n')
+  })
+
+  await taskApi.addFile({
     fileContent: [
       'module.exports = {}',
     ].join('\n'),
