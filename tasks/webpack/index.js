@@ -65,11 +65,22 @@ export default async function webpack({
   /*
    * package.json
    */
+  const scripts = {
+    base: {
+      'webpack': `rm -rf build && ./node_modules/webpack/bin/webpack.js --config ${webpackConfigFileName}`,
+    },
+    frontend: {
+      'webpack': `rm -rf build && ./node_modules/webpack/bin/webpack.js --config ${webpackConfigFileName}`,
+      'webpack:dev': `PORT=${PORT:-8080}; ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --history-api-fallback --client-log-level error --port $PORT`,
+    },
+    react: {
+      'webpack': `rm -rf build && ./node_modules/webpack/bin/webpack.js --config ${webpackConfigFileName}`,
+      'webpack:dev': `PORT=${PORT:-8080}; ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --history-api-fallback --client-log-level error --port $PORT`,
+    },
+  }
   await taskApi.addToPackageJson({
     json: {
-      scripts: {
-        'webpack': `rm -rf build && ./node_modules/webpack/bin/webpack.js --config ${webpackConfigFileName}`,
-      },
+      scripts: scripts[buildorderType] || scripts.base,
     },
   })
 
