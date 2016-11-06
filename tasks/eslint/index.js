@@ -1,26 +1,32 @@
 import path from 'path'
+import invariant from 'invariant'
 
-// eslintType 'react'
+// buildorderType 'react'
 export default async function babel({
   env: {
     cwd,
     projectRootPath,
   },
   options: {
-    eslintType = 'default',
+    buildorderType = 'default',
   } = {},
   taskApi,
 }) {
+  const allowedTypes = ['default', 'react']
+  invariant(!!~allowedTypes.indexOf(buildorderType), `--eslint-type must be one of these values '${allowedTypes}'`)
 
   /*
    * npm packages
    */
   await taskApi.addPackages({
     packages: [
+      // required if using certain babel enabled features
+      // eslint-config-esayemm sets the parser config
+      // https://github.com/babel/babel-eslint
       'babel-eslint',
       'eslint',
       'eslint-config-esayemm',
-      eslintType === 'react' && 'eslint-plugin-react',
+      buildorderType === 'react' && 'eslint-plugin-react',
     ].filter(a => a),
     dev: true,
   })
@@ -36,6 +42,9 @@ export default async function babel({
     },
   })
 
+  /*
+   * eslint files
+   */
   await taskApi.addFile({
     fileContent: [
       'build/',
@@ -49,7 +58,7 @@ export default async function babel({
     dest: '.eslintrc',
     json: {
       "extends": [
-        eslintType === 'react' ? "esayemm/lib/react" : "esayemm",
+        buildorderType === 'react' ? "esayemm/lib/react" : "esayemm",
       ].filter(a => a),
     },
   })
