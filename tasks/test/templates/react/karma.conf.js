@@ -1,6 +1,6 @@
 // set env var in ci configs
 const isCI = process.env.CONTINUOUS_INTEGRATION
-const webpackConfig = require('./webpack.config.test.js')
+const webpackConfig = require('./webpack.config.js')
 
 module.exports = function(config) {
   config.set({
@@ -34,7 +34,9 @@ module.exports = function(config) {
       'dots',
       'mocha',
     ],
-    webpack: Object.assign({}, webpackConfig, {
+    webpack: {
+      module: webpackConfig.module,
+      resolve: webpackConfig.resolve,
       // required by enzyme
       externals: {
         'cheerio': 'window',
@@ -42,9 +44,9 @@ module.exports = function(config) {
         'react/lib/ExecutionEnvironment': true,
         'react/lib/ReactContext': true,
       },
-    }),
-    webpackServer: {
-      noInfo: true,
+    },
+    webpackMiddleware: {
+      stats: 'errors-only',
     },
   })
 }

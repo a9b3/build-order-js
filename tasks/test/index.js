@@ -29,7 +29,8 @@ export default async function test({
       'enzyme',
       'mocha',
       'expect',
-      'sinon',
+      /* need to use this for import style */
+      'sinon@2.0.0-pre.3',
       'karma',
       'karma-chrome-launcher',
       'karma-phantomjs-launcher',
@@ -83,10 +84,6 @@ export default async function test({
     await taskApi.addFile({
       src: path.resolve(__dirname, './templates/react/karma.conf.js'),
       dest: 'karma.conf.js',
-    })
-    await taskApi.addFile({
-      src: path.resolve(__dirname, './templates/react/webpack.config.test.js'),
-      dest: 'webpack.config.test.js',
     })
   }
 
