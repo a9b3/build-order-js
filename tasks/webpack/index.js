@@ -1,14 +1,9 @@
 import path from 'path'
 import invariant from 'invariant'
-
-function getWebpackConfigFileName(webpackType) {
-  const allowedTypes = ['lib']
-  invariant(allowedTypes.indexOf(webpackType) !== -1, `'${webpackType}' not an allowed --webpack-type '${allowedTypes}'`)
-  return `webpack.${webpackType}.config.js`
-}
+import * as helper from '../../src/helper.js'
 
 /*
- * webpackType 'lib'
+ * buildorderType 'lib'
  */
 export default async function webpack({
   env: {
@@ -16,36 +11,76 @@ export default async function webpack({
     projectRootPath,
   },
   options: {
-    webpackType = 'lib',
+    buildorderType = 'default',
   } = {},
   taskApi,
 }) {
+  const allowedTypes = ['default', 'react']
+  invariant(!!~allowedTypes.indexOf(buildorderType), `--buildorder-type must be one of these values '${allowedTypes}'`)
 
-  await taskApi.addPackages({
-    packages: [
+  const webpackConfigFileName = 'webpack.config.js'
+
+  /*
+   * npm packages
+   */
+  const packages = {
+    base: [
       'webpack@2.1.0-beta.5',
       'webpack-dev-server',
       'babel-core',
       'babel-loader',
       'json-loader',
     ],
+    react: [
+      /* loaders */
+      'css-loader',
+      'file-loader',
+      'html-loader',
+      'url-loader',
+      'style-loader',
+      'sass-loader',
+      'postcss-loader',
+      'react-hot-loader',
+      'image-webpack-loader',
+      /* plugins */
+      'html-webpack-plugin',
+      'extract-text-webpack-plugin',
+      /* css */
+      'autoprefixer',
+      'precss',
+      'node-sass',
+      'postcss-import',
+      /* misc */
+      'webpack-load-plugins',
+      'webpack-dashboard',
+    ],
+  }
+
+  await taskApi.addPackages({
+    packages: helper.concatMappedArrays(['base', buildorderType], packages),
     dev: true,
   })
 
-  const webpackConfigFileName = getWebpackConfigFileName(webpackType)
+  /*
+   * package.json
+   */
   await taskApi.addToPackageJson({
     json: {
       main: 'build/index.js',
       scripts: {
-        'version': 'npm run webpack && git add .',
-        'postversion': 'git push && git push --tags && npm publish',
         'webpack': `rm -rf build && ./node_modules/webpack/bin/webpack.js --config ${webpackConfigFileName}`,
       },
     },
   })
 
-  await taskApi.addFile({
+  /*
+   * webpack config file
+   */
+  await taskApi.templateFile({
     src: path.resolve(__dirname, `./templates/${webpackConfigFileName}`),
+    args: {
+      buildorderType,
+    },
     dest: `${webpackConfigFileName}`,
   })
 
