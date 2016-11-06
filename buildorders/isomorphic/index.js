@@ -37,4 +37,5 @@ export default async function isomorphic(opts) {
   if (opts.options.git) {
     await taskApi.gitInit()
   }
+
 }
