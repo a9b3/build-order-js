@@ -71,11 +71,11 @@ export default async function webpack({
     },
     frontend: {
       'webpack': `rm -rf build && ./node_modules/webpack/bin/webpack.js --config ${webpackConfigFileName}`,
-      'webpack:dev': `PORT=${PORT:-8080}; ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --history-api-fallback --client-log-level error --port $PORT`,
+      'webpack:dev': `PORT=\${PORT:-8080}; ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --history-api-fallback --client-log-level error --port $PORT`,
     },
     react: {
       'webpack': `rm -rf build && ./node_modules/webpack/bin/webpack.js --config ${webpackConfigFileName}`,
-      'webpack:dev': `PORT=${PORT:-8080}; ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --history-api-fallback --client-log-level error --port $PORT`,
+      'webpack:dev': `PORT=\${PORT:-8080}; ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --history-api-fallback --client-log-level error --port $PORT`,
     },
   }
   await taskApi.addToPackageJson({
