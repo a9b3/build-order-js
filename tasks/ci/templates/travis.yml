@@ -28,11 +28,8 @@ cache:
 install:
   - npm install
 
-<% if (ciTarget === 'frontend') { %>
 before_script:
-  - npm install karma-phantomjs-launcher --save-dev
   - export CONTINUOUS_INTEGRATION=true
-<% } %>
 
 script:
   - npm test

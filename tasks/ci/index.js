@@ -1,4 +1,5 @@
 import path from 'path'
+import invariant from 'invariant'
 
 export default async function ci({
   env: {
@@ -6,24 +7,21 @@ export default async function ci({
     projectRootPath,
   },
   options: {
-    ciType = 'travis',
-    ciTarget = 'default',
+    ciTarget = 'travis',
   } = {},
   taskApi,
 }) {
+  const allowedTypes = ['travis', 'circle']
+  invariant(!!~allowedTypes.indexOf(ciTarget), `--ci-type must be one of these values '${allowedTypes}'`)
 
-  if (ciType === 'travis') {
-    await taskApi.templateFile({
+  if (ciTarget === 'travis') {
+    await taskApi.addFile({
       src: path.resolve(__dirname, './templates/travis.yml'),
-      args: {
-        ciType,
-        ciTarget,
-      },
       dest: '.travis.yml',
     })
   }
 
-  if (ciType === 'circle') {
+  if (ciTarget === 'circle') {
     await taskApi.addFile({
       src: path.resolve(__dirname, './templates/circle.yml'),
       dest: 'circle.yml',
