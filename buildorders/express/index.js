@@ -15,13 +15,19 @@ export default async function express(opts) {
   await tasks.eslint(opts)
   await tasks.test(opts)
   await tasks.ci(opts)
-  await tasks.docker(opts)
+  await tasks.docker(Object.assign({}, opts, {
+    options: Object.assign({}, opts.options, {
+      dockerTarget: 'backend',
+    }),
+  }))
 
   await taskApi.addPackages({
     packages: [
       'express',
       'body-parser',
       'cors',
+      'babel-register',
+      'babel-polyfill',
     ],
   })
 
@@ -33,6 +39,7 @@ export default async function express(opts) {
   await taskApi.addFile({
     src: path.resolve(__dirname, './templates/config.js'),
     dest: 'config.js',
+    overwrite: true,
   })
 
   await taskApi.copyDirectory({
