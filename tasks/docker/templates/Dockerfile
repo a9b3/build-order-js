@@ -1,4 +1,4 @@
-<% if (dockerType === 'frontend') { %>
+<% if (dockerTarget === 'frontend') { %>
 FROM ubuntu
 
 MAINTAINER Sam L. <esayemm@gmail.com>

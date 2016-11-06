@@ -1,4 +1,5 @@
 import path from 'path'
+import invariant from 'invariant'
 
 /*
  * dockerType 'frontend'
@@ -9,12 +10,14 @@ export default async function docker({
     projectRootPath,
   },
   options: {
-    dockerType = 'default',
+    dockerTarget = 'backend',
   } = {},
   taskApi,
 }) {
+  const allowedTargets = ['backend', 'frontend']
+  invariant(!!~allowedTargets.indexOf(dockerTarget), `--docker-type must be one of these values '${allowedTargets}'`)
 
-  if (dockerType === 'frontend') {
+  if (dockerTarget === 'frontend') {
     await taskApi.copyDirectory({
       src: path.resolve(__dirname, './templates/nginx'),
       dest: 'nginx',
@@ -24,7 +27,7 @@ export default async function docker({
   await taskApi.templateFile({
     src: path.resolve(__dirname, './templates/Dockerfile'),
     args: {
-      dockerType,
+      dockerTarget,
     },
     dest: 'Dockerfile',
   })
