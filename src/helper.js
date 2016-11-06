@@ -158,7 +158,7 @@ export function extractHandlers({
     const cwdFilePath = path.resolve(cwd, name)
     const defaultFilePath = path.resolve(defaultDir, name)
 
-    const handlerPath = fileExists(cwdFilePath)
+    const handlerPath = path.extname(name) !== '' && fileExists(cwdFilePath)
       ? cwdFilePath
       : fileExists(defaultFilePath) ? defaultFilePath : null
     invariant(handlerPath, `${name} is not a file or a default`)
