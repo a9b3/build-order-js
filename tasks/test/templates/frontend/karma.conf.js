@@ -37,6 +37,7 @@ module.exports = function(config) {
     webpack: {
       module: webpackConfig.module,
       resolve: webpackConfig.resolve,
+      <% if (buildorderType === 'react') { %>
       // required by enzyme
       externals: {
         'cheerio': 'window',
@@ -44,6 +45,7 @@ module.exports = function(config) {
         'react/lib/ExecutionEnvironment': true,
         'react/lib/ReactContext': true,
       },
+      <% } %>
     },
     webpackMiddleware: {
       stats: 'errors-only',

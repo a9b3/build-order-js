@@ -4,7 +4,7 @@ import invariant from 'invariant'
 import { allowedTypes } from '../allowed-types.js'
 
 /*
- * buildorderType 'default' 'react'
+ * buildorderType 'react'
  */
 export default async function babel({
   env: {

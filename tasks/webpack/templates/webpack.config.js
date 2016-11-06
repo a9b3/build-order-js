@@ -43,6 +43,9 @@ module.exports = {
       'node_modules',
     ],
   },
+  <% if (buildorderType === 'node') { %>
+  target: 'node',
+  <% } %>
 }
 <% } else if (buildorderType) { %>
 'use strict'
