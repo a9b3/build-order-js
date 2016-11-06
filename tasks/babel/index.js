@@ -1,8 +1,9 @@
 import path from 'path'
 import * as helper from '../../src/helper.js'
+import invariant from 'invariant'
 
 /*
- * babelType 'default' 'react'
+ * buildorderType 'default' 'react'
  */
 export default async function babel({
   env: {
@@ -10,17 +11,20 @@ export default async function babel({
     projectRootPath,
   },
   options: {
-    babelType = 'default',
+    buildorderType = 'default',
     babelOutdir = 'lib',
   } = {},
   taskApi,
 }) {
+  const allowedTypes = ['default', 'react']
+  invariant(!!~allowedTypes.indexOf(buildorderType), `--babel-type flag must have one of these values '${allowedTypes}'`)
 
   /*
    * npm packages
    */
-  const npmPackages = {
+  const packages = {
     base: [
+      'babel-plugin-transform-runtime',
       'babel-plugin-transform-class-properties',
       'babel-plugin-transform-decorators-legacy',
       'babel-preset-es2015',
@@ -29,16 +33,23 @@ export default async function babel({
     ],
     react: [
       'babel-plugin-react-transform',
-      'babel-plugin-transform-runtime',
-      'babel-preset-airbnb',
       'babel-preset-react',
-      'babel-runtime',
+      // enzyme needs this
+      'babel-preset-airbnb',
     ],
   }
 
   await taskApi.addPackages({
-    packages: helper.concatMappedArrays(['base', babelType], npmPackages),
+    packages: helper.concatMappedArrays(['base', buildorderType], packages),
     dev: true,
+  })
+
+  await taskApi.addPackages({
+    packages: [
+      // required by babel-plugin-transform-runtime
+      // https://babeljs.io/docs/plugins/transform-runtime/
+      'babel-runtime',
+    ],
   })
 
   /*
@@ -67,11 +78,11 @@ export default async function babel({
 
   const babelRcPlugins = {
     base: [
+      "transform-runtime",
       "transform-decorators-legacy",
       "transform-class-properties",
     ],
     react: [
-      "transform-runtime",
       "react-hot-loader/babel",
     ],
   }
@@ -79,12 +90,12 @@ export default async function babel({
   await taskApi.addToJsonFile({
     dest: '.babelrc',
     json: {
-      "presets": helper.concatMappedArrays(['base', babelType], babelRcPresets),
-      "plugins": helper.concatMappedArrays(['base', babelType], babelRcPlugins),
+      "presets": helper.concatMappedArrays(['base', buildorderType], babelRcPresets),
+      "plugins": helper.concatMappedArrays(['base', buildorderType], babelRcPlugins),
     },
   })
 
-  if (babelType === 'react') {
+  if (buildorderType === 'react') {
     await taskApi.addToJsonFile({
       dest: '.babelrc',
       json: {
@@ -102,3 +113,4 @@ export default async function babel({
     })
   }
 
+}
