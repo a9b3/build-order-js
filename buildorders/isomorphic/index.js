@@ -18,6 +18,17 @@ export default async function isomorphic(opts) {
   await tasks.ci(opts)
   await tasks.webpack(opts)
 
+  await taskApi.addToPackageJson({
+    json: {
+      main: 'build/index.js',
+      scripts: {
+        preversion: 'npm run eslint && npm run test',
+        version: 'npm run webpack && git add .',
+        postversion: 'git push && git push --tags && npm publish',
+      },
+    },
+  })
+
   await taskApi.copyDirectory({
     src: path.resolve(__dirname, './templates/src'),
     dest: './src',
