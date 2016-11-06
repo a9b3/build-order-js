@@ -4,6 +4,6 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "postversion": "git push && git push --tags",
+    "postversion": "git push && git push --tags"
   }
 }

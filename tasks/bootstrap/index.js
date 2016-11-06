@@ -24,4 +24,11 @@ export default async function bootstrap({
     dest: 'package.json',
   })
 
+  await taskApi.addFile({
+    fileContent: [
+      'module.exports = {}',
+    ].join('\n'),
+    dest: 'config.js',
+  })
+
 }
