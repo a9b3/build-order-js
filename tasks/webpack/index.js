@@ -31,30 +31,31 @@ export default async function webpack({
       'babel-loader',
       'json-loader',
     ],
-    react: [
-      /* loaders */
-      'css-loader',
-      'file-loader',
-      'html-loader',
-      'url-loader',
-      'style-loader',
-      'sass-loader',
-      'postcss-loader',
-      'react-hot-loader',
-      'image-webpack-loader',
-      /* plugins */
-      'html-webpack-plugin',
-      'extract-text-webpack-plugin',
-      /* css */
-      'autoprefixer',
-      'precss',
-      'node-sass',
-      'postcss-import',
-      /* misc */
-      'webpack-load-plugins',
-      'webpack-dashboard',
-    ],
   }
+  packages.frontend = [
+    /* loaders */
+    'css-loader',
+    'file-loader',
+    'html-loader',
+    'url-loader',
+    'style-loader',
+    'sass-loader',
+    'postcss-loader',
+    'react-hot-loader',
+    'image-webpack-loader',
+    /* plugins */
+    'html-webpack-plugin',
+    'extract-text-webpack-plugin',
+    /* css */
+    'autoprefixer',
+    'precss',
+    'node-sass',
+    'postcss-import',
+    /* misc */
+    'webpack-load-plugins',
+    'webpack-dashboard',
+  ]
+  packages.react = packages.frontend
 
   await taskApi.addPackages({
     packages: helper.concatMappedArrays(['base', buildorderType], packages),

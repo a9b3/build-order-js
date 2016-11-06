@@ -71,7 +71,9 @@ function entry() {
       entryConfigs[key] = [
         `webpack-dev-server/client?http://localhost:` + port,
         `webpack/hot/dev-server`,
+        <% if (buildorderType === 'react') { %>
         `react-hot-loader/patch`,
+        <% } %>
       ].concat(entryConfigs[key])
     })
   }
@@ -177,10 +179,12 @@ function plugins() {
       },
       'CONFIG': JSON.stringify(CONFIG),
     }),
+    <% if (buildorderType === 'react') { %>
     new webpack.ProvidePlugin({
       React: 'react',
       CSSModules: 'react-css-modules',
     }),
+    <% } %>
   ]
 
   if (env === 'production') {
@@ -221,8 +225,10 @@ const configs = {
   plugins: plugins(),
   resolve: {
     alias: {
+      <% if (buildorderType === 'react') { %>
       // ensure one instance of react
       react: path.resolve('./node_modules/react'),
+      <% } %>
     },
     modules: [
       path.resolve('./src'),
