@@ -1,25 +1,25 @@
 import path from 'path'
 import invariant from 'invariant'
 
-// buildorderType 'mocha' 'react'
+// buildorderType 'default' 'react'
 export default async function test({
   env: {
     cwd,
     projectRootPath,
   },
   options: {
-    buildorderType = 'mocha',
+    buildorderType = 'default',
   } = {},
   taskApi,
 }) {
-  const allowedTypes = ['mocha', 'react']
+  const allowedTypes = ['default', 'react']
   invariant(!!~allowedTypes.indexOf(buildorderType), `--test-type must be one of these values '${allowedTypes}'`)
 
   /*
    * npm packages
    */
   const packages = {
-    mocha: [
+    default: [
       'babel-register',
       'babel-polyfill',
       'mocha',
@@ -50,7 +50,7 @@ export default async function test({
    */
 
   const scripts = {
-    mocha: {
+    default: {
       'test': `NODE_ENV=test ./node_modules/mocha/bin/mocha --compilers js:babel-register --require babel-polyfill $(find . -name '*.spec.js' ! -ipath '*node_modules*')`,
       'test:watch': `NODE_ENV=test ./node_modules/mocha/bin/mocha --compilers js:babel-register --require babel-polyfill --watch $(find . -name '*.spec.js' ! -ipath '*node_modules*')`,
     },
@@ -69,7 +69,7 @@ export default async function test({
   /*
    * test files
    */
-  if (buildorderType === 'mocha') {
+  if (buildorderType === 'default') {
     await taskApi.copyDirectory({
       src: path.resolve(__dirname, './templates/mocha/test'),
       dest: './test',
