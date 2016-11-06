@@ -66,7 +66,6 @@ export default async function webpack({
    */
   await taskApi.addToPackageJson({
     json: {
-      main: 'build/index.js',
       scripts: {
         'webpack': `rm -rf build && ./node_modules/webpack/bin/webpack.js --config ${webpackConfigFileName}`,
       },
