@@ -1,6 +1,7 @@
 import path from 'path'
 import * as helper from '../../src/helper.js'
 import invariant from 'invariant'
+import { allowedTypes } from '../allowed-types.js'
 
 /*
  * buildorderType 'default' 'react'
@@ -16,7 +17,6 @@ export default async function babel({
   } = {},
   taskApi,
 }) {
-  const allowedTypes = ['default', 'react']
   invariant(!!~allowedTypes.indexOf(buildorderType), `--babel-type flag must have one of these values '${allowedTypes}'`)
 
   /*

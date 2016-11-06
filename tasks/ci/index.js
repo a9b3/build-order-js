@@ -11,8 +11,8 @@ export default async function ci({
   } = {},
   taskApi,
 }) {
-  const allowedTypes = ['travis', 'circle']
-  invariant(!!~allowedTypes.indexOf(ciTarget), `--ci-type must be one of these values '${allowedTypes}'`)
+  const allowedTargets = ['travis', 'circle']
+  invariant(!!~allowedTargets.indexOf(ciTarget), `--ci-type must be one of these values '${allowedTargets}'`)
 
   if (ciTarget === 'travis') {
     await taskApi.addFile({

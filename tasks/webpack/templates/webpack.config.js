@@ -15,7 +15,7 @@ module.exports = {
     index: './src/index.js',
   },
   output: {
-    filename: `${configs.name}.js`,
+    filename: configs.name + `.js`,
     publicPath: '/',
     path: path.resolve(__dirname, 'build'),
     libraryTarget: 'umd',

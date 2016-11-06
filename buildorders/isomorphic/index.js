@@ -9,21 +9,14 @@ import * as tasks from '../../tasks/index.js'
  */
 export default async function isomorphic(opts) {
   const taskApi = opts.taskApi
+  opts.options.buildorderType = 'isomorphic'
 
   await tasks.bootstrap(opts)
   await tasks.babel(opts)
   await tasks.eslint(opts)
   await tasks.test(opts)
-  await tasks.ci(Object.assign({}, opts, {
-    options: Object.assign({}, opts.options, {
-      ciType: 'circle',
-    }),
-  }))
-  await tasks.webpack(Object.assign({}, opts, {
-    options: Object.assign({}, opts.options, {
-      webpackType: 'lib',
-    }),
-  }))
+  await tasks.ci(opts)
+  await tasks.webpack(opts)
 
   await taskApi.copyDirectory({
     src: path.resolve(__dirname, './templates/src'),

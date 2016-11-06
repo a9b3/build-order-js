@@ -1,6 +1,7 @@
 import path from 'path'
 import invariant from 'invariant'
 import * as helper from '../../src/helper.js'
+import { allowedTypes } from '../allowed-types.js'
 
 /*
  * buildorderType 'lib'
@@ -15,7 +16,6 @@ export default async function webpack({
   } = {},
   taskApi,
 }) {
-  const allowedTypes = ['default', 'react']
   invariant(!!~allowedTypes.indexOf(buildorderType), `--buildorder-type must be one of these values '${allowedTypes}'`)
 
   const webpackConfigFileName = 'webpack.config.js'

@@ -1,5 +1,6 @@
 import path from 'path'
 import invariant from 'invariant'
+import { allowedTypes } from '../allowed-types.js'
 
 // buildorderType 'default' 'react'
 export default async function test({
@@ -12,7 +13,6 @@ export default async function test({
   } = {},
   taskApi,
 }) {
-  const allowedTypes = ['default', 'react']
   invariant(!!~allowedTypes.indexOf(buildorderType), `--test-type must be one of these values '${allowedTypes}'`)
 
   /*
@@ -42,7 +42,7 @@ export default async function test({
   }
 
   await taskApi.addPackages({
-    packages: packages[buildorderType],
+    packages: packages[buildorderType] || packages.default,
     dev: true,
   })
 
@@ -63,20 +63,14 @@ export default async function test({
 
   await taskApi.addToPackageJson({
     json: {
-      scripts: scripts[buildorderType],
+      scripts: scripts[buildorderType] || scripts.default,
     },
   })
 
   /*
    * test files
    */
-  if (buildorderType === 'default') {
-    await taskApi.copyDirectory({
-      src: path.resolve(__dirname, './templates/mocha/test'),
-      dest: './test',
-    })
-
-  } else if (buildorderType === 'react') {
+  if (buildorderType === 'react') {
     await taskApi.copyDirectory({
       src: path.resolve(__dirname, './templates/react/test'),
       dest: './test',
@@ -84,6 +78,11 @@ export default async function test({
     await taskApi.addFile({
       src: path.resolve(__dirname, './templates/react/karma.conf.js'),
       dest: 'karma.conf.js',
+    })
+  } else {
+    await taskApi.copyDirectory({
+      src: path.resolve(__dirname, './templates/mocha/test'),
+      dest: './test',
     })
   }
 

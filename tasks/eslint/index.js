@@ -1,5 +1,6 @@
 import path from 'path'
 import invariant from 'invariant'
+import { allowedTypes } from '../allowed-types.js'
 
 // buildorderType 'react'
 export default async function babel({
@@ -12,7 +13,6 @@ export default async function babel({
   } = {},
   taskApi,
 }) {
-  const allowedTypes = ['default', 'react']
   invariant(!!~allowedTypes.indexOf(buildorderType), `--eslint-type must be one of these values '${allowedTypes}'`)
 
   /*

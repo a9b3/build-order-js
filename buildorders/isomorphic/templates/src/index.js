@@ -1,1 +1,3 @@
-console.log(`hi`)
+export function foo() {
+  console.log(`hi`)
+}
