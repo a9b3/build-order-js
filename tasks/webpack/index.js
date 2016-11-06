@@ -50,7 +50,8 @@ export default async function webpack({
     'autoprefixer',
     'precss',
     'node-sass',
-    'postcss-import',
+    // TODO (sam) https://github.com/postcss/postcss-import/issues/207
+    'postcss-import@8.1.0',
     /* misc */
     'webpack-load-plugins',
     'webpack-dashboard',
