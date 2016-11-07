@@ -48,136 +48,93 @@ module.exports = {
   <% } %>
 }
 <% } else if (buildorderType) { %>
-'use strict'
-
 const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const ExtractText = require('extract-text-webpack-plugin')
 const webpack = require('webpack')
-const webpackPlugins = require('webpack-load-plugins')()
-// 'development' | 'production' | 'test
-const env = process.env.NODE_ENV || 'development'
-const port = process.env.PORT || 8080
-const CONFIG = require('./config.js')
-const Dashboard = require('webpack-dashboard')
-const DashboardPlugin = require('webpack-dashboard/plugin')
-
-function entry() {
-  const entryConfigs = {
-    app: [
-      './src/app/index.js',
-    ],
-  }
-  if (env !== 'production') {
-    Object.keys(entryConfigs).forEach(key => {
-      entryConfigs[key] = [
-        `webpack-dev-server/client?http://localhost:` + port,
-        `webpack/hot/dev-server`,
-        <% if (buildorderType === 'react') { %>
-        `react-hot-loader/patch`,
-        <% } %>
-      ].concat(entryConfigs[key])
-    })
-  }
-  return env === 'test' ? undefined : entryConfigs
+const config = {
+  // development, production, test
+  env: process.env.NODE_ENV || 'development',
+  port: process.env.PORT || 8080,
 }
 
-function output() {
-  const outputConfig = {
-    filename: env === 'production' ? '[name].[hash].bundle.js' : '[name].bundle.js',
-    path: path.resolve('./build'),
+const webpackConfig = {
+  entry: {
+    app: './src/app/index.js',
+  },
+  output: {
+    path: path.resolve(__dirname, 'build'),
     publicPath: '/',
-  }
-  return env === 'test' ? undefined : outputConfig
-}
-
-function wpModule() {
-  const loaders = {
-    js: {
-      test: /\.jsx?$/,
-      exclude: /\/node_modules\//,
-      loaders: [ 'babel' ],
-    },
-    styles: {
-      test: /\.scss$/,
-      loaders: [
-        'style?sourceMap',
-        'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]&sourceMap',
-        'postcss',
-        'sass?sourceMap',
-      ],
-    },
-    css: {
-      test: /\.css$/,
-      loaders: [
-        'style?sourceMap',
-        'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]&sourceMap',
-        'postcss',
-      ],
-    },
-    html: {
-      test: /\.html$/,
-      loaders: [ 'html' ],
-    },
-    images: {
-      test: /\.(png|jpe?g|gif|svg|ico)$/i,
-      loaders: [
-        env === 'production' ? 'url-loader?limit=8192' : 'url-loader',
-        'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false',
-      ],
-    },
-    fonts: {
-      test: /\.(woff|woff2|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/i,
-      loaders: [
-        env === 'production' ? 'url-loader?limit=10000' : 'url-loader',
-      ],
-    },
-    json: {
-      test: /\.json$/i,
-      loaders: [ 'json' ],
-    },
-    sounds: {
-      test: /\.(mp3|m4a|wav)$/i,
-      loaders: [
-        'file',
-      ],
-    },
-  }
-
-  if (env === 'production') {
-    delete loaders.styles.loaders
-    delete loaders.css.loaders
-
-    loaders.styles.loader = webpackPlugins.extractText.extract(
-      'style',
-      'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]!postcss!sass'
-    )
-    loaders.css.loader = webpackPlugins.extractText.extract(
-      'style',
-      'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]!postcss'
-    )
-  }
-
-  return {
-    loaders: Object.keys(loaders).map(key => loaders[key]),
-  }
-}
-
-function plugins() {
-  let pluginsConfigs = [
-    new webpackPlugins.html({
-      filename: 'index.html',
-      template: './src/index.html',
-      inject: true,
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      children: true,
-      minChunks: 2,
-    }),
+    filename: '[name].bundled.js',
+  },
+  module: {
+    loaders: [
+      {
+        test: /\.jsx?$/,
+        exclude: /\/node_modules\//,
+        loaders: [ 'babel' ],
+      },
+      {
+        test: /\.scss$/,
+        loaders: config.env === 'production' ? ExtractText.extract(
+          'style-loader',
+          'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]!postcss!sass'
+        ) : [
+          'style?sourceMap',
+          'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]&sourceMap',
+          'postcss',
+          'sass?sourceMap',
+        ],
+      },
+      {
+        test: /\.css$/,
+        loaders: config.env === 'production' ? ExtractText.extract(
+          'style-loader',
+          'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]!postcss'
+        ) : [
+          'style?sourceMap',
+          'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]&sourceMap',
+          'postcss',
+        ],
+      },
+      {
+        test: /\.html$/,
+        loaders: [ 'html' ],
+      },
+      {
+        test: /\.(png|jpe?g|gif|svg|ico)$/i,
+        loaders: [
+          config.env === 'production' ? 'url-loader?limit=8192' : 'url-loader',
+          'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false',
+        ],
+      },
+      {
+        test: /\.(woff|woff2|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/i,
+        loaders: [
+          config.env === 'production' ? 'url-loader?limit=10000' : 'url-loader',
+        ],
+      },
+      {
+        test: /\.json$/i,
+        loaders: [ 'json' ],
+      },
+      {
+        test: /\.(mp3|m4a|wav)$/i,
+        loaders: [
+          'file',
+        ],
+      },
+    ],
+  },
+  postcss() {
+    return [require('autoprefixer')]
+  },
+  // https://github.com/webpack/docs/wiki/list-of-plugins
+  plugins: [
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: JSON.stringify(env),
+        NODE_ENV: JSON.stringify(config.env),
       },
-      'CONFIG': JSON.stringify(CONFIG),
     }),
     <% if (buildorderType === 'react') { %>
     new webpack.ProvidePlugin({
@@ -185,72 +142,50 @@ function plugins() {
       CSSModules: 'react-css-modules',
     }),
     <% } %>
-  ]
-
-  if (env === 'production') {
-    pluginsConfigs = pluginsConfigs.concat([
-      new webpack.optimize.DedupePlugin(),
-      new webpack.optimize.MinChunkSizePlugin({
-        minChunkSize: 51200,
-      }),
-      new webpackPlugins.extractText('[name].[hash].bundle.css'),
-      new webpack.optimize.UglifyJsPlugin({
-        mangle: true,
-        compressor: {
-          warnings: false,
-        },
-      }),
-    ])
-  } else {
-    if (env !== 'test') {
-      const dashboard = new Dashboard()
-      pluginsConfigs = pluginsConfigs.concat([
-        new DashboardPlugin(dashboard.setData),
-      ])
-    }
-    pluginsConfigs = pluginsConfigs.concat([
-      new webpack.HotModuleReplacementPlugin(),
-      new webpack.NoErrorsPlugin(),
-      new webpack.NamedModulesPlugin(),
-    ])
-  }
-  return pluginsConfigs
-}
-
-// Webpack config
-const configs = {
-  entry: entry(),
-  output: output(),
-  module: wpModule(),
-  plugins: plugins(),
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      children: true,
+      minChunks: 2,
+    }),
+    config.env === 'development' && new webpack.NamedModulesPlugin(),
+    config.env === 'development' && new webpack.NoErrorsPlugin(),
+    config.env === 'production' && new ExtractText('[name].[hash].bundle.css'),
+    config.env === 'production' && new webpack.optimize.DedupePlugin(),
+    config.env === 'production' && new webpack.optimize.MinChunkSizePlugin({
+      minChunkSize: 51200,
+    }),
+    config.env === 'production' && new webpack.optimize.UglifyJsPlugin({
+      mangle: true,
+      compressor: {
+        warnings: false,
+      },
+    }),
+  ].filter(a => a),
   resolve: {
-    alias: {
-      <% if (buildorderType === 'react') { %>
-      // ensure one instance of react
-      react: path.resolve('./node_modules/react'),
-      <% } %>
-    },
     modules: [
       path.resolve('./src'),
       path.resolve('./src/app'),
       'node_modules',
     ],
   },
-  postcss() {
-    return [
-      require('postcss-import'),
-      require('autoprefixer'),
-      require('precss'),
-    ]
-  },
 }
-if (env !== 'production') {
+
+if (config.env === 'test') {
+  delete webpackConfig.entry
+  delete webpackConfig.output
+}
+
+if (config.env !== 'production') {
   // used by image-webpack loader
-  configs.debug = true
+  webpackConfig.debug = true
   // http://webpack.github.io/docs/build-performance.html
   // recommendation: 'eval-source-map',
   // 'eval' is the fastest if you don't care about source-map
-  configs.devtool = 'eval-source-map'
+  webpackConfig.devtool = 'eval-source-map'
 }
-module.exports = configs
+
+module.exports = webpackConfig
 <% } %>

@@ -41,22 +41,14 @@ export default async function webpack({
     'style-loader',
     'sass-loader',
     'postcss-loader',
-    'react-hot-loader',
     'image-webpack-loader',
     /* plugins */
     'html-webpack-plugin',
     'extract-text-webpack-plugin',
     /* css */
     'autoprefixer',
-    'precss',
-    'node-sass',
-    // TODO (sam) https://github.com/postcss/postcss-import/issues/207
-    'postcss-import@8.1.0',
-    /* misc */
-    'webpack-load-plugins',
-    'webpack-dashboard',
+    'node-sass', // peer dep of sass-loader
   ]
-  packages.react = packages.frontend
 
   await taskApi.addPackages({
     packages: helper.concatMappedArrays(['base', buildorderType], packages),
@@ -72,13 +64,11 @@ export default async function webpack({
     },
     frontend: {
       'webpack': `rm -rf build && ./node_modules/webpack/bin/webpack.js --config ${webpackConfigFileName}`,
-      'webpack:dev': `PORT=\${PORT:-8080}; ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --history-api-fallback --client-log-level error --port $PORT`,
-    },
-    react: {
-      'webpack': `rm -rf build && ./node_modules/webpack/bin/webpack.js --config ${webpackConfigFileName}`,
-      'webpack:dev': `PORT=\${PORT:-8080}; ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --history-api-fallback --client-log-level error --port $PORT`,
+      'webpack:dev': `PORT=\${PORT:-8080}; ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --history-api-fallback --hot --inline --content-base ./src --client-log-level error --port $PORT`,
     },
   }
+  scripts.react = scripts.frontend
+
   await taskApi.addToPackageJson({
     json: {
       scripts: scripts[buildorderType] || scripts.base,
