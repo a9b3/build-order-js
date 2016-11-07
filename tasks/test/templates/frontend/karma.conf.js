@@ -44,8 +44,7 @@ module.exports = function(config) {
         'react/addons': true,
         'react/lib/ExecutionEnvironment': true,
         'react/lib/ReactContext': true,
-      },
-      <% } %>
+      }, <% } %>
     },
     webpackMiddleware: {
       stats: 'errors-only',

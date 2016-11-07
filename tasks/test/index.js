@@ -27,7 +27,6 @@ export default async function test({
     ],
   }
   packages.frontend = [
-    'enzyme',
     'mocha',
     'expect',
     /* need to use this for import style */
@@ -40,7 +39,9 @@ export default async function test({
     'karma-sourcemap-loader',
     'karma-webpack',
   ]
-  packages.react = packages.frontend
+  packages.react = packages.frontend.concat([
+    'enzyme',
+  ])
 
   await taskApi.addPackages({
     packages: packages[buildorderType] || packages.default,
