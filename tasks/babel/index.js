@@ -82,9 +82,6 @@ export default async function babel({
       "transform-decorators-legacy",
       "transform-class-properties",
     ],
-    react: [
-      "react-hot-loader/babel",
-    ],
   }
 
   await taskApi.addToJsonFile({
@@ -100,6 +97,9 @@ export default async function babel({
       dest: '.babelrc',
       json: {
         "env": {
+          "development": [
+            "react-hot-loader/babel",
+          ],
           "test": {
             "presets": [
               "airbnb",
