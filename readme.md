@@ -24,6 +24,22 @@ Set up a mocha testing suite and docker files by running tasks
 bojs tasks test docker --npm yarn
 ```
 
+## Presets
+
+Preset build orders.
+
+```
+bojs buildorders <name> --npm yarn
+```
+
+Names|Description
+---|---
+frontend |A generic frontend project
+react| A react frontend project
+node| A node package
+express| An express server
+isomorphic| An isomorphic package
+
 ## Menu
 
 ```
