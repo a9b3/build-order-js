@@ -97,9 +97,11 @@ export default async function babel({
       dest: '.babelrc',
       json: {
         "env": {
-          "development": [
-            "react-hot-loader/babel",
-          ],
+          "development": {
+            "plugins": [
+              "react-hot-loader/babel",
+            ],
+          },
           "test": {
             "presets": [
               "airbnb",
