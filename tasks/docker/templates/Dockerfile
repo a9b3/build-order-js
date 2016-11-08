@@ -6,27 +6,19 @@ MAINTAINER Sam L. <esayemm@gmail.com>
 # Install programs
 RUN apt-get update
 RUN apt-get install -y nginx
-RUN apt-get install -y nodejs
-RUN apt-get install -y nodejs-legacy
-RUN apt-get install -y npm
-
-# Cache package.json and node_modules
-ADD package.json /tmp/package.json
-RUN cd /tmp && npm install
-RUN mkdir -p /opt/app && cp -a /tmp/node_modules /opt/app/
 
 ##
 # App Code
+
+# IMPORTANT build app before calling docker build
 ##
 
-# Build the website
 WORKDIR /opt/app
-ADD . /opt/app
-RUN npm run build
+ADD build /opt/app/build
 
 # Move built website to nginx html folder
 RUN rm -rf /var/www/html
-RUN cp -r build /var/www/html
+RUN cp -r /opt/app/build /var/www/html
 
 # Replace nginx server config
 RUN rm -v /etc/nginx/sites-enabled/default

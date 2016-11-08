@@ -28,7 +28,8 @@ export default async function react(opts) {
       scripts: {
         // docker will run 'npm run build'
         build: 'npm run webpack',
-        start: 'npm run webpack:dev'
+        start: 'npm run webpack:dev',
+        deploy: 'npm run build && echo add continuous deployment here',
       },
     },
   })
