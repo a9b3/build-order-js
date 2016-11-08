@@ -14,6 +14,7 @@ export default async function react(opts) {
   await tasks.bootstrap(opts)
   await tasks.babel(opts)
   await tasks.eslint(opts)
+  await tasks.webpack(opts)
   await tasks.test(opts)
   await tasks.ci(opts)
   await tasks.docker(Object.assign({}, opts, {
@@ -27,8 +28,16 @@ export default async function react(opts) {
       scripts: {
         // docker will run 'npm run build'
         build: 'npm run webpack',
+        start: 'npm run webpack:dev'
       },
     },
+  })
+
+  await taskApi.addPackages({
+    packages: [
+      'react-addons-test-utils',
+      'react-hot-loader@3.0.0-beta.6',
+    ],
   })
 
   await taskApi.addPackages({
@@ -40,24 +49,15 @@ export default async function react(opts) {
       'react-router',
       'history',
       'html',
+      'invariant',
+      'esayemm-styles',
     ],
   })
 
-  // await taskApi.addFile({
-  //   src: path.resolve(__dirname, './templates/index.js'),
-  //   dest: 'index.js',
-  // })
-  //
-  // await taskApi.addFile({
-  //   src: path.resolve(__dirname, './templates/config.js'),
-  //   dest: 'config.js',
-  //   overwrite: true,
-  // })
-  //
-  // await taskApi.copyDirectory({
-  //   src: path.resolve(__dirname, './templates/src'),
-  //   dest: './src',
-  // })
+  await taskApi.copyDirectory({
+    src: path.resolve(__dirname, './templates/src'),
+    dest: './src',
+  })
 
   if (opts.options.git) {
     await taskApi.gitInit()
