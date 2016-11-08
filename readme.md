@@ -1,6 +1,6 @@
 # Build Order JS
 
-Set up javascript development environment procedurally.
+Set up javascript development environment procedurally. This tool comes with a few preset build orders but the goal is for individuals to create their own build orders and tasks that they can share. However feel free to use the preset build orders if it fits your needs.
 
 ## Installation
 
@@ -8,12 +8,28 @@ Set up javascript development environment procedurally.
 npm i -g build-order-js
 ```
 
+## Usage
+
+Scaffold a react project
+
+```sh
+mkdir project
+cd project
+bojs buildorder react --npm yarn
+```
+
+Set up a mocha testing suite and docker files by running tasks
+
+```sh
+bojs tasks test docker --npm yarn
+```
+
 ## Menu
 
 ```
-$ bojs
+$ bojs  
   
-  build-order-js 1.0.0
+  build-order-js 1.2.0
 
     Set up your javascript project procedurally
 
@@ -23,20 +39,14 @@ $ bojs
 
     help		show help
     tasks		apply tasks to the current project
+    buildorders		apply build orders to the current project
   
   Global Options:
 
     --npm		specify npm client to use [npm || yarn] defaults to npm
     --help, -h		show help for commands
-  
-```
 
-## Usage
 
-```sh
-mkdir project
-cd project
-bojs tasks bootstrap babel --npm yarn
 ```
 
 ## Dev
