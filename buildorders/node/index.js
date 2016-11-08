@@ -7,7 +7,7 @@ import * as tasks from '../../tasks/index.js'
  * args used
  * --git
  */
-export default async function isomorphic(opts) {
+export default async function node(opts) {
   const taskApi = opts.taskApi
   opts.options.buildorderType = 'node'
 
@@ -16,14 +16,21 @@ export default async function isomorphic(opts) {
   await tasks.eslint(opts)
   await tasks.test(opts)
   await tasks.ci(opts)
-  await tasks.webpack(opts)
+
+  await taskApi.addPackages({
+    packages: [
+      'babel-register',
+      'babel-polyfill',
+    ],
+    dev: true,
+  })
 
   await taskApi.addToPackageJson({
     json: {
-      main: 'build/index.js',
+      main: 'lib/index.js',
       scripts: {
         preversion: 'npm run eslint && npm run test',
-        version: 'npm run webpack && git add .',
+        version: 'npm run babel && git add .',
         postversion: 'git push && git push --tags && npm publish',
       },
     },
@@ -32,6 +39,15 @@ export default async function isomorphic(opts) {
   await taskApi.copyDirectory({
     src: path.resolve(__dirname, './templates/src'),
     dest: './src',
+  })
+
+  await taskApi.addFile({
+    dest: './index.js',
+    fileContent: [
+      `require('babel-register')`,
+      `require('babel-polyfill')`,
+      `require('./src')`,
+    ].join('\n'),
   })
 
   if (opts.options.git) {
