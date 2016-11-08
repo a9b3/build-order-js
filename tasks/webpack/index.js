@@ -25,8 +25,8 @@ export default async function webpack({
    */
   const packages = {
     base: [
-      'webpack@2.1.0-beta.5',
-      'webpack-dev-server',
+      'webpack@2.1.0-beta.25',
+      'webpack-dev-server@2.1.0-beta.10',
       'babel-core',
       'babel-loader',
       'json-loader',
@@ -44,11 +44,12 @@ export default async function webpack({
     'image-webpack-loader',
     /* plugins */
     'html-webpack-plugin',
-    'extract-text-webpack-plugin',
+    'extract-text-webpack-plugin@2.0.0-beta.4',
     /* css */
     'autoprefixer',
     'node-sass', // peer dep of sass-loader
   ]
+  packages.react = packages.frontend
 
   await taskApi.addPackages({
     packages: helper.concatMappedArrays(['base', buildorderType], packages),
@@ -60,11 +61,11 @@ export default async function webpack({
    */
   const scripts = {
     base: {
-      'webpack': `rm -rf build && ./node_modules/webpack/bin/webpack.js --config ${webpackConfigFileName}`,
+      'webpack': `rm -rf build && NODE_ENV=production ./node_modules/webpack/bin/webpack.js --config ${webpackConfigFileName}`,
     },
     frontend: {
-      'webpack': `rm -rf build && ./node_modules/webpack/bin/webpack.js --config ${webpackConfigFileName}`,
-      'webpack:dev': `PORT=\${PORT:-8080}; ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --history-api-fallback --hot --inline --content-base ./src --client-log-level error --port $PORT`,
+      'webpack': `rm -rf build && NODE_ENV=production ./node_modules/webpack/bin/webpack.js --config ${webpackConfigFileName}`,
+      'webpack:dev': `NODE_ENV=development ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --history-api-fallback --hot --inline --content-base ./src --client-log-level error --port \${PORT:-8080}`,
     },
   }
   scripts.react = scripts.frontend

@@ -60,12 +60,14 @@ const config = {
 
 const webpackConfig = {
   entry: {
-    app: './src/app/index.js',
+    // generally just need one entry file, but if you want another tag for
+    // something like google analytics script you can add to this array
+    app: ['./src/app/index.js'],
   },
   output: {
     path: path.resolve(__dirname, 'build'),
     publicPath: '/',
-    filename: '[name].bundled.js',
+    filename: '[name].[hash].bundled.js',
   },
   module: {
     loaders: [
@@ -76,26 +78,56 @@ const webpackConfig = {
       },
       {
         test: /\.scss$/,
-        loaders: config.env === 'production' ? ExtractText.extract(
-          'style-loader',
-          'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]!postcss!sass'
-        ) : [
-          'style?sourceMap',
-          'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]&sourceMap',
-          'postcss',
-          'sass?sourceMap',
-        ],
+        loaders: config.env === 'production'
+          ?
+            ExtractText.extract({
+              fallbackLoader: 'style',
+              loader: [
+                {
+                  loader: 'css',
+                  query: {
+                    modules: true,
+                    importLoaders: '1',
+                    localIdentName: '[path]___[name]__[local]___[hash:base64:5]',
+                  },
+                },
+                'postcss',
+                'sass',
+              ],
+            })
+          :
+            [
+              'style?sourceMap',
+              'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]&sourceMap',
+              'postcss',
+              'sass?sourceMap',
+            ],
       },
       {
         test: /\.css$/,
-        loaders: config.env === 'production' ? ExtractText.extract(
-          'style-loader',
-          'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]!postcss'
-        ) : [
-          'style?sourceMap',
-          'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]&sourceMap',
-          'postcss',
-        ],
+        loaders: config.env === 'production'
+          ?
+            ExtractText.extract({
+              fallbackLoader: 'style',
+              loader: [
+                {
+                  loader: 'css',
+                  query: {
+                    modules: true,
+                    importLoaders: '1',
+                    localIdentName: '[path]___[name]__[local]___[hash:base64:5]',
+                  },
+                },
+                'postcss',
+                'sass',
+              ],
+            })
+          :
+            [
+              'style?sourceMap',
+              'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]&sourceMap',
+              'postcss',
+            ],
       },
       {
         test: /\.html$/,
@@ -105,8 +137,15 @@ const webpackConfig = {
         test: /\.(png|jpe?g|gif|svg|ico)$/i,
         loaders: [
           config.env === 'production' ? 'url-loader?limit=8192' : 'url-loader',
-          'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false',
-        ],
+          {
+            loader: 'image-webpack',
+            query: {
+              bypassOnDebug: true,
+              optimizationLevel: 7,
+              interfaced: false,
+            },
+          },
+        ].filter(a => a),
       },
       {
         test: /\.(woff|woff2|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/i,
@@ -126,9 +165,6 @@ const webpackConfig = {
       },
     ],
   },
-  postcss() {
-    return [require('autoprefixer')]
-  },
   // https://github.com/webpack/docs/wiki/list-of-plugins
   plugins: [
     new webpack.DefinePlugin({
@@ -136,12 +172,7 @@ const webpackConfig = {
         NODE_ENV: JSON.stringify(config.env),
       },
     }),
-    <% if (buildorderType === 'react') { %>
-    new webpack.ProvidePlugin({
-      React: 'react',
-      CSSModules: 'react-css-modules',
-    }),
-    <% } %>
+
     new HtmlWebpackPlugin({
       template: './src/index.html',
     }),
@@ -149,6 +180,18 @@ const webpackConfig = {
       name: 'vendor',
       children: true,
       minChunks: 2,
+    }),
+    // debug: true on top level webpack config was removed in webpack2 update
+    // passing debug options to loaders directly this is the interim solution
+    // need to fix image-webpack loader
+    new webpack.LoaderOptionsPlugin({
+      debug: config.env === 'development',
+      options: {
+        context: path.resolve(__dirname, 'src'),
+        postcss: [
+          require('autoprefixer'),
+        ],
+      },
     }),
     config.env === 'development' && new webpack.NamedModulesPlugin(),
     config.env === 'development' && new webpack.NoErrorsPlugin(),
@@ -179,8 +222,6 @@ if (config.env === 'test') {
 }
 
 if (config.env !== 'production') {
-  // used by image-webpack loader
-  webpackConfig.debug = true
   // http://webpack.github.io/docs/build-performance.html
   // recommendation: 'eval-source-map',
   // 'eval' is the fastest if you don't care about source-map
