@@ -10,6 +10,11 @@ import * as tasks from '../../tasks/index.js'
 export default async function express(opts) {
   const taskApi = opts.taskApi
 
+  await taskApi.copyDirectory({
+    src: path.resolve(__dirname, './templates/test'),
+    dest: './test',
+  })
+
   await tasks.bootstrap(opts)
   await tasks.babel(opts)
   await tasks.eslint(opts)
@@ -20,6 +25,13 @@ export default async function express(opts) {
       dockerTarget: 'backend',
     }),
   }))
+
+  await taskApi.addPackages({
+    packages: [
+      'axios',
+    ],
+    dev: true,
+  })
 
   await taskApi.addPackages({
     packages: [

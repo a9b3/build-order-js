@@ -3,7 +3,7 @@ import cors from 'cors'
 import bodyParser from 'body-parser'
 import router from './router.js'
 
-export default class Server {
+class Server {
   _bootstrap = () => {
     this.app.use(cors())
     this.app.use(bodyParser.json())
@@ -36,3 +36,5 @@ export default class Server {
     await this.server.close()
   }
 }
+
+export default new Server()

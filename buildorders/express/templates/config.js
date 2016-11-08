@@ -11,7 +11,7 @@ config.dev = {
 }
 
 config.test = {
-  port: envOverrides.port || 8080,
+  port: envOverrides.port || 8081,
 }
 
 config.travis = {
