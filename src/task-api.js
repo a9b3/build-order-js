@@ -6,25 +6,6 @@ import invariant from 'invariant'
 import path from 'path'
 import _ from 'lodash'
 
-/**
- * @param {Object} opts
- * @param {Object} json - json to merge
- * @param {String} dest - destination file path of json file to merge into
- */
-async function mergeToJsonFile({ json:jsonToMerge, dest }) {
-  const json = helper.requireJson(dest)
-
-  // log out the merging json
-  const jsonStr = JSON.stringify(jsonToMerge, null, '  ')
-  const paddedJsonStr = helper.leftPad(jsonStr, ' ', 2)
-  console.log(chalk.yellow(`\n  Merging -> ${dest}`))
-  console.log(chalk.yellow(paddedJsonStr))
-  console.log(``)
-
-  const mergedJson = helper.deepMergeJson(json, jsonToMerge)
-  fs.writeFileSync(dest, JSON.stringify(mergedJson, null, '  '))
-}
-
 const taskApi = {
 
   /**
@@ -81,7 +62,7 @@ const taskApi = {
       fs.writeFileSync(dest, '{}', { encoding: 'utf8' })
     }
 
-    await mergeToJsonFile({ json, dest })
+    await helper.mergeToJsonFile({ json, dest })
   },
 
   /**
@@ -98,7 +79,7 @@ const taskApi = {
       fs.writeFileSync(packageJsonFilePath, '{}', { encoding: 'utf8' })
     }
 
-    await mergeToJsonFile({ json, dest: packageJsonFilePath })
+    await helper.mergeToJsonFile({ json, dest: packageJsonFilePath })
   },
 
   /**

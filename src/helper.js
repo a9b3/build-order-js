@@ -95,7 +95,7 @@ function _deepMergeJson(a, b, c, opts = {}) {
       throw new Error(`Cannot merge ${a} with ${b} not the same type`)
     }
 
-    /* IMPORTANT: this is not allowing arr dupes */
+    // IMPORTANT: this is not allowing arr dupes
     for (let i = 0; i < b.length; i++) {
       if (a.indexOf(b[i]) === -1) {
         a = a.concat(b)
@@ -284,4 +284,28 @@ export function concatMappedArrays(keys, mappedArrays) {
 
     return arr.concat(mappedArrays[key])
   }, [])
+}
+
+/**
+ * requires a json file, executes a deep merge, and then writes the merged
+ * content back into the json file
+ * *might want to consider separating the file operation from the merge
+ * operation
+ *
+ * @param {Object} opts
+ * @param {Object} json - json to merge
+ * @param {String} dest - destination file path of json file to merge into
+ */
+export function mergeToJsonFile({ json:jsonToMerge, dest }) {
+  const json = requireJson(dest)
+
+  // log out the merging json
+  const jsonStr = JSON.stringify(jsonToMerge, null, '  ')
+  const paddedJsonStr = leftPad(jsonStr, ' ', 2)
+  console.log(chalk.yellow(`\n  Merging -> ${dest}`))
+  console.log(chalk.yellow(paddedJsonStr))
+  console.log(``)
+
+  const mergedJson = deepMergeJson(json, jsonToMerge)
+  fs.writeFileSync(dest, JSON.stringify(mergedJson, null, '  '))
 }
