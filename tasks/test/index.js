@@ -2,7 +2,12 @@ import path from 'path'
 import invariant from 'invariant'
 import { allowedTypes } from '../allowed-types.js'
 
-// buildorderType 'default' 'react'
+/*
+ * buildorderType
+ * default   - mocha/expect
+ * frontend  - mocha/expect/sinon, karma, webpack
+ * react     - mocha/expect/sinon, karma, webpack, enzyme
+ */
 export default async function test({
   env: {
     cwd,
@@ -51,7 +56,6 @@ export default async function test({
   /*
    * package.json
    */
-
   const scripts = {
     default: {
       'test': `NODE_ENV=test ./node_modules/mocha/bin/mocha --compilers js:babel-register --require babel-polyfill $(find . -name '*.spec.js' ! -ipath '*node_modules*')`,

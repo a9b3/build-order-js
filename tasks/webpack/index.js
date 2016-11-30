@@ -4,7 +4,10 @@ import * as helper from '../../src/helper.js'
 import { allowedTypes } from '../allowed-types.js'
 
 /*
- * buildorderType 'lib'
+ * buildorderType
+ * default  - webpack, only babel-loader
+ * frontend - webpack, all asset loaders
+ * react    - webpack (same as frontend)
  */
 export default async function webpack({
   env: {

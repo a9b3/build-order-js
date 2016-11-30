@@ -1,6 +1,11 @@
 import path from 'path'
 import invariant from 'invariant'
 
+/*
+ * ciTarget
+ * travis -
+ * circle -
+ */
 export default async function ci({
   env: {
     cwd,

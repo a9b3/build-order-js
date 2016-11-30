@@ -2,7 +2,9 @@ import path from 'path'
 import invariant from 'invariant'
 
 /*
- * dockerType 'frontend'
+ * dockerType
+ * frontend - nginx docker file serving /build
+ * backend  - alphine/node serving 'node index.js' on 8080
  */
 export default async function docker({
   env: {

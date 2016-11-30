@@ -2,7 +2,11 @@ import path from 'path'
 import invariant from 'invariant'
 import { allowedTypes } from '../allowed-types.js'
 
-// buildorderType 'react'
+/*
+ * buildorderType
+ * none  - eslint-config-esayemm
+ * react - eslint-config-esayemm/lib/react
+ */
 export default async function babel({
   env: {
     cwd,

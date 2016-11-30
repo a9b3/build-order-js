@@ -1,5 +1,12 @@
 import path from 'path'
 
+/*
+ * 1. git init
+ * 2. .gitignore
+ * 3. package.json
+ * 4. readme.md
+ * 5. config.js
+ */
 export default async function bootstrap({
   env: {
     cwd,

@@ -4,7 +4,9 @@ import invariant from 'invariant'
 import { allowedTypes } from '../allowed-types.js'
 
 /*
- * buildorderType 'react'
+ * buildorderType
+ * none  - es-2015 and stage-0
+ * react - react preset
  */
 export default async function babel({
   env: {
