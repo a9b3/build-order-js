@@ -25,11 +25,11 @@ module.exports = {
       {
         test: /\.jsx?$/,
         include: [ path.resolve(__dirname, 'src') ],
-        loaders: [ 'babel' ],
+        loaders: [ 'babel-loader' ],
       },
       {
         test: /\.json$/,
-        loaders: [ 'json' ],
+        loaders: [ 'json-loader' ],
       },
     ],
   },
@@ -74,33 +74,33 @@ const webpackConfig = {
       {
         test: /\.jsx?$/,
         exclude: /\/node_modules\//,
-        loaders: [ 'babel' ],
+        loaders: [ 'babel-loader' ],
       },
       {
         test: /\.scss$/,
         loaders: config.env === 'production'
           ?
             ExtractText.extract({
-              fallbackLoader: 'style',
+              fallbackLoader: 'style-loader',
               loader: [
                 {
-                  loader: 'css',
+                  loader: 'css-loader',
                   query: {
                     modules: true,
                     importLoaders: '1',
                     localIdentName: '[path]___[name]__[local]___[hash:base64:5]',
                   },
                 },
-                'postcss',
-                'sass',
+                'postcss-loader',
+                'sass-loader',
               ],
             })
           :
             [
-              'style?sourceMap',
-              'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]&sourceMap',
-              'postcss',
-              'sass?sourceMap',
+              'style-loader?sourceMap',
+              'css-loader?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]&sourceMap',
+              'postcss-loader',
+              'sass-loader?sourceMap',
             ],
       },
       {
@@ -108,37 +108,37 @@ const webpackConfig = {
         loaders: config.env === 'production'
           ?
             ExtractText.extract({
-              fallbackLoader: 'style',
+              fallbackLoader: 'style-loader',
               loader: [
                 {
-                  loader: 'css',
+                  loader: 'css-loader',
                   query: {
                     modules: true,
                     importLoaders: '1',
                     localIdentName: '[path]___[name]__[local]___[hash:base64:5]',
                   },
                 },
-                'postcss',
-                'sass',
+                'postcss-loader',
+                'sass-loader',
               ],
             })
           :
             [
-              'style?sourceMap',
-              'css?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]&sourceMap',
-              'postcss',
+              'style-loader?sourceMap',
+              'css-loader?modules&importLoaders=1&localIdentName=[path]___[name]__[local]___[hash:base64:5]&sourceMap',
+              'postcss-loader',
             ],
       },
       {
         test: /\.html$/,
-        loaders: [ 'html' ],
+        loaders: [ 'html-loader' ],
       },
       {
         test: /\.(png|jpe?g|gif|svg|ico)$/i,
         loaders: [
           config.env === 'production' ? 'url-loader?limit=8192' : 'url-loader',
           {
-            loader: 'image-webpack',
+            loader: 'image-webpack-loader',
             query: {
               bypassOnDebug: true,
               optimizationLevel: 7,
@@ -155,12 +155,12 @@ const webpackConfig = {
       },
       {
         test: /\.json$/i,
-        loaders: [ 'json' ],
+        loaders: [ 'json-loader' ],
       },
       {
         test: /\.(mp3|m4a|wav)$/i,
         loaders: [
-          'file',
+          'file-loader',
         ],
       },
     ],
@@ -194,7 +194,7 @@ const webpackConfig = {
       },
     }),
     config.env === 'development' && new webpack.NamedModulesPlugin(),
-    config.env === 'development' && new webpack.NoErrorsPlugin(),
+    config.env === 'development' && new webpack.NoEmitOnErrorsPlugin(),
     config.env === 'production' && new ExtractText('[name].[hash].bundle.css'),
     config.env === 'production' && new webpack.optimize.DedupePlugin(),
     config.env === 'production' && new webpack.optimize.MinChunkSizePlugin({

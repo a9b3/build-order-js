@@ -28,8 +28,8 @@ export default async function webpack({
    */
   const packages = {
     base: [
-      'webpack@2.1.0-beta.25',
-      'webpack-dev-server@2.1.0-beta.10',
+      'webpack@2.2.0',
+      'webpack-dev-server@2.2.0',
       'babel-core',
       'babel-loader',
       'json-loader',
@@ -47,7 +47,7 @@ export default async function webpack({
     'image-webpack-loader',
     /* plugins */
     'html-webpack-plugin',
-    'extract-text-webpack-plugin@2.0.0-beta.4',
+    'extract-text-webpack-plugin@2.0.0-beta.5',
     /* css */
     'autoprefixer',
     'node-sass', // peer dep of sass-loader
