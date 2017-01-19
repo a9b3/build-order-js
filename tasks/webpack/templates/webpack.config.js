@@ -205,7 +205,9 @@ const webpackConfig = {
     }),
     config.env === 'development' && new webpack.NamedModulesPlugin(),
     config.env === 'development' && new webpack.NoEmitOnErrorsPlugin(),
-    config.env === 'production' && new ExtractText('[name].[hash].bundle.css'),
+    config.env === 'production' && new ExtractText({
+      filename: '[name].[hash].bundle.css',
+    }),
     config.env === 'production' && new webpack.optimize.DedupePlugin(),
     config.env === 'production' && new webpack.optimize.MinChunkSizePlugin({
       minChunkSize: 51200,
