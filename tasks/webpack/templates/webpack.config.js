@@ -21,15 +21,19 @@ module.exports = {
     libraryTarget: 'umd',
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
         include: [ path.resolve(__dirname, 'src') ],
-        loaders: [ 'babel-loader' ],
+        use: [
+          'babel-loader',
+        ],
       },
       {
         test: /\.json$/,
-        loaders: [ 'json-loader' ],
+        use: [
+          'json-loader',
+        ],
       },
     ],
   },
@@ -70,15 +74,17 @@ const webpackConfig = {
     filename: '[name].[hash].bundled.js',
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
         exclude: /\/node_modules\//,
-        loaders: [ 'babel-loader' ],
+        use: [
+          'babel-loader',
+        ],
       },
       {
         test: /\.scss$/,
-        loaders: config.env === 'production'
+        use: config.env === 'production'
           ?
             ExtractText.extract({
               fallbackLoader: 'style-loader',
@@ -105,7 +111,7 @@ const webpackConfig = {
       },
       {
         test: /\.css$/,
-        loaders: config.env === 'production'
+        use: config.env === 'production'
           ?
             ExtractText.extract({
               fallbackLoader: 'style-loader',
@@ -131,15 +137,17 @@ const webpackConfig = {
       },
       {
         test: /\.html$/,
-        loaders: [ 'html-loader' ],
+        use: [
+          'html-loader',
+        ],
       },
       {
         test: /\.(png|jpe?g|gif|svg|ico)$/i,
-        loaders: [
+        use: [
           config.env === 'production' ? 'url-loader?limit=8192' : 'url-loader',
           {
             loader: 'image-webpack-loader',
-            query: {
+            options: {
               bypassOnDebug: true,
               optimizationLevel: 7,
               interfaced: false,
@@ -149,17 +157,19 @@ const webpackConfig = {
       },
       {
         test: /\.(woff|woff2|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/i,
-        loaders: [
+        use: [
           config.env === 'production' ? 'url-loader?limit=10000' : 'url-loader',
         ],
       },
       {
         test: /\.json$/i,
-        loaders: [ 'json-loader' ],
+        use: [
+          'json-loader',
+        ],
       },
       {
         test: /\.(mp3|m4a|wav)$/i,
-        loaders: [
+        use: [
           'file-loader',
         ],
       },
