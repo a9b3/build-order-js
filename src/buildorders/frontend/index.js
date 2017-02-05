@@ -1,5 +1,5 @@
 import path from 'path'
-import * as tasks from '../../tasks/index.js'
+import * as tasks from '../../tasks'
 
 /*
  * refer to commands/index.js for the opts passed into this function

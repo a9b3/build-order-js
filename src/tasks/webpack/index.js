@@ -1,6 +1,6 @@
 import path from 'path'
 import invariant from 'invariant'
-import * as helper from '../../src/helper.js'
+import * as helper from '../../helper.js'
 import { allowedTypes } from '../allowed-types.js'
 
 /*
