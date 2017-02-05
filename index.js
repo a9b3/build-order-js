@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 // use this for dev, prod will use ./bin/index.js
 require('babel-register')
 require('babel-polyfill')
