@@ -11,23 +11,35 @@
     "url": "https://github.com/esayemm/build-order-js"
   },
   "scripts": {
+    "babel": "rm -rf lib && ./node_modules/babel-cli/bin/babel.js src --out-dir lib",
+    "eslint": "./node_modules/eslint/bin/eslint.js .",
+    "version": "npm run babel && git add .",
     "postversion": "git push && git push --tags && npm publish"
   },
   "dependencies": {
+    "babel-cli": "^6.22.2",
+    "babel-eslint": "^7.1.1",
     "babel-plugin-transform-class-properties": "^6.18.0",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
-    "babel-polyfill": "^6.16.0",
+    "babel-plugin-transform-runtime": "^6.22.0",
+    "babel-polyfill": "^6.22.0",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-stage-0": "^6.16.0",
-    "babel-register": "^6.18.0",
+    "babel-register": "^6.22.0",
+    "babel-runtime": "^6.22.0",
     "chalk": "^1.1.3",
     "commander-shepard": "1.1.13",
+    "eslint": "^3.15.0",
+    "eslint-config-esayemm": "^1.0.0",
+    "expect": "^1.20.2",
     "fs-extra": "^0.30.0",
     "invariant": "^2.2.1",
-    "lodash": "^4.16.6"
+    "lodash": "^4.16.6",
+    "mocha": "^3.2.0"
   },
   "preferGlobal": true,
   "bin": {
+    "bojs-dev": "./index.js",
     "bojs": "./bin/index.js"
   }
 }
