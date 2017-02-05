@@ -60,7 +60,7 @@ export default async function babel({
   await taskApi.addToPackageJson({
     json: {
       scripts: {
-        'babel': `rm -rf ${babelOutdir} && ./node_modules/babel-cli/bin/babel.js src --out-dir ${babelOutdir}`,
+        'babel': `rm -rf ${babelOutdir} && ./node_modules/babel-cli/bin/babel.js src --out-dir ${babelOutdir} --copy-files`,
       },
     },
   })
