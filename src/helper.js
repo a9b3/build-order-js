@@ -29,6 +29,10 @@ export function execPromise(execCommand, opts = {}) {
   })
 }
 
+/**
+ * @param {String] filePath
+ * @returns {Boolean} whether file exists
+ */
 export function fileExists(filePath) {
   try {
     fs.accessSync(filePath, fs.F_OK)
@@ -38,8 +42,10 @@ export function fileExists(filePath) {
   }
 }
 
-/*
+/**
  * returns project root based on where .git is located in the ancestor nodes
+ *
+ * @returns {String} project root dir
  */
 export async function getProjectRootPath() {
   try {
@@ -50,16 +56,27 @@ export async function getProjectRootPath() {
   }
 }
 
+/**
+ * @param {String} command - check if command line tool exists ex. 'git', 'npm'
+ * @returns {Boolean}
+ */
 // TODO this might need to be improved on to not use 'which'
 export async function isCommandInstalled(command) {
   const res = await execPromise(`which ${command}`)
   return Boolean(res.trim()) ? true : false
 }
 
-/*
+/**
+ * Check if commands are installed
+ *
+ * ex.
+ *
  * [['yarn', 'npm'], 'git']
  * =
  * ('yarn' || 'npm') && 'git'
+ *
+ * @param {Array.<String>} commands - refer to ex
+ * @returns {Boolean}
  */
 export async function areCommandsInstalled(commands) {
   for (let i = 0; i < commands.length; i++) {
@@ -246,7 +263,13 @@ export function copyFile(src, dest, opts = { encoding: 'utf8' }) {
  * @param {String} src - file path
  * @param {String} dest - file path
  */
-export function copy(src, dest, { overwrite = false } = {}) {
+export function copy(
+  src,
+  dest,
+  {
+    overwrite = false,
+  } = {},
+) {
   const stat = fs.lstatSync(src)
   if (stat.isDirectory()) {
     if (fs.existsSync(dest) && overwrite) {
