@@ -21,7 +21,8 @@ export default async function webpack({
 }) {
   invariant(!!~allowedTypes.indexOf(buildorderType), `--buildorder-type must be one of these values '${allowedTypes}'`)
 
-  const webpackConfigFileName = 'webpack.config.js'
+  const webpackConfigFileName = 'webpack.config.js.tpl'
+  const webpackConfigFileNameOutput = 'webpack.config.js'
 
   /*
    * npm packages
@@ -64,10 +65,10 @@ export default async function webpack({
    */
   const scripts = {
     base: {
-      'webpack': `rm -rf build && NODE_ENV=production ./node_modules/webpack/bin/webpack.js --config ${webpackConfigFileName}`,
+      'webpack': `rm -rf build && NODE_ENV=production ./node_modules/webpack/bin/webpack.js --config ${webpackConfigFileNameOutput}`,
     },
     frontend: {
-      'webpack': `rm -rf build && NODE_ENV=production ./node_modules/webpack/bin/webpack.js --config ${webpackConfigFileName}`,
+      'webpack': `rm -rf build && NODE_ENV=production ./node_modules/webpack/bin/webpack.js --config ${webpackConfigFileNameOutput}`,
       'webpack:dev': `NODE_ENV=development ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --history-api-fallback --hot --inline --content-base ./src --client-log-level error --port \${PORT:-8080}`,
     },
   }
@@ -87,7 +88,7 @@ export default async function webpack({
     args: {
       buildorderType,
     },
-    dest: `${webpackConfigFileName}`,
+    dest: `${webpackConfigFileNameOutput}`,
   })
 
 }

@@ -9,5 +9,8 @@
     "transform-runtime",
     "transform-decorators-legacy",
     "transform-class-properties"
+  ],
+  "ignore": [
+    "**/templates/**/*.js"
   ]
 }
