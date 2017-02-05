@@ -32,13 +32,14 @@ Preset build orders.
 bojs buildorders <name> --npm yarn
 ```
 
-Names|Description
----|---
-frontend |A generic frontend project
-react| A react frontend project
-node| A node package
-express| An express server
-isomorphic| An isomorphic package
+Names|Description|args
+---|---|---
+frontend |A generic frontend project | --name
+react| A react frontend project | --name
+node| A node package | --name
+cli| A node cli app| --name
+express| An express server | --name
+isomorphic| An isomorphic package | --name
 
 ## Menu
 
