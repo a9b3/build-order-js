@@ -26,8 +26,11 @@ export default async function bootstrap({
     dest: '.gitignore',
   })
 
-  await taskApi.addFile({
+  await taskApi.templateFile({
     src: path.resolve(__dirname, './templates/package.json.tpl'),
+    args: {
+      name: options.name || 'changeMe',
+    },
     dest: 'package.json',
   })
 
