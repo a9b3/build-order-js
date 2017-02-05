@@ -11,7 +11,7 @@
     "url": "https://github.com/esayemm/build-order-js"
   },
   "scripts": {
-    "babel": "rm -rf lib && ./node_modules/babel-cli/bin/babel.js src --out-dir lib",
+    "babel": "rm -rf lib && ./node_modules/babel-cli/bin/babel.js src --out-dir lib --copy-files",
     "eslint": "./node_modules/eslint/bin/eslint.js .",
     "version": "npm run babel && git add .",
     "postversion": "git push && git push --tags && npm publish"
