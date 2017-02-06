@@ -9,12 +9,9 @@ async function initialize() {
 }
 
 function setupCommanderShepard() {
-  const pkg = require('../package.json')
-  const binName = Object.keys(pkg.bin)[0]
-
   const c = new CommanderShepard({
-    key: binName,
-    package: pkg,
+    key: 'bojs',
+    package: require('../package.json'),
     longDescription: 'Set up your javascript project procedurally',
     flags: [
       {
