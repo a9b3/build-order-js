@@ -11,35 +11,40 @@ async function initialize() {
 function setupCommanderShepard() {
   const pkg = require('../package.json')
   const binName = Object.keys(pkg.bin)[0]
+
   const c = new CommanderShepard({
-    pkg,
-    usage: `${binName} <command> [command arguments] [flags]`,
-    description: `Set up your javascript project procedurally`,
-    globalOptions: {
-      'npmClient': {
-        name: '--npm',
-        help: 'specify npm client to use [npm || yarn] defaults to npm',
+    key: binName,
+    package: pkg,
+    longDescription: 'Set up your javascript project procedurally',
+    flags: [
+      {
+        keys: ['npm'],
+        required: false,
+        shortDescription: 'specify npm client to use [npm || yarn] defaults to npm',
       },
-    },
+      {
+        keys: ['git'],
+        required: false,
+        shortDescription: 'initialize empty git repo',
+      },
+    ],
+    subcommands: [
+      {
+        key: 'tasks',
+        shortDescription: 'apply tasks to the current project',
+        longDescription: 'Apply a granular task to current project',
+        command: commands.task,
+      },
+      {
+        key: 'buildorders',
+        shortDescription: 'apply build orders to the current project',
+        longDescription: 'Apply a set of tasks to the current project',
+        command: commands.buildorders,
+      },
+    ],
   })
-
-  c.add({
-    name: 'tasks',
-    usage: `${binName} tasks [tasks]`,
-    help: 'apply tasks to the current project',
-    command: commands.tasks,
-  })
-
-  c.add({
-    name: 'buildorders',
-    usage: `${binName} buildorders [names]`,
-    help: 'apply build orders to the current project',
-    command: commands.buildorders,
-  })
-
-  npmClientAdapter.setAdapter(c.options.npm || 'npm')
-
-  c.start()
+  npmClientAdapter.setAdapter(c.flags.npm || 'npm')
+  c.execute()
 }
 
 async function main() {

@@ -35,10 +35,10 @@ async function commandRunner({ options, args, defaultDir, name }) {
 
 }
 
-export function tasks({ options, args }) {
-  return commandRunner({ options, args, defaultDir: config.defaultTaskDir, name: 'TASKS' })
+export function tasks({ flags, args }) {
+  return commandRunner({ options: flags, args, defaultDir: config.defaultTaskDir, name: 'TASKS' })
 }
 
-export function buildorders({ options, args }) {
-  return commandRunner({ options, args, defaultDir: config.defaultBuildOrdersDir, name: 'BUILD ORDER' })
+export function buildorders({ flags, args }) {
+  return commandRunner({ options: flags, args, defaultDir: config.defaultBuildOrdersDir, name: 'BUILD ORDER' })
 }
