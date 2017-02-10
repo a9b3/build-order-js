@@ -48,7 +48,7 @@ export default async function webpack({
     'image-webpack-loader',
     /* plugins */
     'html-webpack-plugin',
-    'extract-text-webpack-plugin@2.0.0-beta.5',
+    'extract-text-webpack-plugin@2.0.0-rc.3',
     /* css */
     'autoprefixer',
     'node-sass', // peer dep of sass-loader
