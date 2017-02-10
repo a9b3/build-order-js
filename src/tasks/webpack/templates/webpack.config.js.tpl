@@ -55,6 +55,7 @@ module.exports = {
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractText = require('extract-text-webpack-plugin')
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
 const webpack = require('webpack')
 const config = {
   // development, production, test
@@ -182,10 +183,17 @@ const webpackConfig = {
         NODE_ENV: JSON.stringify(config.env),
       },
     }),
-
     new HtmlWebpackPlugin({
       template: './src/index.html',
     }),
+    // https://github.com/jantimon/favicons-webpack-plugin
+    // Uncomment and add location to your favicon
+    //new FaviconsWebpackPlugin({
+    //  logo: './src/assets/favicon.png',
+    //  icons: {
+    //    favicons: true,
+    //  },
+    //}),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       children: true,

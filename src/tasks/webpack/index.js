@@ -48,6 +48,7 @@ export default async function webpack({
     'image-webpack-loader',
     /* plugins */
     'html-webpack-plugin',
+    'favicons-webpack-plugin',
     'extract-text-webpack-plugin@2.0.0-rc.3',
     /* css */
     'autoprefixer',
