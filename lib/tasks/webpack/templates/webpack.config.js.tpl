@@ -88,8 +88,8 @@ const webpackConfig = {
         use: config.env === 'production'
           ?
             ExtractText.extract({
-              fallbackLoader: 'style-loader',
-              loader: [
+              fallback: 'style-loader',
+              use: [
                 {
                   loader: 'css-loader',
                   query: {
@@ -115,8 +115,8 @@ const webpackConfig = {
         use: config.env === 'production'
           ?
             ExtractText.extract({
-              fallbackLoader: 'style-loader',
-              loader: [
+              fallback: 'style-loader',
+              use: [
                 {
                   loader: 'css-loader',
                   query: {
