@@ -40,7 +40,19 @@ export default async function express(opts) {
       'cors',
       'babel-register',
       'babel-polyfill',
+      'bunyan',
+      'helmet',
+      'morgan',
     ],
+  })
+
+  await taskApi.addToPackageJson({
+    json: {
+      scripts: {
+        serve: 'node lib/index.js',
+        dev: 'nodemon index.js | ./node_modules/bunyan/bin/bunyan --output short',
+      },
+    },
   })
 
   await taskApi.addFile({

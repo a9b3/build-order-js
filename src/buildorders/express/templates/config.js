@@ -1,28 +1,25 @@
-const env = process.env.NODE_ENV || 'dev'
+const env = process.env.NODE_ENV || 'development'
 
-const config = {}
-
-const envOverrides = {
-  port: process.env.PORT,
+const config = {
+  default: {
+    env,
+    port: 8080,
+    cors_origins: [/\.*/],
+  },
+  development: {},
+  test: {
+    port: 8081,
+  },
+  // deploy targets
+  staging: {
+    cors_origins: [/\.*/],
+  },
+  production: {
+    cors_origins: [/\.CHANGEME.com/],
+  },
 }
 
-config.dev = {
-  port: envOverrides.port || 8080,
-}
-
-config.test = {
-  port: envOverrides.port || 8081,
-}
-
-config.travis = {
-  port: envOverrides.port || 8080,
-}
-
-config.prod = {
-  port: envOverrides.port || 8080,
-}
-
-export default Object.assign(
-  {},
-  config[env],
-)
+const selectedConfig = Object.assign({}, config.default, config[env] || {})
+module.exports = Object.assign({}, selectedConfig, {
+  port: process.env.SERVICE_PORT || selectedConfig.port,
+})
