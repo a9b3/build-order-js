@@ -43,6 +43,7 @@ export default async function express(opts) {
       'bunyan',
       'helmet',
       'morgan',
+      'app-module-path',
     ],
   })
 
