@@ -1,6 +1,6 @@
 {
   "name": "build-order-js",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "main": "./bin/index.js",
   "description": "Set up javascript development environment procedurally using tasks",
   "author": "Sam Lau <esayemm@gmail.com>",
