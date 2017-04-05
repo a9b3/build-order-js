@@ -183,6 +183,12 @@ const webpackConfig = {
         NODE_ENV: JSON.stringify(config.env),
       },
     }),
+    <% if (!!~['react'].indexOf(buildorderType)) { %>
+    new webpack.ProvidePlugin({
+      React: 'react',
+      CSSModules: 'react-css-modules',
+    }),
+    <% } %>
     new HtmlWebpackPlugin({
       template: './src/index.html',
     }),
