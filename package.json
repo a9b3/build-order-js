@@ -1,7 +1,6 @@
 {
   "name": "build-order-js",
   "version": "1.4.5",
-  "main": "./bin/index.js",
   "description": "Set up javascript development environment procedurally using tasks",
   "author": "Sam Lau <esayemm@gmail.com>",
   "license": "MIT",
@@ -17,6 +16,7 @@
     "postversion": "git push && git push --tags && npm publish"
   },
   "dependencies": {
+    "app-module-path": "^2.2.0",
     "babel-cli": "^6.22.2",
     "babel-eslint": "^7.1.1",
     "babel-plugin-transform-class-properties": "^6.18.0",
@@ -30,7 +30,7 @@
     "chalk": "^1.1.3",
     "commander-shepard": "^2.0.6",
     "eslint": "^3.15.0",
-    "eslint-config-esayemm": "^1.0.0",
+    "eslint-config-esayemm": "^2.0.1",
     "expect": "^1.20.2",
     "fs-extra": "^0.30.0",
     "invariant": "^2.2.1",
@@ -40,6 +40,6 @@
   "preferGlobal": true,
   "bin": {
     "bojs-dev": "./index.js",
-    "bojs": "./bin/index.js"
+    "bojs": "./bin.js"
   }
 }

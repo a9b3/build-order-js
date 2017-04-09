@@ -1,25 +1,49 @@
-import process from 'process'
-import * as helper from '../helper.js'
-import taskApi from '../task-api.js'
-import config from '../config.js'
-import chalk from 'chalk'
+import process     from 'process'
+import path        from 'path'
+import invariant   from 'invariant'
+import chalk       from 'chalk'
+import * as helper from 'services/helper'
+import taskApi     from 'services/task-api'
+import config      from 'config'
 
-async function commandRunner({ options, args, defaultDir, name }) {
+export function tasks({ flags, args }) {
+  return commandRunner({
+    flags,
+    args,
+    defaultDir: config.defaultTaskDir,
+    name: 'TASKS',
+  })
+}
+
+export function buildorders({ flags, args }) {
+  return commandRunner({
+    flags,
+    args,
+    defaultDir: config.defaultBuildOrdersDir,
+    name: 'BUILD ORDER',
+  })
+}
+
+async function commandRunner({ flags, args, defaultDir, name }) {
 
   const cwd = process.cwd()
-  const handlers = helper.extractHandlers({
+  const handlers = extractHandlers({
     cwd,
     names: args,
     defaultDir,
   })
+
+  // set default flags
+  flags.babelOutdir = flags.babelOutdir || 'build'
 
   const projectRootPath = await helper.getProjectRootPath()
   await helper.mapAsync(handlers, async (fn, i) => {
     helper.taskApiLogHeader(name, args[i])
     console.log(``)
 
+    // callsite for task functions
     await fn({
-      options,
+      flags,
       env: {
         cwd,
         projectRootPath,
@@ -35,10 +59,35 @@ async function commandRunner({ options, args, defaultDir, name }) {
 
 }
 
-export function tasks({ flags, args }) {
-  return commandRunner({ options: flags, args, defaultDir: config.defaultTaskDir, name: 'TASKS' })
-}
+// names is an array of
+// - filepaths relative to cwd
+// or
+// - default dir folder
 
-export function buildorders({ flags, args }) {
-  return commandRunner({ options: flags, args, defaultDir: config.defaultBuildOrdersDir, name: 'BUILD ORDER' })
+/**
+ * @param {Object} opts
+ * @param {Array.<String>} names - json to merge
+ * @param {String} cwd - return of process.cwd()
+ * @param {String} defaultDir
+ */
+function extractHandlers({
+  names,
+  cwd,
+  defaultDir,
+}) {
+  return names.map(name => {
+    const cwdFilePath = path.resolve(cwd, name)
+    const defaultFilePath = path.resolve(defaultDir, name)
+
+    const handlerPath = path.extname(name) !== '' && helper.fileExists(cwdFilePath)
+      ? cwdFilePath
+      : helper.fileExists(defaultFilePath)
+        ? defaultFilePath
+        : null
+    invariant(handlerPath, `${name} is not a file or a default`)
+
+    const handler = require(handlerPath).default || require(handlerPath)
+    invariant(handler || typeof handler === 'function', `${name} must export a function`)
+    return handler
+  })
 }

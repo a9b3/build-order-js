@@ -15,7 +15,7 @@ Scaffold a react project
 ```sh
 mkdir project
 cd project
-bojs buildorder react --npm yarn
+bojs buildorder react --npm yarn --git
 ```
 
 Set up a mocha testing suite and docker files by running tasks
@@ -191,7 +191,7 @@ When developing a task all you have to do is export an async function, the funct
 ```js
 export default async function taskOne({
 	env: {},
-	options,
+	flags,
 	taskApi,
 }) {
 	await taskApi.addPackages({
