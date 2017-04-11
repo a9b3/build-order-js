@@ -38,6 +38,12 @@ function setupCommanderShepard() {
         longDescription: 'Apply a set of tasks to the current project',
         command: commands.buildorders,
       },
+      {
+        key: 'list',
+        shortDescription: 'list the available tasks or buildorders',
+        longDescription: 'list the available tasks or buildorders',
+        command: commands.list,
+      },
     ],
   })
   npmClientAdapter.setAdapter(c.flags.npm || 'npm')
