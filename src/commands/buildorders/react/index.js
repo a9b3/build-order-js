@@ -44,6 +44,7 @@ export default async function react(opts) {
   await taskApi.addPackages({
     packages: [
       'react',
+      'prop-types',
       'react-css-modules',
       'react-dom',
       'react-helmet',
