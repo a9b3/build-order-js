@@ -3,6 +3,6 @@ import Index     from 'views/index/index.js'
 
 export default (
   <Route path='/'>
-    <Route path='/' children={Index} />
+    <Route path='/' component={Index} />
   </Route>
 )

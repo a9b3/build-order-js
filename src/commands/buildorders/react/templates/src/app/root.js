@@ -9,7 +9,7 @@ export default class Root extends React.Component {
   render() {
     return <Router
       history={this.props.history}
-      routes={routes}
+      children={routes}
     />
   }
 }
