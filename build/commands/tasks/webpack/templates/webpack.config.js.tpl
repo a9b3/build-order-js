@@ -187,6 +187,7 @@ const webpackConfig = {
     new webpack.ProvidePlugin({
       React: 'react',
       CSSModules: 'react-css-modules',
+      PropTypes: 'prop-types',
     }),
     <% } %>
     new HtmlWebpackPlugin({

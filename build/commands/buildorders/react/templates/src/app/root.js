@@ -3,7 +3,7 @@ import routes     from './routes.js'
 
 export default class Root extends React.Component {
   static propTypes = {
-    history: React.PropTypes.object,
+    history: PropTypes.object,
   }
 
   render() {

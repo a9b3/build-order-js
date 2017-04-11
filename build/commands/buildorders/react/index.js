@@ -98,7 +98,7 @@ exports.default = function () {
           case 20:
             _context.next = 22;
             return taskApi.addPackages({
-              packages: ['react', 'react-css-modules', 'react-dom', 'react-helmet', 'react-router', 'history', 'html', 'invariant', 'esayemm-styles']
+              packages: ['react', 'prop-types', 'react-css-modules', 'react-dom', 'react-helmet', 'react-router', 'history', 'html', 'invariant', 'esayemm-styles']
             });
 
           case 22:
