@@ -935,11 +935,10 @@ combined-stream@^1.0.5, combined-stream@~1.0.5:
   dependencies:
     delayed-stream "~1.0.0"
 
-commander-shepard@^2.0.6:
-  version "2.0.6"
-  resolved "https://registry.npmjs.org/commander-shepard/-/commander-shepard-2.0.6.tgz#a0ca1a91566307860b7bb9e5bd3843124c612e18"
+commander-shepard@^2.0.10:
+  version "2.0.10"
+  resolved "https://registry.npmjs.org/commander-shepard/-/commander-shepard-2.0.10.tgz#ce4f96c9f8f9ad74299a31a2146c847424205a54"
   dependencies:
-    babel-runtime "^6.22.0"
     yargs "^6.3.0"
 
 commander@2.9.0, commander@^2.8.1, commander@^2.9.0:
