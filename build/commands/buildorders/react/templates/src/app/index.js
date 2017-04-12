@@ -9,10 +9,10 @@ import Root                     from './root.js'
 
 const browserHistory = createBrowserHistory()
 
-function renderRoot(Root) {
+function renderRoot(Component) {
   render(
     <AppContainer>
-      <Root history={browserHistory} />
+      <Component history={browserHistory} />
     </AppContainer>,
     document.getElementById('mount')
   )
@@ -25,6 +25,6 @@ if (module.hot) {
     require('../styles/index.scss')
   })
   module.hot.accept(() => {
-    renderRoot(require('./root.js').default)
+    renderRoot(Root)
   })
 }

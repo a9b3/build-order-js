@@ -39,7 +39,7 @@ exports.default = function () {
         buildorderType = _ref$flags$buildorder === undefined ? 'default' : _ref$flags$buildorder,
         babelOutdir = _ref$flags.babelOutdir,
         taskApi = _ref.taskApi;
-    var packages, babelRcPresets, babelRcPlugins;
+    var packages, babelRcPlugins;
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -85,29 +85,27 @@ exports.default = function () {
             /*
              * .babelrc
              */
-            babelRcPresets = {
-              base: ["stage-0", "es2015"],
-              react: ['react']
-            };
             babelRcPlugins = {
               base: ["transform-runtime", "transform-decorators-legacy", "transform-class-properties"]
             };
-            _context.next = 12;
+            _context.next = 11;
             return taskApi.addToJsonFile({
               dest: '.babelrc',
               json: {
-                "presets": helper.concatMappedArrays(['base', buildorderType], babelRcPresets),
+                "presets": ['stage-0', ['es2015', { 'modules': false }], buildorderType === 'react' && 'react'].filter(function (a) {
+                  return a;
+                }),
                 "plugins": helper.concatMappedArrays(['base', buildorderType], babelRcPlugins)
               }
             });
 
-          case 12:
+          case 11:
             if (!(buildorderType === 'react')) {
-              _context.next = 15;
+              _context.next = 14;
               break;
             }
 
-            _context.next = 15;
+            _context.next = 14;
             return taskApi.addToJsonFile({
               dest: '.babelrc',
               json: {
@@ -122,7 +120,7 @@ exports.default = function () {
               }
             });
 
-          case 15:
+          case 14:
           case 'end':
             return _context.stop();
         }
