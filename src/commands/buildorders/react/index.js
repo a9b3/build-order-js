@@ -49,6 +49,7 @@ export default async function react(opts) {
       'react-dom',
       'react-helmet',
       'react-router',
+      'react-router-dom',
       'history',
       'html',
       'invariant',

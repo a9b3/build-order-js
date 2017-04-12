@@ -63,16 +63,6 @@ export default async function babel({
   /*
    * .babelrc
    */
-  const babelRcPresets = {
-    base: [
-      "stage-0",
-      "es2015",
-    ],
-    react: [
-      'react',
-    ],
-  }
-
   const babelRcPlugins = {
     base: [
       "transform-runtime",
@@ -84,7 +74,11 @@ export default async function babel({
   await taskApi.addToJsonFile({
     dest: '.babelrc',
     json: {
-      "presets": helper.concatMappedArrays(['base', buildorderType], babelRcPresets),
+      "presets": [
+        'stage-0',
+        ['es2015', { 'modules': false }],
+        buildorderType === 'react' && 'react',
+      ].filter(a => a),
       "plugins": helper.concatMappedArrays(['base', buildorderType], babelRcPlugins),
     },
   })
