@@ -63,14 +63,6 @@ export default async function babel({
   /*
    * .babelrc
    */
-  const babelRcPlugins = {
-    base: [
-      "transform-runtime",
-      "transform-decorators-legacy",
-      "transform-class-properties",
-    ],
-  }
-
   await taskApi.addToJsonFile({
     dest: '.babelrc',
     json: {
@@ -79,7 +71,12 @@ export default async function babel({
         ['es2015', { 'modules': false }],
         buildorderType === 'react' && 'react',
       ].filter(a => a),
-      "plugins": helper.concatMappedArrays(['base', buildorderType], babelRcPlugins),
+      "plugins": [
+        "transform-runtime",
+        "transform-decorators-legacy",
+        "transform-class-properties",
+        buildorderType === 'react' && 'react-hot-loader/babel',
+      ].filter(a => a),
     },
   })
 
@@ -88,11 +85,6 @@ export default async function babel({
       dest: '.babelrc',
       json: {
         "env": {
-          "development": {
-            "plugins": [
-              "react-hot-loader/babel",
-            ],
-          },
           "test": {
             "presets": [
               "airbnb",
