@@ -39,7 +39,7 @@ exports.default = function () {
         buildorderType = _ref$flags$buildorder === undefined ? 'default' : _ref$flags$buildorder,
         babelOutdir = _ref$flags.babelOutdir,
         taskApi = _ref.taskApi;
-    var packages, babelRcPlugins;
+    var packages;
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -81,38 +81,30 @@ exports.default = function () {
             });
 
           case 8:
-
-            /*
-             * .babelrc
-             */
-            babelRcPlugins = {
-              base: ["transform-runtime", "transform-decorators-legacy", "transform-class-properties"]
-            };
-            _context.next = 11;
+            _context.next = 10;
             return taskApi.addToJsonFile({
               dest: '.babelrc',
               json: {
                 "presets": ['stage-0', ['es2015', { 'modules': false }], buildorderType === 'react' && 'react'].filter(function (a) {
                   return a;
                 }),
-                "plugins": helper.concatMappedArrays(['base', buildorderType], babelRcPlugins)
+                "plugins": ["transform-runtime", "transform-decorators-legacy", "transform-class-properties", buildorderType === 'react' && 'react-hot-loader/babel'].filter(function (a) {
+                  return a;
+                })
               }
             });
 
-          case 11:
+          case 10:
             if (!(buildorderType === 'react')) {
-              _context.next = 14;
+              _context.next = 13;
               break;
             }
 
-            _context.next = 14;
+            _context.next = 13;
             return taskApi.addToJsonFile({
               dest: '.babelrc',
               json: {
                 "env": {
-                  "development": {
-                    "plugins": ["react-hot-loader/babel"]
-                  },
                   "test": {
                     "presets": ["airbnb", "es2015", "stage-0", "react"]
                   }
@@ -120,7 +112,7 @@ exports.default = function () {
               }
             });
 
-          case 14:
+          case 13:
           case 'end':
             return _context.stop();
         }

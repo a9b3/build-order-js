@@ -41,6 +41,12 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env': JSON.stringify(env),
     }),
+    new webpack.optimize.UglifyJsPlugin({
+      mangle: true,
+      compressor: {
+        warnings: false,
+      },
+    }),
   ],
   resolve: {
     modules: [
