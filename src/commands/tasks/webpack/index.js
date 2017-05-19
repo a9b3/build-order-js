@@ -40,7 +40,7 @@ export default async function webpack({
     'url-loader',
     'style-loader',
     'sass-loader',
-    'postcss-loader',
+    'postcss-loader@1.0.0',
     'image-webpack-loader',
     /* plugins */
     'html-webpack-plugin',

@@ -26,9 +26,10 @@ export default async function react(opts) {
   await taskApi.addToPackageJson({
     json: {
       scripts: {
+        'watch-scss': "./node_modules/chokidar-cli/index.js 'src/**/*.scss' -c 'touch src/app/index.js'",
         // docker will run 'npm run build'
         build: 'npm run webpack',
-        start: 'npm run webpack:dev',
+        start: 'npm run webpack:dev && npm run watch-scss',
         deploy: 'npm run build && echo add continuous deployment here',
       },
     },
@@ -54,6 +55,7 @@ export default async function react(opts) {
       'html',
       'invariant',
       'esayemm-styles',
+      'chokidar-cli',
     ],
   })
 
