@@ -63,7 +63,7 @@ exports.default = function () {
 
             packages.frontend = [
             /* loaders */
-            'css-loader', 'file-loader', 'html-loader', 'url-loader', 'style-loader', 'sass-loader', 'postcss-loader', 'image-webpack-loader',
+            'css-loader', 'file-loader', 'html-loader', 'url-loader', 'style-loader', 'sass-loader', 'postcss-loader@1.0.0', 'image-webpack-loader',
             /* plugins */
             'html-webpack-plugin', 'favicons-webpack-plugin', 'extract-text-webpack-plugin@2.0.0-rc.3',
             /* css */

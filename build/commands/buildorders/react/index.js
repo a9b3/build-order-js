@@ -81,9 +81,10 @@ exports.default = function () {
             return taskApi.addToPackageJson({
               json: {
                 scripts: {
+                  'watch-scss': "./node_modules/chokidar-cli/index.js 'src/**/*.scss' -c 'touch src/app/index.js'",
                   // docker will run 'npm run build'
                   build: 'npm run webpack',
-                  start: 'npm run webpack:dev',
+                  start: 'npm run webpack:dev && npm run watch-scss',
                   deploy: 'npm run build && echo add continuous deployment here'
                 }
               }
@@ -98,7 +99,7 @@ exports.default = function () {
           case 20:
             _context.next = 22;
             return taskApi.addPackages({
-              packages: ['react', 'prop-types', 'react-css-modules', 'react-dom', 'react-helmet', 'react-router', 'react-router-dom', 'history', 'html', 'invariant', 'esayemm-styles']
+              packages: ['react', 'prop-types', 'react-css-modules', 'react-dom', 'react-helmet', 'react-router', 'react-router-dom', 'history', 'html', 'invariant', 'esayemm-styles', 'chokidar-cli']
             });
 
           case 22:

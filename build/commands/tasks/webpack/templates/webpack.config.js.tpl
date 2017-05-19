@@ -156,8 +156,19 @@ const webpackConfig = {
             loader: 'image-webpack-loader',
             options: {
               bypassOnDebug: true,
-              optimizationLevel: 7,
-              interfaced: false,
+              mozjpeg: {
+                progressive: true,
+              },
+              gifsicle: {
+                interfaced: false,
+              },
+              optipng: {
+                optimizationLevel: 7,
+              },
+              pngquant: {
+                quality: '75-90',
+                speed: 3,
+              },
             },
           },
         ].filter(a => a),
