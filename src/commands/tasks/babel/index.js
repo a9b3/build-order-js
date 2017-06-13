@@ -1,4 +1,7 @@
 export default async function babel({
+  flags: {
+    buildorderType,
+  },
   taskApi,
 }) {
   /*
@@ -9,6 +12,8 @@ export default async function babel({
     dev: true,
   })
 
+  const babelrcFile = ['frontend', 'react'].indexOf(buildorderType) > -1 ? 'babelrc.json' : 'babelrc.node.json'
+
   /*
    * package.json
    */
@@ -18,7 +23,7 @@ export default async function babel({
         'babel': `rm -rf es && ./node_modules/js-build-scripts/bin.js babel`,
       },
       babel: {
-        "extends": "./node_modules/js-build-scripts/configs/babelrc.json",
+        "extends": `./node_modules/js-build-scripts/configs/${babelrcFile}`,
       },
     },
   })

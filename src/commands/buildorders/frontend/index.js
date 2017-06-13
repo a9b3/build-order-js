@@ -21,8 +21,8 @@ export default async function frontend(opts) {
     json: {
       scripts: {
         // docker will run 'npm run build'
-        build: 'npm run webpack',
-        start: 'npm run webpack:dev',
+        build: 'NODE_PATH=./src:./src/app rm -rf build && ./node_modules/js-build-scripts/bin.js webpack:build',
+        start: 'NODE_PATH=./src:./src/app ./node_modules/js-build-scripts/bin.js webpack:dev',
         deploy: 'npm run build && echo add continuous deployment here',
       },
     },
