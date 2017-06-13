@@ -24,7 +24,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /*
  * dockerType
- * frontend - nginx docker file serving /build
  * backend  - alphine/node serving 'node index.js' on 8080
  */
 exports.default = function () {
@@ -39,23 +38,16 @@ exports.default = function () {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            allowedTargets = ['backend', 'frontend'];
+            allowedTargets = ['backend'];
 
             (0, _invariant2.default)(!!~allowedTargets.indexOf(dockerTarget), '--docker-type must be one of these values \'' + allowedTargets + '\'');
 
-            if (!(dockerTarget === 'frontend')) {
+            if (!(dockerTarget === 'backend')) {
               _context.next = 5;
               break;
             }
 
             _context.next = 5;
-            return taskApi.copyDirectory({
-              src: _path2.default.resolve(__dirname, './templates/nginx'),
-              dest: 'nginx'
-            });
-
-          case 5:
-            _context.next = 7;
             return taskApi.templateFile({
               src: _path2.default.resolve(__dirname, './templates/Dockerfile'),
               args: {
@@ -64,7 +56,7 @@ exports.default = function () {
               dest: 'Dockerfile'
             });
 
-          case 7:
+          case 5:
           case 'end':
             return _context.stop();
         }

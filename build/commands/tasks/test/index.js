@@ -51,11 +51,10 @@ exports.default = function () {
               default: ['babel-register', 'babel-polyfill', 'mocha', 'expect']
             };
 
-            packages.frontend = ['mocha', 'expect',
+            packages.frontend = ['expect',
             /* need to use this for import style */
-            'sinon@2.0.0-pre.3', 'karma', 'karma-chrome-launcher', 'karma-phantomjs-launcher', 'karma-mocha', 'karma-mocha-reporter', 'karma-sourcemap-loader', 'karma-webpack'];
+            'sinon@2.0.0-pre.3', 'babel-register', 'babel-polyfill'];
             packages.react = packages.frontend.concat(['enzyme']);
-
             _context.next = 6;
             return taskApi.addPackages({
               packages: packages[buildorderType] || packages.default,
@@ -75,11 +74,10 @@ exports.default = function () {
             };
 
             scripts.frontend = {
-              'test': 'NODE_ENV=test ./node_modules/karma/bin/karma start --single-run',
-              'test:watch': 'NODE_ENV=test ./node_modules/karma/bin/karma start'
+              'test': 'NODE_ENV=test ./node_modules/js-build-scripts/bin.js karma',
+              'test:watch': 'NODE_ENV=test ./node_modules/js-build-scripts/bin.js karma:watch'
             };
             scripts.react = scripts.frontend;
-
             _context.next = 11;
             return taskApi.addToPackageJson({
               json: {
@@ -88,44 +86,29 @@ exports.default = function () {
             });
 
           case 11:
-            if (!(['frontend', 'react'].indexOf(buildorderType) > -1)) {
-              _context.next = 19;
-              break;
-            }
-
             if (!(buildorderType === 'react')) {
-              _context.next = 15;
+              _context.next = 16;
               break;
             }
 
-            _context.next = 15;
+            _context.next = 14;
             return taskApi.copyDirectory({
               src: _path2.default.resolve(__dirname, './templates/frontend/test'),
               dest: './test'
             });
 
-          case 15:
-            _context.next = 17;
-            return taskApi.templateFile({
-              src: _path2.default.resolve(__dirname, './templates/frontend/karma.conf.js'),
-              args: {
-                buildorderType: buildorderType
-              },
-              dest: 'karma.conf.js'
-            });
-
-          case 17:
-            _context.next = 21;
+          case 14:
+            _context.next = 18;
             break;
 
-          case 19:
-            _context.next = 21;
+          case 16:
+            _context.next = 18;
             return taskApi.copyDirectory({
               src: _path2.default.resolve(__dirname, './templates/mocha/test'),
               dest: './test'
             });
 
-          case 21:
+          case 18:
           case 'end':
             return _context.stop();
         }

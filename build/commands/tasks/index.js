@@ -58,13 +58,4 @@ Object.defineProperty(exports, 'test', {
   }
 });
 
-var _index7 = require('./webpack/index.js');
-
-Object.defineProperty(exports, 'webpack', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_index7).default;
-  }
-});
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

@@ -12,107 +12,43 @@ var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
 
 var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 
-var _invariant = require('invariant');
-
-var _invariant2 = _interopRequireDefault(_invariant);
-
-var _helper = require('services/helper');
-
-var helper = _interopRequireWildcard(_helper);
-
-var _allowedTypes = require('../allowed-types.js');
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/*
- * buildorderType
- * none  - es-2015 and stage-0
- * react - react preset
- */
 exports.default = function () {
   var _ref2 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(_ref) {
-    var _ref$flags = _ref.flags;
-    _ref$flags = _ref$flags === undefined ? {} : _ref$flags;
-    var _ref$flags$buildorder = _ref$flags.buildorderType,
-        buildorderType = _ref$flags$buildorder === undefined ? 'default' : _ref$flags$buildorder,
-        babelOutdir = _ref$flags.babelOutdir,
+    var buildorderType = _ref.flags.buildorderType,
         taskApi = _ref.taskApi;
-    var packages;
+    var babelrcFile;
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            (0, _invariant2.default)(!!~_allowedTypes.allowedTypes.indexOf(buildorderType), '--babel-type flag must have one of these values \'' + _allowedTypes.allowedTypes + '\'');
-
-            /*
-             * npm packages
-             */
-            packages = {
-              base: ['babel-plugin-transform-runtime', 'babel-plugin-transform-class-properties', 'babel-plugin-transform-decorators-legacy', 'babel-preset-es2015', 'babel-preset-stage-0', 'babel-cli'],
-              react: ['babel-plugin-react-transform', 'babel-preset-react',
-              // enzyme needs this
-              'babel-preset-airbnb']
-            };
-            _context.next = 4;
+            _context.next = 2;
             return taskApi.addPackages({
-              packages: helper.concatMappedArrays(['base', buildorderType], packages),
+              packages: ['js-build-scripts'],
               dev: true
             });
 
-          case 4:
-            _context.next = 6;
-            return taskApi.addPackages({
-              packages: [
-              // required by babel-plugin-transform-runtime
-              // https://babeljs.io/docs/plugins/transform-runtime/
-              'babel-runtime']
-            });
+          case 2:
+            babelrcFile = ['frontend', 'react'].indexOf(buildorderType) > -1 ? 'babelrc.json' : 'babelrc.node.json';
 
-          case 6:
-            _context.next = 8;
+            /*
+             * package.json
+             */
+
+            _context.next = 5;
             return taskApi.addToPackageJson({
               json: {
                 scripts: {
-                  'babel': 'rm -rf ' + babelOutdir + ' && ./node_modules/babel-cli/bin/babel.js src --out-dir ' + babelOutdir + ' --copy-files'
+                  'babel': 'rm -rf es && ./node_modules/js-build-scripts/bin.js babel'
+                },
+                babel: {
+                  "extends": './node_modules/js-build-scripts/configs/' + babelrcFile
                 }
               }
             });
 
-          case 8:
-            _context.next = 10;
-            return taskApi.addToJsonFile({
-              dest: '.babelrc',
-              json: {
-                "presets": ['stage-0', ['es2015', { 'modules': false }], buildorderType === 'react' && 'react'].filter(function (a) {
-                  return a;
-                }),
-                "plugins": ["transform-runtime", "transform-decorators-legacy", "transform-class-properties", buildorderType === 'react' && 'react-hot-loader/babel'].filter(function (a) {
-                  return a;
-                })
-              }
-            });
-
-          case 10:
-            if (!(buildorderType === 'react')) {
-              _context.next = 13;
-              break;
-            }
-
-            _context.next = 13;
-            return taskApi.addToJsonFile({
-              dest: '.babelrc',
-              json: {
-                "env": {
-                  "test": {
-                    "presets": ["airbnb", "es2015", "stage-0", "react"]
-                  }
-                }
-              }
-            });
-
-          case 13:
+          case 5:
           case 'end':
             return _context.stop();
         }

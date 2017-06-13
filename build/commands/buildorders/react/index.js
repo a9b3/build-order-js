@@ -8,10 +8,6 @@ var _regenerator = require('babel-runtime/regenerator');
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
-var _assign = require('babel-runtime/core-js/object/assign');
-
-var _assign2 = _interopRequireDefault(_assign);
-
 var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
 
 var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
@@ -58,7 +54,7 @@ exports.default = function () {
 
           case 8:
             _context.next = 10;
-            return tasks.webpack(opts);
+            return tasks.ci(opts);
 
           case 10:
             _context.next = 12;
@@ -66,59 +62,45 @@ exports.default = function () {
 
           case 12:
             _context.next = 14;
-            return tasks.ci(opts);
-
-          case 14:
-            _context.next = 16;
-            return tasks.docker((0, _assign2.default)({}, opts, {
-              flags: (0, _assign2.default)({}, opts.flags, {
-                dockerTarget: 'frontend'
-              })
-            }));
-
-          case 16:
-            _context.next = 18;
             return taskApi.addToPackageJson({
               json: {
                 scripts: {
-                  'watch-scss': "./node_modules/chokidar-cli/index.js 'src/**/*.scss' -c 'touch src/app/index.js'",
-                  // docker will run 'npm run build'
-                  build: 'npm run webpack',
-                  start: 'npm run webpack:dev & npm run watch-scss',
+                  build: 'NODE_PATH=./src:./src/app rm -rf build && ./node_modules/js-build-scripts/bin.js webpack:build',
+                  start: 'NODE_PATH=./src:./src/app ./node_modules/js-build-scripts/bin.js webpack:dev',
                   deploy: 'npm run build && echo add continuous deployment here'
                 }
               }
             });
 
+          case 14:
+            _context.next = 16;
+            return taskApi.addPackages({
+              packages: ['react-addons-test-utils']
+            });
+
+          case 16:
+            _context.next = 18;
+            return taskApi.addPackages({
+              packages: ['react', 'prop-types', 'react-css-modules', 'react-dom', 'react-helmet', 'react-router', 'react-router-dom', 'history', 'html', 'invariant', 'esayemm-styles']
+            });
+
           case 18:
             _context.next = 20;
-            return taskApi.addPackages({
-              packages: ['react-addons-test-utils', 'react-hot-loader@3.0.0-beta.6']
-            });
-
-          case 20:
-            _context.next = 22;
-            return taskApi.addPackages({
-              packages: ['react', 'prop-types', 'react-css-modules', 'react-dom', 'react-helmet', 'react-router', 'react-router-dom', 'history', 'html', 'invariant', 'esayemm-styles', 'chokidar-cli']
-            });
-
-          case 22:
-            _context.next = 24;
             return taskApi.copyDirectory({
               src: _path2.default.resolve(__dirname, './templates/src'),
               dest: './src'
             });
 
-          case 24:
+          case 20:
             if (!opts.flags.git) {
-              _context.next = 27;
+              _context.next = 23;
               break;
             }
 
-            _context.next = 27;
+            _context.next = 23;
             return taskApi.gitInit();
 
-          case 27:
+          case 23:
           case 'end':
             return _context.stop();
         }

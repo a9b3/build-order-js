@@ -106,17 +106,12 @@ var commandRunner = function () {
               names: args,
               defaultDir: defaultDir
             });
-
-            // set default flags
-
-            flags.babelOutdir = flags.babelOutdir || 'build';
-
-            _context3.next = 5;
+            _context3.next = 4;
             return helper.getProjectRootPath();
 
-          case 5:
+          case 4:
             projectRootPath = _context3.sent;
-            _context3.next = 8;
+            _context3.next = 7;
             return helper.mapAsync(handlers, function () {
               var _ref7 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee2(fn, i) {
                 return _regenerator2.default.wrap(function _callee2$(_context2) {
@@ -155,11 +150,11 @@ var commandRunner = function () {
               };
             }());
 
-          case 8:
+          case 7:
 
             console.log(_chalk2.default.green('All done!'));
 
-          case 9:
+          case 8:
           case 'end':
             return _context3.stop();
         }

@@ -116,7 +116,7 @@ exports.default = function () {
             _context.next = 27;
             return taskApi.addFile({
               dest: './bin.js',
-              fileContent: ['#!/usr/bin/env node', 'const path = require(\'path\')', 'require(\'app-module-path\').addPath(path.resolve(__dirname, \'./' + opts.flags.babelOutdir + '\'))', 'require(\'./' + opts.flags.babelOutdir + '/index.js\')'].join('\n')
+              fileContent: ['#!/usr/bin/env node', 'const path = require(\'path\')', 'require(\'app-module-path\').addPath(path.resolve(__dirname, \'./es\'))', 'require(\'./es/index.js\')'].join('\n')
             });
 
           case 27:

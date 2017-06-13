@@ -94,7 +94,7 @@ exports.default = function () {
             return taskApi.addToPackageJson({
               json: {
                 scripts: {
-                  serve: 'NODE_PATH=./' + opts.flags.babelOutdir + ' node ' + opts.flags.babelOutdir + '/index.js',
+                  serve: 'NODE_PATH=./es node es/index.js',
                   dev: 'NODE_PATH=./src nodemon index.js | ./node_modules/bunyan/bin/bunyan --output short'
                 }
               }

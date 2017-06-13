@@ -8,10 +8,6 @@ var _regenerator = require('babel-runtime/regenerator');
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
-var _assign = require('babel-runtime/core-js/object/assign');
-
-var _assign2 = _interopRequireDefault(_assign);
-
 var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
 
 var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
@@ -58,54 +54,42 @@ exports.default = function () {
 
           case 8:
             _context.next = 10;
-            return tasks.webpack(opts);
+            return tasks.test(opts);
 
           case 10:
             _context.next = 12;
-            return tasks.test(opts);
+            return tasks.ci(opts);
 
           case 12:
             _context.next = 14;
-            return tasks.ci(opts);
-
-          case 14:
-            _context.next = 16;
-            return tasks.docker((0, _assign2.default)({}, opts, {
-              flags: (0, _assign2.default)({}, opts.flags, {
-                dockerTarget: 'frontend'
-              })
-            }));
-
-          case 16:
-            _context.next = 18;
             return taskApi.addToPackageJson({
               json: {
                 scripts: {
                   // docker will run 'npm run build'
-                  build: 'npm run webpack',
-                  start: 'npm run webpack:dev',
+                  build: 'NODE_PATH=./src:./src/app rm -rf build && ./node_modules/js-build-scripts/bin.js webpack:build',
+                  start: 'NODE_PATH=./src:./src/app ./node_modules/js-build-scripts/bin.js webpack:dev',
                   deploy: 'npm run build && echo add continuous deployment here'
                 }
               }
             });
 
-          case 18:
-            _context.next = 20;
+          case 14:
+            _context.next = 16;
             return taskApi.copyDirectory({
               src: _path2.default.resolve(__dirname, './templates/src'),
               dest: './src'
             });
 
-          case 20:
+          case 16:
             if (!opts.flags.git) {
-              _context.next = 23;
+              _context.next = 19;
               break;
             }
 
-            _context.next = 23;
+            _context.next = 19;
             return taskApi.gitInit();
 
-          case 23:
+          case 19:
           case 'end':
             return _context.stop();
         }

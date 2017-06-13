@@ -71,11 +71,11 @@ exports.default = function () {
             _context.next = 16;
             return taskApi.addToPackageJson({
               json: {
-                main: opts.flags.babelOutdir + '/index.js',
+                main: 'es/index.js',
                 scripts: {
                   preversion: 'npm run eslint && npm run test',
                   version: 'npm run babel && git add .',
-                  postversion: 'git push && git push --tags && npm publish'
+                  postversion: 'npm publish && git push && git push --tags'
                 }
               }
             });

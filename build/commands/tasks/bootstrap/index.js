@@ -44,18 +44,18 @@ exports.default = function () {
           case 2:
             _context.next = 4;
             return taskApi.addFile({
-              fileContent: ['node_modules/', '*.log'].join('\n'),
-              dest: '.gitignore'
+              dest: '.gitignore',
+              fileContent: ['node_modules/', '*.log'].join('\n')
             });
 
           case 4:
             _context.next = 6;
             return taskApi.templateFile({
+              dest: 'package.json',
               src: _path2.default.resolve(__dirname, './templates/package.json.tpl'),
               args: {
                 name: name
-              },
-              dest: 'package.json'
+              }
             });
 
           case 6:
