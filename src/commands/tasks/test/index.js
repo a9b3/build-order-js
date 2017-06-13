@@ -28,22 +28,15 @@ export default async function test({
     ],
   }
   packages.frontend = [
-    'mocha',
     'expect',
     /* need to use this for import style */
     'sinon@2.0.0-pre.3',
-    'karma',
-    'karma-chrome-launcher',
-    'karma-phantomjs-launcher',
-    'karma-mocha',
-    'karma-mocha-reporter',
-    'karma-sourcemap-loader',
-    'karma-webpack',
+    'babel-register',
+    'babel-polyfill',
   ]
   packages.react = packages.frontend.concat([
     'enzyme',
   ])
-
   await taskApi.addPackages({
     packages: packages[buildorderType] || packages.default,
     dev: true,
@@ -59,11 +52,10 @@ export default async function test({
     },
   }
   scripts.frontend = {
-    'test': 'NODE_ENV=test ./node_modules/karma/bin/karma start --single-run',
-    'test:watch': 'NODE_ENV=test ./node_modules/karma/bin/karma start',
+    'test': 'NODE_ENV=test ./node_modules/js-build-scripts/bin.js karma',
+    'test:watch': 'NODE_ENV=test ./node_modules/js-build-scripts/bin.js karma:watch',
   }
   scripts.react = scripts.frontend
-
   await taskApi.addToPackageJson({
     json: {
       scripts: scripts[buildorderType] || scripts.default,
@@ -73,20 +65,10 @@ export default async function test({
   /*
    * test files
    */
-  if (['frontend', 'react'].indexOf(buildorderType) > -1) {
-    if (buildorderType === 'react') {
-      await taskApi.copyDirectory({
-        src: path.resolve(__dirname, './templates/frontend/test'),
-        dest: './test',
-      })
-    }
-
-    await taskApi.templateFile({
-      src: path.resolve(__dirname, './templates/frontend/karma.conf.js'),
-      args: {
-        buildorderType,
-      },
-      dest: 'karma.conf.js',
+  if (buildorderType === 'react') {
+    await taskApi.copyDirectory({
+      src: path.resolve(__dirname, './templates/frontend/test'),
+      dest: './test',
     })
   } else {
     await taskApi.copyDirectory({

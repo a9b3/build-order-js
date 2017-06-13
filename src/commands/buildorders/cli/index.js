@@ -73,8 +73,8 @@ export default async function cli(opts) {
     fileContent: [
       `#!/usr/bin/env node`,
       `const path = require('path')`,
-      `require('app-module-path').addPath(path.resolve(__dirname, './${opts.flags.babelOutdir}'))`,
-      `require('./${opts.flags.babelOutdir}/index.js')`,
+      `require('app-module-path').addPath(path.resolve(__dirname, './es'))`,
+      `require('./es/index.js')`,
     ].join('\n'),
   })
   await taskApi.shell({ command: `chmod 0755 ./bin.js` })

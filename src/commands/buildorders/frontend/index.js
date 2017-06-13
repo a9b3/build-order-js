@@ -14,14 +14,8 @@ export default async function frontend(opts) {
   await tasks.bootstrap(opts)
   await tasks.babel(opts)
   await tasks.eslint(opts)
-  await tasks.webpack(opts)
   await tasks.test(opts)
   await tasks.ci(opts)
-  await tasks.docker(Object.assign({}, opts, {
-    flags: Object.assign({}, opts.flags, {
-      dockerTarget: 'frontend',
-    }),
-  }))
 
   await taskApi.addToPackageJson({
     json: {

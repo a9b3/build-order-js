@@ -74,9 +74,6 @@ async function commandRunner({ flags, args, defaultDir, name }) {
     defaultDir,
   })
 
-  // set default flags
-  flags.babelOutdir = flags.babelOutdir || 'build'
-
   const projectRootPath = await helper.getProjectRootPath()
   await helper.mapAsync(handlers, async (fn, i) => {
     helper.taskApiLogHeader(name, args[i])

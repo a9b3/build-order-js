@@ -28,5 +28,4 @@ export default async function ci({
       dest: 'circle.yml',
     })
   }
-
 }

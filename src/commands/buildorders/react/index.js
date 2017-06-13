@@ -14,22 +14,14 @@ export default async function react(opts) {
   await tasks.bootstrap(opts)
   await tasks.babel(opts)
   await tasks.eslint(opts)
-  await tasks.webpack(opts)
-  await tasks.test(opts)
   await tasks.ci(opts)
-  await tasks.docker(Object.assign({}, opts, {
-    flags: Object.assign({}, opts.flags, {
-      dockerTarget: 'frontend',
-    }),
-  }))
+  await tasks.test(opts)
 
   await taskApi.addToPackageJson({
     json: {
       scripts: {
-        'watch-scss': "./node_modules/chokidar-cli/index.js 'src/**/*.scss' -c 'touch src/app/index.js'",
-        // docker will run 'npm run build'
-        build: 'npm run webpack',
-        start: 'npm run webpack:dev & npm run watch-scss',
+        build: 'NODE_PATH=./src:./src/app rm -rf build && ./node_modules/js-build-scripts/bin.js webpack:build',
+        start: 'NODE_PATH=./src:./src/app ./node_modules/js-build-scripts/bin.js webpack:dev',
         deploy: 'npm run build && echo add continuous deployment here',
       },
     },
@@ -38,7 +30,6 @@ export default async function react(opts) {
   await taskApi.addPackages({
     packages: [
       'react-addons-test-utils',
-      'react-hot-loader@3.0.0-beta.6',
     ],
   })
 
@@ -55,7 +46,6 @@ export default async function react(opts) {
       'html',
       'invariant',
       'esayemm-styles',
-      'chokidar-cli',
     ],
   })
 

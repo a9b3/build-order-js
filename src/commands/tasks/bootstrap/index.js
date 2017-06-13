@@ -13,25 +13,24 @@ export default async function bootstrap({
   } = {},
   taskApi,
 }) {
-
   await taskApi.shell({
     command: 'git init',
   })
 
   await taskApi.addFile({
+    dest: '.gitignore',
     fileContent: [
       'node_modules/',
       '*.log',
     ].join('\n'),
-    dest: '.gitignore',
   })
 
   await taskApi.templateFile({
+    dest: 'package.json',
     src: path.resolve(__dirname, './templates/package.json.tpl'),
     args: {
       name,
     },
-    dest: 'package.json',
   })
 
   await taskApi.addFile({
@@ -40,12 +39,4 @@ export default async function bootstrap({
       '# Readme',
     ].join('\n')
   })
-
-  // await taskApi.addFile({
-  //   fileContent: [
-  //     'module.exports = {}',
-  //   ].join('\n'),
-  //   dest: 'config.js',
-  // })
-
 }
