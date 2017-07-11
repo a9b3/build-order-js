@@ -40,7 +40,7 @@ export default async function express({
       scripts: {
         build: './node_modules/jbs-node/bin.js build --input src --output build',
         deploy: 'npm run build && echo add deployment script here',
-        dev: 'NODE_PATH=./src nodemon index.js',
+        start: 'NODE_PATH=./src nodemon index.js | ./node_modules/bunyan/bin/bunyan --output short',
         serve: 'NODE_PATH=./build node ./build',
       },
       babel: {
