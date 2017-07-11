@@ -20,90 +20,81 @@ var _tasks = require('../../tasks');
 
 var tasks = _interopRequireWildcard(_tasks);
 
+var _taskApi = require('services/task-api');
+
+var _taskApi2 = _interopRequireDefault(_taskApi);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/*
- * refer to commands/index.js for the opts passed into this function
- *
- * args used
- * --git
- */
 exports.default = function () {
-  var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(opts) {
-    var taskApi;
+  var _ref2 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(_ref) {
+    var flags = _ref.flags;
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            taskApi = opts.taskApi;
+            _context.next = 2;
+            return tasks.bootstrap({ name: flags.name });
 
-            opts.flags.buildorderType = 'node';
-
+          case 2:
             _context.next = 4;
-            return tasks.bootstrap(opts);
+            return tasks.mocha();
 
           case 4:
             _context.next = 6;
-            return tasks.babel(opts);
+            return tasks.eslint({ extend: 'eslint-config-esayemm' });
 
           case 6:
             _context.next = 8;
-            return tasks.eslint(opts);
-
-          case 8:
-            _context.next = 10;
-            return tasks.test(opts);
-
-          case 10:
-            _context.next = 12;
-            return tasks.ci(opts);
-
-          case 12:
-            _context.next = 14;
-            return taskApi.addPackages({
-              packages: ['babel-register', 'babel-polyfill'],
+            return _taskApi2.default.addPackages({
+              packages: ['jbs-node', 'babel-register', 'babel-polyfill'],
               dev: true
             });
 
-          case 14:
-            _context.next = 16;
-            return taskApi.addToPackageJson({
+          case 8:
+            _context.next = 10;
+            return _taskApi2.default.addToPackageJson({
               json: {
-                main: 'es/index.js',
+                main: './build/index.js',
                 scripts: {
-                  preversion: 'npm run eslint && npm run test',
-                  version: 'npm run babel && git add .',
-                  postversion: 'npm publish && git push && git push --tags'
+                  build: './node_modules/jbs-node/bin.js build --input src --output build',
+                  preversion: 'npm run lint && npm run test',
+                  version: 'npm run build && npm publish',
+                  postversion: 'git add . && git push && git push --tags'
+                },
+                babel: {
+                  presets: ['./node_modules/jbs-node/configs/babel-preset-jbs-node.js']
                 }
               }
             });
 
-          case 16:
-            _context.next = 18;
-            return taskApi.copyDirectory({
-              src: _path2.default.resolve(__dirname, './templates/src'),
-              dest: './src'
-            });
+          case 10:
+            _context.next = 12;
+            return _taskApi2.default.shell({ command: 'mkdir src' });
 
-          case 18:
-            _context.next = 20;
-            return taskApi.addFile({
+          case 12:
+            _context.next = 14;
+            return _taskApi2.default.shell({ command: 'touch src/index.js' });
+
+          case 14:
+            _context.next = 16;
+            return _taskApi2.default.addFile({
               dest: './index.js',
-              fileContent: ['require(\'babel-register\')', 'require(\'babel-polyfill\')', 'require(\'./src\')'].join('\n')
+              fileContent: ['// use this for dev', 'require(\'babel-register\')', 'require(\'babel-polyfill\')', 'require(\'./src\')'].join('\n')
             });
 
-          case 20:
-            if (!opts.flags.git) {
-              _context.next = 23;
+          case 16:
+            if (!flags.git) {
+              _context.next = 19;
               break;
             }
 
-            _context.next = 23;
-            return taskApi.gitInit();
+            _context.next = 19;
+            return _taskApi2.default.gitInit();
 
-          case 23:
+          case 19:
           case 'end':
             return _context.stop();
         }
@@ -111,9 +102,9 @@ exports.default = function () {
     }, _callee, this);
   }));
 
-  function node(_x) {
-    return _ref.apply(this, arguments);
+  function nodeApp(_x) {
+    return _ref2.apply(this, arguments);
   }
 
-  return node;
+  return nodeApp;
 }();

@@ -16,68 +16,62 @@ var _invariant = require('invariant');
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
-var _allowedTypes = require('../allowed-types.js');
+var _taskApi = require('services/task-api');
+
+var _taskApi2 = _interopRequireDefault(_taskApi);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/*
- * buildorderType
- * none  - eslint-config-esayemm
- * react - eslint-config-esayemm/lib/react
+/**
+ * extend: 'eslint-config-esayemm/lib/react',
+ *
+ * else pass in 'eslint-config-esayemm'
  */
 exports.default = function () {
   var _ref2 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(_ref) {
-    var _ref$flags = _ref.flags;
-    _ref$flags = _ref$flags === undefined ? {} : _ref$flags;
-    var _ref$flags$buildorder = _ref$flags.buildorderType,
-        buildorderType = _ref$flags$buildorder === undefined ? 'default' : _ref$flags$buildorder,
-        taskApi = _ref.taskApi;
+    var extend = _ref.extend;
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            (0, _invariant2.default)(!!~_allowedTypes.allowedTypes.indexOf(buildorderType), '--eslint-type must be one of these values \'' + _allowedTypes.allowedTypes + '\'');
+            (0, _invariant2.default)(typeof extend === 'string', 'Must provide \'extend\' field to eslint (what eslint preset to extend).');
 
             /*
              * npm packages
              */
             _context.next = 3;
-            return taskApi.addPackages({
+            return _taskApi2.default.addPackages({
               packages: [
               // required if using certain babel enabled features
               // eslint-config-esayemm sets the parser config
               // https://github.com/babel/babel-eslint
-              'babel-eslint', 'eslint', 'eslint-config-esayemm', buildorderType === 'react' && 'eslint-plugin-react'].filter(function (a) {
-                return a;
-              }),
+              'babel-eslint', 'eslint', 'eslint-config-esayemm', 'eslint-plugin-react'],
               dev: true
             });
 
           case 3:
             _context.next = 5;
-            return taskApi.addToPackageJson({
+            return _taskApi2.default.addToPackageJson({
               json: {
                 scripts: {
-                  'eslint': './node_modules/eslint/bin/eslint.js .'
+                  'lint': './node_modules/eslint/bin/eslint.js .'
                 }
               }
             });
 
           case 5:
             _context.next = 7;
-            return taskApi.addFile({
+            return _taskApi2.default.addFile({
               fileContent: ['build/', 'lib/', 'node_modules/'].join('\n'),
               dest: '.eslintignore'
             });
 
           case 7:
             _context.next = 9;
-            return taskApi.addToJsonFile({
+            return _taskApi2.default.addToJsonFile({
               dest: '.eslintrc',
               json: {
-                "extends": [buildorderType === 'react' ? "esayemm/lib/react" : "esayemm"].filter(function (a) {
-                  return a;
-                })
+                "extends": [extend]
               }
             });
 
@@ -89,9 +83,9 @@ exports.default = function () {
     }, _callee, this);
   }));
 
-  function babel(_x) {
+  function eslint(_x) {
     return _ref2.apply(this, arguments);
   }
 
-  return babel;
+  return eslint;
 }();

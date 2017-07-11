@@ -20,20 +20,18 @@ var _invariant = require('invariant');
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
+var _taskApi = require('services/task-api');
+
+var _taskApi2 = _interopRequireDefault(_taskApi);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/*
- * ciTarget
- * travis -
- * circle -
- */
 exports.default = function () {
-  var _ref2 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(_ref) {
-    var _ref$flags = _ref.flags;
-    _ref$flags = _ref$flags === undefined ? {} : _ref$flags;
-    var _ref$flags$ciTarget = _ref$flags.ciTarget,
-        ciTarget = _ref$flags$ciTarget === undefined ? 'travis' : _ref$flags$ciTarget,
-        taskApi = _ref.taskApi;
+  var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee() {
+    var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+        _ref2$ciTarget = _ref2.ciTarget,
+        ciTarget = _ref2$ciTarget === undefined ? 'travis' : _ref2$ciTarget;
+
     var allowedTargets;
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
@@ -41,7 +39,7 @@ exports.default = function () {
           case 0:
             allowedTargets = ['travis', 'circle'];
 
-            (0, _invariant2.default)(!!~allowedTargets.indexOf(ciTarget), '--ci-type must be one of these values \'' + allowedTargets + '\'');
+            (0, _invariant2.default)(!!~allowedTargets.indexOf(ciTarget), '\'ciTarget\' must be one of these values \'' + allowedTargets + '\'');
 
             if (!(ciTarget === 'travis')) {
               _context.next = 5;
@@ -49,7 +47,7 @@ exports.default = function () {
             }
 
             _context.next = 5;
-            return taskApi.addFile({
+            return _taskApi2.default.addFile({
               src: _path2.default.resolve(__dirname, './templates/travis.yml'),
               dest: '.travis.yml'
             });
@@ -61,7 +59,7 @@ exports.default = function () {
             }
 
             _context.next = 8;
-            return taskApi.addFile({
+            return _taskApi2.default.addFile({
               src: _path2.default.resolve(__dirname, './templates/circle.yml'),
               dest: 'circle.yml'
             });
@@ -74,8 +72,8 @@ exports.default = function () {
     }, _callee, this);
   }));
 
-  function ci(_x) {
-    return _ref2.apply(this, arguments);
+  function ci() {
+    return _ref.apply(this, arguments);
   }
 
   return ci;

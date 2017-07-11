@@ -40,81 +40,54 @@ exports.default = function () {
 
           case 2:
             _context.next = 4;
-            return tasks.mocha();
+            return tasks.eslint({ extend: 'eslint-config-esayemm' });
 
           case 4:
             _context.next = 6;
-            return tasks.eslint({ extend: 'eslint-config-esayemm' });
+            return tasks.ci();
 
           case 6:
             _context.next = 8;
-            return tasks.ci();
-
-          case 8:
-            _context.next = 10;
-            return tasks.docker();
-
-          case 10:
-            _context.next = 12;
             return _taskApi2.default.addPackages({
-              packages: ['jbs-node', 'babel-register', 'babel-polyfill', 'axios'],
+              packages: ['jbs-fe'],
               dev: true
             });
 
-          case 12:
-            _context.next = 14;
-            return _taskApi2.default.addPackages({
-              packages: ['express', 'body-parser', 'cors', 'babel-register', 'babel-polyfill', 'bunyan', 'helmet', 'morgan']
-            });
-
-          case 14:
-            _context.next = 16;
+          case 8:
+            _context.next = 10;
             return _taskApi2.default.addToPackageJson({
               json: {
                 main: './build/index.js',
                 scripts: {
-                  build: './node_modules/jbs-node/bin.js build --input src --output build',
-                  deploy: 'npm run build && echo add deployment script here',
-                  start: 'NODE_PATH=./src nodemon index.js | ./node_modules/bunyan/bin/bunyan --output short',
-                  serve: 'NODE_PATH=./build node ./build'
+                  build: 'NODE_ENV=prod ./node_modules/jbs-fe/bin.js build',
+                  start: './node_modules/jbs-fe/bin.js dev',
+                  test: 'NODE_ENV=test ./node_modules/jbs-fe/bin.js test --single-run',
+                  'test:watch': 'NODE_ENV=test ./node_modules/jbs-fe/bin.js test',
+                  deploy: 'npm run build && echo add deployment script here'
                 },
                 babel: {
-                  presets: ['./node_modules/jbs-node/configs/babel-preset-jbs-node.js']
+                  presets: ['./node_modules/jbs-fe/configs/babel-preset-jbs-fe.js']
                 }
               }
             });
 
-          case 16:
-            _context.next = 18;
-            return _taskApi2.default.addFile({
-              src: _path2.default.resolve(__dirname, './templates/index.js'),
-              dest: 'index.js'
-            });
-
-          case 18:
-            _context.next = 20;
+          case 10:
+            _context.next = 12;
             return _taskApi2.default.copyDirectory({
               src: _path2.default.resolve(__dirname, './templates/src'),
               dest: './src'
             });
 
-          case 20:
-            _context.next = 22;
-            return _taskApi2.default.copyDirectory({
-              src: _path2.default.resolve(__dirname, './templates/test'),
-              dest: './test'
-            });
-
-          case 22:
+          case 12:
             if (!flags.git) {
-              _context.next = 25;
+              _context.next = 15;
               break;
             }
 
-            _context.next = 25;
+            _context.next = 15;
             return _taskApi2.default.gitInit();
 
-          case 25:
+          case 15:
           case 'end':
             return _context.stop();
         }
@@ -122,9 +95,9 @@ exports.default = function () {
     }, _callee, this);
   }));
 
-  function express(_x) {
+  function frontendApp(_x) {
     return _ref2.apply(this, arguments);
   }
 
-  return express;
+  return frontendApp;
 }();

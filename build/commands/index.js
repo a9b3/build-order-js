@@ -18,7 +18,7 @@ var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
  *****************************************************************************/
 
 /*
- * list folders for either 'tasks' or 'buildorders'
+ * list folders for 'buildorders'
  */
 var list = exports.list = function () {
   var _ref2 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(_ref) {
@@ -29,28 +29,13 @@ var list = exports.list = function () {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            if (!(['tasks', 'buildorders'].indexOf(args[0]) === -1)) {
-              _context.next = 2;
-              break;
-            }
-
-            throw new Error('command must be provided one of \'tasks\' or \'buildorders\'');
-
-          case 2:
-            dir = void 0;
-
-            if (args[0] === 'tasks') {
-              dir = _config2.default.defaultTaskDir;
-            } else if (args[0] === 'buildorders') {
-              dir = _config2.default.defaultBuildOrdersDir;
-            }
-
-            _context.next = 6;
+            dir = _config2.default.defaultBuildOrdersDir;
+            _context.next = 3;
             return flatWalk(dir, function (name) {
               return _fs2.default.lstatSync(_path2.default.resolve(dir, name)).isDirectory() && name;
             });
 
-          case 6:
+          case 3:
             _context.t0 = function (a) {
               return a;
             };
@@ -62,7 +47,7 @@ var list = exports.list = function () {
               console.log(name);
             });
 
-          case 9:
+          case 6:
           case 'end':
             return _context.stop();
         }
@@ -76,7 +61,7 @@ var list = exports.list = function () {
 }();
 
 /*
- * executes a given list of tasks
+ * executes a buildorder
  */
 
 
@@ -88,13 +73,13 @@ var list = exports.list = function () {
  * runs either buildorder or tasks
  */
 var commandRunner = function () {
-  var _ref6 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee3(_ref5) {
+  var _ref5 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee3(_ref4) {
     var _this = this;
 
-    var flags = _ref5.flags,
-        args = _ref5.args,
-        defaultDir = _ref5.defaultDir,
-        name = _ref5.name;
+    var flags = _ref4.flags,
+        args = _ref4.args,
+        defaultDir = _ref4.defaultDir,
+        name = _ref4.name;
     var cwd, handlers, projectRootPath;
     return _regenerator2.default.wrap(function _callee3$(_context3) {
       while (1) {
@@ -113,7 +98,7 @@ var commandRunner = function () {
             projectRootPath = _context3.sent;
             _context3.next = 7;
             return helper.mapAsync(handlers, function () {
-              var _ref7 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee2(fn, i) {
+              var _ref6 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee2(fn, i) {
                 return _regenerator2.default.wrap(function _callee2$(_context2) {
                   while (1) {
                     switch (_context2.prev = _context2.next) {
@@ -146,7 +131,7 @@ var commandRunner = function () {
               }));
 
               return function (_x3, _x4) {
-                return _ref7.apply(this, arguments);
+                return _ref6.apply(this, arguments);
               };
             }());
 
@@ -163,7 +148,7 @@ var commandRunner = function () {
   }));
 
   return function commandRunner(_x2) {
-    return _ref6.apply(this, arguments);
+    return _ref5.apply(this, arguments);
   };
 }();
 
@@ -184,7 +169,7 @@ var commandRunner = function () {
  * flatWalk
  */
 var flatWalk = function () {
-  var _ref9 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee4(dir, cb) {
+  var _ref8 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee4(dir, cb) {
     var files, res, i;
     return _regenerator2.default.wrap(function _callee4$(_context4) {
       while (1) {
@@ -226,11 +211,10 @@ var flatWalk = function () {
   }));
 
   return function flatWalk(_x5, _x6) {
-    return _ref9.apply(this, arguments);
+    return _ref8.apply(this, arguments);
   };
 }();
 
-exports.tasks = tasks;
 exports.buildorders = buildorders;
 
 var _process = require('process');
@@ -269,24 +253,9 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function tasks(_ref3) {
+function buildorders(_ref3) {
   var flags = _ref3.flags,
       args = _ref3.args;
-
-  return commandRunner({
-    flags: flags,
-    args: args,
-    defaultDir: _config2.default.defaultTaskDir,
-    name: 'TASKS'
-  });
-}
-
-/*
- * executes a buildorder
- */
-function buildorders(_ref4) {
-  var flags = _ref4.flags,
-      args = _ref4.args;
 
   return commandRunner({
     flags: flags,
@@ -294,10 +263,10 @@ function buildorders(_ref4) {
     defaultDir: _config2.default.defaultBuildOrdersDir,
     name: 'BUILD ORDER'
   });
-}function extractHandlers(_ref8) {
-  var names = _ref8.names,
-      cwd = _ref8.cwd,
-      defaultDir = _ref8.defaultDir;
+}function extractHandlers(_ref7) {
+  var names = _ref7.names,
+      cwd = _ref7.cwd,
+      defaultDir = _ref7.defaultDir;
 
   return names.map(function (name) {
     var cwdFilePath = _path2.default.resolve(cwd, name);

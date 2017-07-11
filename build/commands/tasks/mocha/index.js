@@ -16,10 +16,6 @@ var _path = require('path');
 
 var _path2 = _interopRequireDefault(_path);
 
-var _invariant = require('invariant');
-
-var _invariant2 = _interopRequireDefault(_invariant);
-
 var _taskApi = require('services/task-api');
 
 var _taskApi2 = _interopRequireDefault(_taskApi);
@@ -33,12 +29,30 @@ exports.default = function () {
         switch (_context.prev = _context.next) {
           case 0:
             _context.next = 2;
-            return _taskApi2.default.templateFile({
-              src: _path2.default.resolve(__dirname, './templates/Dockerfile'),
-              dest: 'Dockerfile'
+            return _taskApi2.default.addPackages({
+              packages: ['babel-register', 'babel-polyfill', 'mocha', 'expect'],
+              dev: true
             });
 
           case 2:
+            _context.next = 4;
+            return _taskApi2.default.addToPackageJson({
+              json: {
+                scripts: {
+                  'test': 'NODE_ENV=test ./node_modules/mocha/bin/mocha --compilers js:babel-register --require babel-polyfill $(find . -name \'*.spec.js\' ! -ipath \'*node_modules*\')',
+                  'test:watch': 'NODE_ENV=test ./node_modules/mocha/bin/mocha --compilers js:babel-register --require babel-polyfill --watch $(find . -name \'*.spec.js\' ! -ipath \'*node_modules*\')'
+                }
+              }
+            });
+
+          case 4:
+            _context.next = 6;
+            return _taskApi2.default.copyDirectory({
+              src: _path2.default.resolve(__dirname, './templates/mocha/test'),
+              dest: './test'
+            });
+
+          case 6:
           case 'end':
             return _context.stop();
         }
@@ -46,9 +60,9 @@ exports.default = function () {
     }, _callee, this);
   }));
 
-  function docker() {
+  function mocha() {
     return _ref.apply(this, arguments);
   }
 
-  return docker;
+  return mocha;
 }();

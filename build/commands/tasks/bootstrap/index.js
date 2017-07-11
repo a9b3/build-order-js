@@ -16,6 +16,10 @@ var _path = require('path');
 
 var _path2 = _interopRequireDefault(_path);
 
+var _taskApi = require('services/task-api');
+
+var _taskApi2 = _interopRequireDefault(_taskApi);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /*
@@ -27,30 +31,27 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  */
 exports.default = function () {
   var _ref2 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(_ref) {
-    var _ref$flags = _ref.flags;
-    _ref$flags = _ref$flags === undefined ? {} : _ref$flags;
-    var _ref$flags$name = _ref$flags.name,
-        name = _ref$flags$name === undefined ? 'changeMe' : _ref$flags$name,
-        taskApi = _ref.taskApi;
+    var _ref$name = _ref.name,
+        name = _ref$name === undefined ? 'changeMe' : _ref$name;
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             _context.next = 2;
-            return taskApi.shell({
+            return _taskApi2.default.shell({
               command: 'git init'
             });
 
           case 2:
             _context.next = 4;
-            return taskApi.addFile({
+            return _taskApi2.default.addFile({
               dest: '.gitignore',
               fileContent: ['node_modules/', '*.log'].join('\n')
             });
 
           case 4:
             _context.next = 6;
-            return taskApi.templateFile({
+            return _taskApi2.default.templateFile({
               dest: 'package.json',
               src: _path2.default.resolve(__dirname, './templates/package.json.tpl'),
               args: {
@@ -60,7 +61,7 @@ exports.default = function () {
 
           case 6:
             _context.next = 8;
-            return taskApi.addFile({
+            return _taskApi2.default.addFile({
               dest: 'readme.md',
               fileContent: ['# Readme'].join('\n')
             });

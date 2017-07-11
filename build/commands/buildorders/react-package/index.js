@@ -40,81 +40,58 @@ exports.default = function () {
 
           case 2:
             _context.next = 4;
-            return tasks.mocha();
+            return tasks.eslint({ extend: 'eslint-config-esayemm/lib/react' });
 
           case 4:
             _context.next = 6;
-            return tasks.eslint({ extend: 'eslint-config-esayemm' });
-
-          case 6:
-            _context.next = 8;
-            return tasks.ci();
-
-          case 8:
-            _context.next = 10;
-            return tasks.docker();
-
-          case 10:
-            _context.next = 12;
             return _taskApi2.default.addPackages({
-              packages: ['jbs-node', 'babel-register', 'babel-polyfill', 'axios'],
+              packages: ['jbs-fe', 'react-addons-test-utils', 'react', 'prop-types', 'react-css-modules', 'react-dom', 'react-helmet', 'react-router', 'react-router-dom', 'history', 'html', 'invariant', 'esayemm-styles'],
               dev: true
             });
 
-          case 12:
-            _context.next = 14;
-            return _taskApi2.default.addPackages({
-              packages: ['express', 'body-parser', 'cors', 'babel-register', 'babel-polyfill', 'bunyan', 'helmet', 'morgan']
-            });
-
-          case 14:
-            _context.next = 16;
+          case 6:
+            _context.next = 8;
             return _taskApi2.default.addToPackageJson({
               json: {
                 main: './build/index.js',
+                module: './build/index.es.js',
                 scripts: {
-                  build: './node_modules/jbs-node/bin.js build --input src --output build',
-                  deploy: 'npm run build && echo add deployment script here',
-                  start: 'NODE_PATH=./src nodemon index.js | ./node_modules/bunyan/bin/bunyan --output short',
-                  serve: 'NODE_PATH=./build node ./build'
+                  build: 'BABEL_REACT=true NODE_ENV=prod NODE_PATH=./src ./node_modules/jbs-fe/bin.js build:package --input src --output build --es-input-file src/index.js --es-output-file build/index.es.js',
+                  start: 'BABEL_REACT=true NODE_PATH=./example:./example/app:./src ./node_modules/jbs-fe/bin.js dev --app-index ./example/app/index.js --html-index ./example/index.html --context ./example',
+                  test: 'BABEL_REACT=true NODE_ENV=test ./node_modules/jbs-fe/bin.js test --single-run',
+                  'test:watch': 'BABEL_REACT=true NODE_ENV=test ./node_modules/jbs-fe/bin.js test'
                 },
                 babel: {
-                  presets: ['./node_modules/jbs-node/configs/babel-preset-jbs-node.js']
+                  presets: ['./node_modules/jbs-fe/configs/babel-preset-jbs-fe.js']
                 }
               }
             });
 
-          case 16:
-            _context.next = 18;
-            return _taskApi2.default.addFile({
-              src: _path2.default.resolve(__dirname, './templates/index.js'),
-              dest: 'index.js'
-            });
+          case 8:
+            _context.next = 10;
+            return _taskApi2.default.shell({ command: 'mkdir src' });
 
-          case 18:
-            _context.next = 20;
+          case 10:
+            _context.next = 12;
+            return _taskApi2.default.shell({ command: 'touch src/index.js' });
+
+          case 12:
+            _context.next = 14;
             return _taskApi2.default.copyDirectory({
               src: _path2.default.resolve(__dirname, './templates/src'),
-              dest: './src'
+              dest: './example'
             });
 
-          case 20:
-            _context.next = 22;
-            return _taskApi2.default.copyDirectory({
-              src: _path2.default.resolve(__dirname, './templates/test'),
-              dest: './test'
-            });
-
-          case 22:
+          case 14:
             if (!flags.git) {
-              _context.next = 25;
+              _context.next = 17;
               break;
             }
 
-            _context.next = 25;
+            _context.next = 17;
             return _taskApi2.default.gitInit();
 
-          case 25:
+          case 17:
           case 'end':
             return _context.stop();
         }
@@ -122,9 +99,9 @@ exports.default = function () {
     }, _callee, this);
   }));
 
-  function express(_x) {
+  function reactPackage(_x) {
     return _ref2.apply(this, arguments);
   }
 
-  return express;
+  return reactPackage;
 }();
