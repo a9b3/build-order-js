@@ -1,6 +1,6 @@
 {
   "name": "build-order-js",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Set up javascript development environment procedurally using tasks",
   "author": "Sam Lau <esayemm@gmail.com>",
   "license": "MIT",
@@ -14,7 +14,7 @@
     "lint": "./node_modules/eslint/bin/eslint.js .",
     "prepublish": "npm run build",
     "preversion": "npm run lint && npm run test",
-    "version": "npm run publish",
+    "version": "npm publish",
     "postversion": "git add . && git push && git push --tags"
   },
   "dependencies": {
