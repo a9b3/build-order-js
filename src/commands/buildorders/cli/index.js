@@ -42,6 +42,8 @@ export default async function cli({
         [flags.name]: './entry.js',
       },
       files: [
+        'entry.js',
+        'dev.entry.js',
         'build/',
       ],
     },

@@ -45,6 +45,8 @@
     "bojs": "./bin.js"
   },
   "files": [
-    "build/"
+    "build/",
+    "./bin.js",
+    "./index.js"
   ]
 }
