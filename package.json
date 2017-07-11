@@ -46,7 +46,7 @@
   },
   "files": [
     "build/",
-    "./bin.js",
-    "./index.js"
+    "bin.js",
+    "index.js"
   ]
 }
