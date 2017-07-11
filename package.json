@@ -10,10 +10,12 @@
     "url": "https://github.com/esayemm/build-order-js"
   },
   "scripts": {
-    "babel": "rm -rf build && ./node_modules/babel-cli/bin/babel.js src --out-dir build --copy-files",
-    "eslint": "./node_modules/eslint/bin/eslint.js .",
-    "version": "npm run babel && git add .",
-    "postversion": "git push && git push --tags && npm publish"
+    "build": "rm -rf build && ./node_modules/babel-cli/bin/babel.js src --out-dir build --copy-files",
+    "lint": "./node_modules/eslint/bin/eslint.js .",
+    "prepublish": "npm run build",
+    "preversion": "npm run lint && npm run test",
+    "version": "npm run publish",
+    "postversion": "git add . && git push && git push --tags"
   },
   "dependencies": {
     "app-module-path": "^2.2.0",
@@ -41,5 +43,8 @@
   "bin": {
     "bojs-dev": "./index.js",
     "bojs": "./bin.js"
-  }
+  },
+  "files": [
+    "build/"
+  ]
 }
