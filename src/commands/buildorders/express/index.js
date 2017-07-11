@@ -1,33 +1,21 @@
 import path       from 'path'
 import * as tasks from '../../tasks'
+import taskApi    from 'services/task-api'
 
-/*
- * refer to commands/index.js for the opts passed into this function
- *
- * args used
- * --git
- */
-export default async function express(opts) {
-  const taskApi = opts.taskApi
-
-  await taskApi.copyDirectory({
-    src: path.resolve(__dirname, './templates/test'),
-    dest: './test',
-  })
-
-  await tasks.bootstrap(opts)
-  await tasks.babel(opts)
-  await tasks.eslint(opts)
-  await tasks.test(opts)
-  await tasks.ci(opts)
-  await tasks.docker(Object.assign({}, opts, {
-    flags: Object.assign({}, opts.flags, {
-      dockerTarget: 'backend',
-    }),
-  }))
+export default async function express({
+  flags,
+}) {
+  await tasks.bootstrap({ name: flags.name })
+  await tasks.mocha()
+  await tasks.eslint({ extend: 'eslint-config-esayemm' })
+  await tasks.ci()
+  await tasks.docker()
 
   await taskApi.addPackages({
     packages: [
+      'jbs-node',
+      'babel-register',
+      'babel-polyfill',
       'axios',
     ],
     dev: true,
@@ -48,9 +36,15 @@ export default async function express(opts) {
 
   await taskApi.addToPackageJson({
     json: {
+      main: `./build/index.js`,
       scripts: {
-        serve: `NODE_PATH=./es node es/index.js`,
-        dev: `NODE_PATH=./src nodemon index.js | ./node_modules/bunyan/bin/bunyan --output short`,
+        build: './node_modules/jbs-node/bin.js build --input src --output build',
+        deploy: 'npm run build && echo add deployment script here',
+        dev: 'NODE_PATH=./src nodemon index.js',
+        serve: 'NODE_PATH=./build node ./build',
+      },
+      babel: {
+        presets: ['./node_modules/jbs-node/configs/babel-preset-jbs-node.js'],
       },
     },
   })
@@ -65,7 +59,12 @@ export default async function express(opts) {
     dest: './src',
   })
 
-  if (opts.flags.git) {
+  await taskApi.copyDirectory({
+    src: path.resolve(__dirname, './templates/test'),
+    dest: './test',
+  })
+
+  if (flags.git) {
     await taskApi.gitInit()
   }
 }
