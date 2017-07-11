@@ -22,7 +22,7 @@ export default async function nodeApp({
       main: `./build/index.js`,
       scripts: {
         build: './node_modules/jbs-node/bin.js build --input src --output build',
-        prepublish: 'npm run build',
+        prepare: 'npm run build',
         preversion: 'npm run lint && npm run test',
         version: 'npm publish',
         postversion: 'git add . && git push && git push --tags',
