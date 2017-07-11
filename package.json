@@ -1,6 +1,6 @@
 {
   "name": "build-order-js",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Set up javascript development environment procedurally using tasks",
   "author": "Sam Lau <esayemm@gmail.com>",
   "license": "MIT",
