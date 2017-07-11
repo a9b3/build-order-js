@@ -1,4 +1,3 @@
-import path       from 'path'
 import taskApi    from 'services/task-api'
 import * as tasks from '../../tasks'
 

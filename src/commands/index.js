@@ -14,7 +14,7 @@ import fs          from 'fs'
 /*
  * list folders for 'buildorders'
  */
-export async function list({ flags, args }) {
+export async function list() {
   const dir = config.defaultBuildOrdersDir
 
   const names = (await flatWalk(dir, name => fs.lstatSync(path.resolve(dir, name)).isDirectory() && name))
