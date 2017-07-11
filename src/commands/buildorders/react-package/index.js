@@ -36,10 +36,17 @@ export default async function reactPackage({
         start: 'BABEL_REACT=true NODE_PATH=./example:./example/app:./src ./node_modules/jbs-fe/bin.js dev --app-index ./example/app/index.js --html-index ./example/index.html --context ./example',
         test: `BABEL_REACT=true NODE_ENV=test ./node_modules/jbs-fe/bin.js test --single-run`,
         'test:watch': `BABEL_REACT=true NODE_ENV=test ./node_modules/jbs-fe/bin.js test`,
+        prepublish: 'npm run build',
+        preversion: 'npm run lint && npm run test',
+        version: 'npm publish',
+        postversion: 'git add . && git push && git push --tags',
       },
       babel: {
         presets: ['./node_modules/jbs-fe/configs/babel-preset-jbs-fe.js'],
       },
+      files: [
+        'build/'
+      ],
     },
   })
 

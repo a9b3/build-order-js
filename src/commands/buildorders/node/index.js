@@ -23,13 +23,17 @@ export default async function nodeApp({
       main: `./build/index.js`,
       scripts: {
         build: './node_modules/jbs-node/bin.js build --input src --output build',
+        prepublish: 'npm run build',
         preversion: 'npm run lint && npm run test',
-        version: 'npm run build && npm publish',
+        version: 'npm publish',
         postversion: 'git add . && git push && git push --tags',
       },
       babel: {
         presets: ['./node_modules/jbs-node/configs/babel-preset-jbs-node.js'],
       },
+      files: [
+        'build/',
+      ],
     },
   })
 

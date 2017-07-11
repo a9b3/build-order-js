@@ -29,8 +29,9 @@ export default async function cli({
     json: {
       scripts: {
         build: './node_modules/jbs-node/bin.js build --input src --output build',
+        prepublish: 'npm run build',
         preversion: 'npm run lint && npm run test',
-        version: 'npm run build && npm publish',
+        version: 'npm publish',
         postversion: 'git add . && git push && git push --tags',
       },
       babel: {
@@ -41,6 +42,9 @@ export default async function cli({
         [flags.name + '-dev']: './dev.entry.js',
         [flags.name]: './entry.js',
       },
+      files: [
+        'build/',
+      ],
     },
   })
 

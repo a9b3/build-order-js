@@ -20,6 +20,7 @@ export default async function bootstrap({
     fileContent: [
       'node_modules/',
       '*.log',
+      'build/',
     ].join('\n'),
   })
 
