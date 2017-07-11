@@ -1,4 +1,5 @@
-import path from 'path'
+import path    from 'path'
+import taskApi from 'services/task-api'
 
 /*
  * 1. git init
@@ -8,10 +9,7 @@ import path from 'path'
  * 5. config.js
  */
 export default async function bootstrap({
-  flags: {
-    name = 'changeMe',
-  } = {},
-  taskApi,
+  name = 'changeMe',
 }) {
   await taskApi.shell({
     command: 'git init',

@@ -1,18 +1,15 @@
-import invariant        from 'invariant'
-import { allowedTypes } from '../allowed-types.js'
+import invariant from 'invariant'
+import taskApi   from 'services/task-api'
 
-/*
- * buildorderType
- * none  - eslint-config-esayemm
- * react - eslint-config-esayemm/lib/react
+/**
+ * extend: 'eslint-config-esayemm/lib/react',
+ *
+ * else pass in 'eslint-config-esayemm'
  */
-export default async function babel({
-  flags: {
-    buildorderType = 'default',
-  } = {},
-  taskApi,
+export default async function eslint({
+  extend,
 }) {
-  invariant(!!~allowedTypes.indexOf(buildorderType), `--eslint-type must be one of these values '${allowedTypes}'`)
+  invariant(typeof extend === 'string', `Must provide 'extend' field to eslint (what eslint preset to extend).`)
 
   /*
    * npm packages
@@ -25,8 +22,8 @@ export default async function babel({
       'babel-eslint',
       'eslint',
       'eslint-config-esayemm',
-      buildorderType === 'react' && 'eslint-plugin-react',
-    ].filter(a => a),
+      'eslint-plugin-react',
+    ],
     dev: true,
   })
 
@@ -36,7 +33,7 @@ export default async function babel({
   await taskApi.addToPackageJson({
     json: {
       scripts: {
-        'eslint': './node_modules/eslint/bin/eslint.js .',
+        'lint': './node_modules/eslint/bin/eslint.js .',
       },
     },
   })
@@ -57,8 +54,8 @@ export default async function babel({
     dest: '.eslintrc',
     json: {
       "extends": [
-        buildorderType === 'react' ? "esayemm/lib/react" : "esayemm",
-      ].filter(a => a),
+        extend
+      ],
     },
   })
 

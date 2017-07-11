@@ -1,19 +1,12 @@
 import path      from 'path'
 import invariant from 'invariant'
+import taskApi   from 'services/task-api'
 
-/*
- * ciTarget
- * travis -
- * circle -
- */
 export default async function ci({
-  flags: {
-    ciTarget = 'travis',
-  } = {},
-  taskApi,
-}) {
+  ciTarget = 'travis',
+} = {}) {
   const allowedTargets = ['travis', 'circle']
-  invariant(!!~allowedTargets.indexOf(ciTarget), `--ci-type must be one of these values '${allowedTargets}'`)
+  invariant(!!~allowedTargets.indexOf(ciTarget), `'ciTarget' must be one of these values '${allowedTargets}'`)
 
   if (ciTarget === 'travis') {
     await taskApi.addFile({

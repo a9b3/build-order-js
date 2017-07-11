@@ -1,29 +1,13 @@
 import path       from 'path'
+import taskApi    from 'services/task-api'
 import * as tasks from '../../tasks'
 
-/*
- * refer to commands/index.js for the opts passed into this function
- *
- * args used
- * --git
- */
-export default async function cli(opts) {
-  const taskApi = opts.taskApi
-  opts.flags.buildorderType = 'node'
-
-  await tasks.bootstrap(opts)
-  await tasks.babel(opts)
-  await tasks.eslint(opts)
-  await tasks.test(opts)
-  await tasks.ci(opts)
-
-  await taskApi.addPackages({
-    packages: [
-      'babel-register',
-      'babel-polyfill',
-    ],
-    dev: true,
-  })
+export default async function cli({
+  flags,
+}) {
+  await tasks.bootstrap({ name: flags.name })
+  await tasks.mocha()
+  await tasks.eslint({ extend: 'eslint-config-esayemm' })
 
   await taskApi.addPackages({
     packages: [
@@ -31,33 +15,41 @@ export default async function cli(opts) {
     ],
   })
 
-  const name = opts.flags.name || 'changeMe'
+  await taskApi.addPackages({
+    packages: [
+      'jbs-node',
+      'babel-register',
+      'babel-polyfill',
+    ],
+    dev: true,
+  })
+
+  // package json
   await taskApi.addToPackageJson({
     json: {
       scripts: {
-        preversion: 'npm run eslint && npm run test',
-        version: 'npm run babel && git add .',
-        postversion: 'git push && git push --tags && npm publish',
+        build: './node_modules/jbs-node/bin.js build --input src --output build',
+        preversion: 'npm run lint && npm run test',
+        version: 'npm run build && npm publish',
+        postversion: 'git add . && git push && git push --tags',
+      },
+      babel: {
+        presets: ['./node_modules/jbs-node/configs/babel-preset-jbs-node.js'],
       },
       preferGlobal: true,
-      'bin': {
-        [name+'-dev']: './index.js',
-        [name]: './bin.js',
+      bin: {
+        [flags.name + '-dev']: './dev.entry.js',
+        [flags.name]: './entry.js',
       },
     },
   })
 
-  await taskApi.copyDirectory({
-    src: path.resolve(__dirname, './templates/src'),
-    dest: './src',
-  })
-
-  // add dev entry file
+  // dev entry
   await taskApi.addFile({
-    dest: './index.js',
+    dest: './dev.entry.js',
     fileContent: [
       `#!/usr/bin/env node`,
-      `// use this for dev, prod will use ./bin.js`,
+      `// use this for dev, prod will use ./entry.js`,
       `const path = require('path')`,
       `require('app-module-path').addPath(path.resolve(__dirname, './src'))`,
       `require('babel-register')`,
@@ -65,22 +57,24 @@ export default async function cli(opts) {
       `require('./src')`,
     ].join('\n'),
   })
-  await taskApi.shell({ command: `chmod 0755 ./index.js` })
+  await taskApi.shell({ command: `chmod 0755 ./dev.entry.js` })
 
-  // add build entry file
+  // build entry
   await taskApi.addFile({
-    dest: './bin.js',
+    dest: './entry.js',
     fileContent: [
       `#!/usr/bin/env node`,
       `const path = require('path')`,
-      `require('app-module-path').addPath(path.resolve(__dirname, './es'))`,
-      `require('./es/index.js')`,
+      `require('app-module-path').addPath(path.resolve(__dirname, './build'))`,
+      `require('./build')`,
     ].join('\n'),
   })
-  await taskApi.shell({ command: `chmod 0755 ./bin.js` })
+  await taskApi.shell({ command: `chmod 0755 ./entry.js` })
 
-  if (opts.flags.git) {
+  await taskApi.shell({ command: `mkdir src` })
+  await taskApi.shell({ command: `touch src/index.js` })
+
+  if (flags.git) {
     await taskApi.gitInit()
   }
-
 }

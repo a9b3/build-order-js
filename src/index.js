@@ -27,12 +27,6 @@ function setupCommanderShepard() {
     ],
     subcommands: [
       {
-        key: 'tasks',
-        shortDescription: 'apply tasks to the current project',
-        longDescription: 'Apply a granular task to current project',
-        command: commands.tasks,
-      },
-      {
         key: 'buildorders',
         shortDescription: 'apply build orders to the current project',
         longDescription: 'Apply a set of tasks to the current project',
@@ -40,8 +34,8 @@ function setupCommanderShepard() {
       },
       {
         key: 'list',
-        shortDescription: 'list the available tasks or buildorders',
-        longDescription: 'list the available tasks or buildorders',
+        shortDescription: 'list the available buildorders',
+        longDescription: 'list the available buildorders',
         command: commands.list,
       },
     ],

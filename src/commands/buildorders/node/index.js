@@ -1,24 +1,17 @@
 import path       from 'path'
 import * as tasks from '../../tasks'
+import taskApi    from 'services/task-api'
 
-/*
- * refer to commands/index.js for the opts passed into this function
- *
- * args used
- * --git
- */
-export default async function node(opts) {
-  const taskApi = opts.taskApi
-  opts.flags.buildorderType = 'node'
-
-  await tasks.bootstrap(opts)
-  await tasks.babel(opts)
-  await tasks.eslint(opts)
-  await tasks.test(opts)
-  await tasks.ci(opts)
+export default async function nodeApp({
+  flags,
+}) {
+  await tasks.bootstrap({ name: flags.name })
+  await tasks.mocha()
+  await tasks.eslint({ extend: 'eslint-config-esayemm' })
 
   await taskApi.addPackages({
     packages: [
+      'jbs-node',
       'babel-register',
       'babel-polyfill',
     ],
@@ -27,31 +20,33 @@ export default async function node(opts) {
 
   await taskApi.addToPackageJson({
     json: {
-      main: `es/index.js`,
+      main: `./build/index.js`,
       scripts: {
-        preversion: 'npm run eslint && npm run test',
-        version: 'npm run babel && git add .',
-        postversion: 'npm publish && git push && git push --tags',
+        build: './node_modules/jbs-node/bin.js build --input src --output build',
+        preversion: 'npm run lint && npm run test',
+        version: 'npm run build && npm publish',
+        postversion: 'git add . && git push && git push --tags',
+      },
+      babel: {
+        presets: ['./node_modules/jbs-node/configs/babel-preset-jbs-node.js'],
       },
     },
   })
 
-  await taskApi.copyDirectory({
-    src: path.resolve(__dirname, './templates/src'),
-    dest: './src',
-  })
+  await taskApi.shell({ command: `mkdir src` })
+  await taskApi.shell({ command: `touch src/index.js` })
 
   await taskApi.addFile({
     dest: './index.js',
     fileContent: [
+      `// use this for dev`,
       `require('babel-register')`,
       `require('babel-polyfill')`,
       `require('./src')`,
     ].join('\n'),
   })
 
-  if (opts.flags.git) {
+  if (flags.git) {
     await taskApi.gitInit()
   }
-
 }

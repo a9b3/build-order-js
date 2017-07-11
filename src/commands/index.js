@@ -12,37 +12,16 @@ import fs          from 'fs'
  *****************************************************************************/
 
 /*
- * list folders for either 'tasks' or 'buildorders'
+ * list folders for 'buildorders'
  */
 export async function list({ flags, args }) {
-  if (['tasks', 'buildorders'].indexOf(args[0]) === -1) {
-    throw new Error(`command must be provided one of 'tasks' or 'buildorders'`)
-  }
-
-  let dir
-  if (args[0] === 'tasks') {
-    dir = config.defaultTaskDir
-  } else if (args[0] === 'buildorders') {
-    dir = config.defaultBuildOrdersDir
-  }
+  const dir = config.defaultBuildOrdersDir
 
   const names = (await flatWalk(dir, name => fs.lstatSync(path.resolve(dir, name)).isDirectory() && name))
     .filter(a => a)
 
   names.forEach(name => {
     console.log(name)
-  })
-}
-
-/*
- * executes a given list of tasks
- */
-export function tasks({ flags, args }) {
-  return commandRunner({
-    flags,
-    args,
-    defaultDir: config.defaultTaskDir,
-    name: 'TASKS',
   })
 }
 
