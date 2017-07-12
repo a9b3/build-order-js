@@ -1,6 +1,6 @@
 # Build Order JS
 
-Set up javascript development environment procedurally. This tool comes with a few preset build orders but the goal is for individuals to create their own build orders and tasks that they can share. However feel free to use the preset build orders if it fits your needs.
+A set of Javascript project boilerplates.
 
 ## Installation
 
@@ -31,7 +31,7 @@ $ bojs
 
 ```
 
-### list
+### List available boilerplates.
 
 ```sh
 $ bojs list
@@ -44,7 +44,7 @@ react-app
 react-package
 ```
 
-### buildorder
+### Use a boilerplate.
 
 ```sh
 $ bojs buildorders react-app --git --npm yarn
