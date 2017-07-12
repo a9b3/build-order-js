@@ -12,7 +12,7 @@
   "scripts": {
     "build": "rm -rf build && ./node_modules/babel-cli/bin/babel.js src --out-dir build --copy-files",
     "lint": "./node_modules/eslint/bin/eslint.js .",
-    "prepare": "npm run build",
+    "prepublish": "npm run build",
     "preversion": "npm run lint && npm run test",
     "version": "npm publish",
     "postversion": "git add . && git push && git push --tags"

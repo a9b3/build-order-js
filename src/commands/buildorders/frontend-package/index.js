@@ -24,7 +24,7 @@ export default async function frontendPackage({
         start: './node_modules/jbs-fe/bin.js dev --app-index ./example/app/index.js --html-index ./example/index.html --context ./example',
         test: `NODE_ENV=test ./node_modules/jbs-fe/bin.js test --single-run`,
         'test:watch': `NODE_ENV=test ./node_modules/jbs-fe/bin.js test`,
-        prepare: 'npm run build',
+        prepublish: 'npm run build',
         preversion: 'npm run lint && npm run test',
         version: 'npm publish',
         postversion: 'git add . && git push && git push --tags',
