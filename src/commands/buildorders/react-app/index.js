@@ -37,7 +37,7 @@ export default async function reactApp({
     json: {
       main: `./build/index.js`,
       scripts: {
-        build: 'BABEL_REACT=true NODE_ENV=prod NODE_PATH=./src:./src/app ./node_modules/jbs-fe/bin.js build',
+        build: 'BABEL_REACT=true NODE_ENV=production NODE_PATH=./src:./src/app ./node_modules/jbs-fe/bin.js build',
         start: 'BABEL_REACT=true NODE_PATH=./src:./src/app ./node_modules/jbs-fe/bin.js dev',
         test: `BABEL_REACT=true NODE_ENV=test ./node_modules/jbs-fe/bin.js test --single-run`,
         'test:watch': `BABEL_REACT=true NODE_ENV=test ./node_modules/jbs-fe/bin.js test`,

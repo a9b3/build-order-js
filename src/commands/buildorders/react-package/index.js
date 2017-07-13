@@ -32,7 +32,7 @@ export default async function reactPackage({
       main: `./build/index.js`,
       module: `./build/index.es.js`,
       scripts: {
-        build: 'BABEL_REACT=true NODE_ENV=prod NODE_PATH=./src ./node_modules/jbs-fe/bin.js build:package --input src --output build --es-input-file src/index.js --es-output-file build/index.es.js',
+        build: 'BABEL_REACT=true NODE_ENV=production NODE_PATH=./src ./node_modules/jbs-fe/bin.js build:package --input src --output build --es-input-file src/index.js --es-output-file build/index.es.js',
         start: 'BABEL_REACT=true NODE_PATH=./example:./example/app:./src ./node_modules/jbs-fe/bin.js dev --app-index ./example/app/index.js --html-index ./example/index.html --context ./example',
         test: `BABEL_REACT=true NODE_ENV=test ./node_modules/jbs-fe/bin.js test --single-run`,
         'test:watch': `BABEL_REACT=true NODE_ENV=test ./node_modules/jbs-fe/bin.js test`,

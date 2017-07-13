@@ -54,7 +54,7 @@ export default async function cli({
     dest: './dev.entry.js',
     fileContent: [
       `#!/usr/bin/env node`,
-      `// use this for dev, prod will use ./entry.js`,
+      `// use this for dev, production will use ./entry.js`,
       `const path = require('path')`,
       `require('app-module-path').addPath(path.resolve(__dirname, './src'))`,
       `require('babel-register')`,

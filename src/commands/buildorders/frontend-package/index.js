@@ -20,7 +20,7 @@ export default async function frontendPackage({
       main: `./build/index.js`,
       module: `./build/index.es.js`,
       scripts: {
-        build: 'NODE_ENV=prod ./node_modules/jbs-fe/bin.js build:package --input src --output build --es-input-file src/index.js --es-output-file build/index.es.js',
+        build: 'NODE_ENV=production ./node_modules/jbs-fe/bin.js build:package --input src --output build --es-input-file src/index.js --es-output-file build/index.es.js',
         start: './node_modules/jbs-fe/bin.js dev --app-index ./example/app/index.js --html-index ./example/index.html --context ./example',
         test: `NODE_ENV=test ./node_modules/jbs-fe/bin.js test --single-run`,
         'test:watch': `NODE_ENV=test ./node_modules/jbs-fe/bin.js test`,
