@@ -11,7 +11,8 @@ export default class Root extends React.Component {
   render() {
     return <Router
       history={this.props.history}
-      children={routes}
-    />
+    >
+      {routes}
+    </Router>
   }
 }

@@ -20,10 +20,10 @@ export default async function frontendApp({
     json: {
       main: `./build/index.js`,
       scripts: {
-        build: 'NODE_ENV=production ./node_modules/jbs-fe/bin.js build',
-        start: './node_modules/jbs-fe/bin.js dev',
-        test: `NODE_ENV=test ./node_modules/jbs-fe/bin.js test --single-run`,
-        'test:watch': `NODE_ENV=test ./node_modules/jbs-fe/bin.js test`,
+        build: 'NODE_PATH=./src ./node_modules/jbs-fe/bin.js build',
+        start: 'NODE_PATH=./src ./node_modules/jbs-fe/bin.js dev',
+        test: `NODE_ENV=test NODE_PATH=./src ./node_modules/jbs-fe/bin.js test --single-run`,
+        'test:watch': `NODE_ENV=test NODE_PATH=./src ./node_modules/jbs-fe/bin.js test`,
         deploy: 'npm run build && echo add deployment script here'
       },
       babel: {
@@ -33,7 +33,7 @@ export default async function frontendApp({
   })
 
   await taskApi.copyDirectory({
-    src: path.resolve(__dirname, './templates/src'),
+    src: path.resolve(__dirname, '../../templates/frontend-app/src'),
     dest: './src',
   })
 

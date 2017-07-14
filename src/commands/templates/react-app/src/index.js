@@ -21,8 +21,8 @@ function renderRoot(Component) {
 renderRoot(Root)
 
 if (module.hot) {
-  module.hot.accept('../styles/index.scss', () => {
-    require('../styles/index.scss')
+  module.hot.accept('./styles/index.scss', () => {
+    require('./styles/index.scss')
   })
   module.hot.accept(() => {
     renderRoot(Root)

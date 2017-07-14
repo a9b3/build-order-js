@@ -20,8 +20,8 @@ export default async function frontendPackage({
       main: `./build/index.js`,
       module: `./build/index.es.js`,
       scripts: {
-        build: 'NODE_ENV=production ./node_modules/jbs-fe/bin.js build:package --input src --output build --es-input-file src/index.js --es-output-file build/index.es.js',
-        start: './node_modules/jbs-fe/bin.js dev --app-index ./example/app/index.js --html-index ./example/index.html --context ./example',
+        build: './node_modules/jbs-fe/bin.js build:package --input src --output build --es-input-file src/index.js --es-output-file build/index.es.js',
+        start: 'NODE_PATH=./example ./node_modules/jbs-fe/bin.js dev --app-index ./example/index.js --html-index ./example/index.html --context ./example',
         test: `NODE_ENV=test ./node_modules/jbs-fe/bin.js test --single-run`,
         'test:watch': `NODE_ENV=test ./node_modules/jbs-fe/bin.js test`,
         prepublish: 'npm run build',
@@ -42,7 +42,7 @@ export default async function frontendPackage({
   await taskApi.shell({ command: `touch src/index.js` })
 
   await taskApi.copyDirectory({
-    src: path.resolve(__dirname, './templates/src'),
+    src: path.resolve(__dirname, '../../templates/frontend-app/src'),
     dest: './example',
   })
 
