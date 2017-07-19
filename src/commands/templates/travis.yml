@@ -1,0 +1,29 @@
+language: node_js
+dist: trusty
+node_js:
+  - "8.1"
+
+addons:
+  apt:
+    packages:
+      - google-chrome-stable
+
+cache:
+  yarn: true
+  directories:
+    - node_modules
+
+install:
+  - yarn
+
+before_script:
+  - export DISPLAY=:99.0
+  - export CONTINUOUS_INTEGRATION=true
+  - sh -e /etc/init.d/xvfb start &
+  - sleep 3
+
+script:
+  - yarn test
+
+after_success:
+  - test $TRAVIS_BRANCH = "production" && yarn run deploy-example
