@@ -1,8 +1,7 @@
-import bunyan from 'bunyan'
-import config from 'config'
+import config from './config.js'
 import server from './server.js'
 import pkg    from '../package.json'
-const logger = bunyan.createLogger({ name: 'init' })
+import logger from './services/logger.js'
 
 /*
  * Main entry point to the app. Do synchronous initialization stuff here e.g.
@@ -17,8 +16,8 @@ async function main() {
     `\n`,
   )
 
-  await server.listen(config.port)
-  logger.info(`listening on port ${config.port}`)
+  await server.listen(config.PORT)
+  logger.info(`listening on port ${config.PORT}`)
 }
 
 // Start it up

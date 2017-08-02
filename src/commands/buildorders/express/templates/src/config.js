@@ -1,25 +1,35 @@
-const env = process.env.NODE_ENV || 'development'
+import { envOverride } from 'js-functions'
+const APP_ENV = process.env.APP_ENV || 'development'
+const NODE_ENV = process.env.NODE_ENV || 'development'
 
-const config = {
-  default: {
-    env,
-    port: 8080,
-    cors_origins: [/\.*/],
-  },
-  development: {},
-  test: {
-    port: 8081,
-  },
-  // deploy targets
-  staging: {
-    cors_origins: [/\.*/],
-  },
-  production: {
-    cors_origins: [/\.CHANGEME.com/],
-  },
+const config = {}
+
+config.development = {
+  APP_ENV,
+  NODE_ENV,
+  PORT: 8010,
+  CORS_ORIGINS: [/\.*/],
 }
 
-const selectedConfig = Object.assign({}, config.default, config[env] || {})
-module.exports = Object.assign({}, selectedConfig, {
-  port: process.env.SERVICE_PORT || selectedConfig.port,
-})
+config.test = {
+  APP_ENV,
+  NODE_ENV,
+  PORT: 8081,
+  CORS_ORIGINS: [/\.*/],
+}
+
+config.staging = {
+  APP_ENV,
+  NODE_ENV,
+  PORT: 8080,
+  CORS_ORIGINS: [/\.*/],
+}
+
+config.production = {
+  APP_ENV,
+  NODE_ENV,
+  PORT: 8080,
+  CORS_ORIGINS: [/\.*/],
+}
+
+export default envOverride(Object.assign({}, config[APP_ENV]))

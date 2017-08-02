@@ -5,7 +5,7 @@ import axios from 'axios'
 
 describe('example', () => {
   beforeEach((done) => {
-    server.listen(config.port)
+    server.listen(config.PORT)
     .then(() => done()).catch(done)
   })
 
@@ -15,7 +15,7 @@ describe('example', () => {
   })
 
   it('server response ok', async () => {
-    const res = await axios.get(`http://localhost:${config.port}`)
+    const res = await axios.get(`http://localhost:${config.PORT}`)
     expect(res.status).toBe(200)
   })
 })

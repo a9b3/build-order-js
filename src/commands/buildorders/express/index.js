@@ -28,7 +28,8 @@ export default async function express({
       'cors',
       'babel-register',
       'babel-polyfill',
-      'bunyan',
+      'winston',
+      'js-functions',
       'helmet',
       'morgan',
     ],
@@ -40,7 +41,7 @@ export default async function express({
       scripts: {
         build: './node_modules/jbs-node/bin.js build --input src --output build',
         deploy: 'npm run build && echo add deployment script here',
-        start: 'NODE_PATH=./src nodemon index.js | ./node_modules/bunyan/bin/bunyan --output short',
+        start: 'NODE_PATH=./src nodemon index.js',
         serve: 'NODE_PATH=./build node ./build',
       },
       babel: {
