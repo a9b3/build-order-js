@@ -9,7 +9,7 @@ services:
 #   - redis-server
 
 # env:
-#   - MONGODB_VERSION=2.6.10 NODE_ENV=travis
+#   - MONGODB_VERSION=2.6.10
 
 cache:
   directories:

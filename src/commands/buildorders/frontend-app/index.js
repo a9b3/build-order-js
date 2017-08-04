@@ -22,8 +22,8 @@ export default async function frontendApp({
       scripts: {
         build: 'NODE_PATH=./src ./node_modules/jbs-fe/bin.js build',
         start: 'NODE_PATH=./src ./node_modules/jbs-fe/bin.js dev',
-        test: `NODE_ENV=test NODE_PATH=./src ./node_modules/jbs-fe/bin.js test --single-run`,
-        'test:watch': `NODE_ENV=test NODE_PATH=./src ./node_modules/jbs-fe/bin.js test`,
+        test: `NODE_PATH=./src ./node_modules/jbs-fe/bin.js test --single-run`,
+        'test:watch': `NODE_PATH=./src ./node_modules/jbs-fe/bin.js test`,
         deploy: 'npm run build && echo add deployment script here'
       },
       babel: {

@@ -22,8 +22,8 @@ export default async function frontendPackage({
       scripts: {
         build: './node_modules/jbs-fe/bin.js build:package --input src --output build --es-input-file src/index.js --es-output-file build/index.es.js',
         start: 'NODE_PATH=./example ./node_modules/jbs-fe/bin.js dev --app-index ./example/index.js --html-index ./example/index.html --context ./example',
-        test: `NODE_ENV=test ./node_modules/jbs-fe/bin.js test --single-run`,
-        'test:watch': `NODE_ENV=test ./node_modules/jbs-fe/bin.js test`,
+        test: `./node_modules/jbs-fe/bin.js test --single-run`,
+        'test:watch': `./node_modules/jbs-fe/bin.js test`,
         prepublish: 'npm run build',
         preversion: 'npm run lint && npm run test',
         version: 'npm publish',
