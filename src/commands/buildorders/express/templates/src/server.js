@@ -1,10 +1,10 @@
-import express            from 'express'
-import config             from 'config'
-import bodyParser         from 'body-parser'
-import helmet             from 'helmet'
-import morgan             from 'morgan'
-import lastErrorHandler   from './middlewares/error-handling.js'
-import router             from './router.js'
+import express          from 'express'
+import config           from 'config'
+import bodyParser       from 'body-parser'
+import helmet           from 'helmet'
+import morgan           from 'morgan'
+import lastErrorHandler from './middlewares/error-handling.js'
+import router           from './router.js'
 
 class Server {
   app = express()

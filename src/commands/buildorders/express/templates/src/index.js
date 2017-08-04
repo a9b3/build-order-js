@@ -1,4 +1,4 @@
-const logger = require('logger.js').createLogger(__filename)
+const logger = require('services/logger').createLogger(__filename)
 import config from './config.js'
 import server from './server.js'
 import pkg    from '../package.json'
@@ -9,17 +9,15 @@ import pkg    from '../package.json'
  */
 async function main() {
   // print out configuration information
-  logger.info(
-    `\n${pkg.name || 'name'} - ${pkg.version || 'version'}\n`,
-    `\nStarting server with the following configs:\n\n`,
-    config,
-    `\n`,
-  )
+  logger.info(`${pkg.name || 'name'} - ${pkg.version || 'version'}`)
+  logger.info(``, config)
 
   await server.listen(config.PORT)
-  logger.info(`listening on port ${config.PORT}`)
+  logger.info(`listening on port ${config.PORT}...`)
 }
 
 // Start it up
-main()
-.catch(logger.error)
+main().catch((err) => {
+  logger.error(err)
+  process.exit()
+})

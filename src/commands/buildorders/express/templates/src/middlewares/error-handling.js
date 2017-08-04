@@ -1,4 +1,4 @@
-const logger = require('logger.js').createLogger(__filename)
+const logger = require('services/logger').createLogger(__filename)
 import config from '../config.js'
 
 /*
