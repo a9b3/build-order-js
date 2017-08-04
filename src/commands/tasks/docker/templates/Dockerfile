@@ -1,7 +1,15 @@
 FROM mhart/alpine-node
 
-WORKDIR /src
-ADD . .
+RUN npm install -g yarn
+
+COPY package.json /app/package.json
+COPY yarn.lock /app/yarn.lock
+
+WORKDIR /app
+RUN yarn --pure-lockfile
+ADD . /app
+
+RUN yarn run build
 
 EXPOSE 8080
-CMD npm run serve
+CMD yarn run serve
