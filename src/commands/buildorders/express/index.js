@@ -28,7 +28,7 @@ export default async function express({
       'cors',
       'babel-register',
       'babel-polyfill',
-      'winston',
+      'bunyan',
       'js-functions',
       'helmet',
       'morgan',

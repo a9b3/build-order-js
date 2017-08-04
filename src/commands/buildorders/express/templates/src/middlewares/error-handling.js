@@ -1,5 +1,5 @@
+const logger = require('logger.js').createLogger(__filename)
 import config from '../config.js'
-import logger from '../services/logger.js'
 
 /*
  * fall back error handler for express server, add to the end of all route

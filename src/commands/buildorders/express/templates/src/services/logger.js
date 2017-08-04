@@ -1,15 +1,26 @@
-import winston from 'winston'
-import config  from '../config.js'
+import bunyan from 'bunyan'
+import config from '../config.js'
 
-const logger = new winston.Logger({
-  transports: [
-    new winston.transports.Console(),
-  ],
-})
+/**
+ * eg.
+ * const logger = require('logger.js').createLogger(__filename)
+ *
+ * Log levels
+ * https://github.com/trentm/node-bunyan#levels
+ *
+ * TL;DR;
+ * fatal 60
+ * error 50
+ * warn 40
+ * info 30
+ * debug 20
+ * trace 10
+ */
+export function createLogger(name) {
+  const level = config.BUNYAN_LOG_LEVEL || 'info'
 
-// Set log level to only log out errors in production.
-if (['production', 'test'].indexOf(config.APP_ENV) > -1) {
-  logger.transports.console.level = 'error'
+  return bunyan.createLogger({
+    name,
+    level,
+  })
 }
-
-export default logger

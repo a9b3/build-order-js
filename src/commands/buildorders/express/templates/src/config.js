@@ -9,6 +9,7 @@ config.development = {
   NODE_ENV,
   PORT: 8010,
   CORS_ORIGINS: [/\.*/],
+  BUNYAN_LOG_LEVEL: 'info',
 }
 
 config.test = {
@@ -16,6 +17,7 @@ config.test = {
   NODE_ENV,
   PORT: 8081,
   CORS_ORIGINS: [/\.*/],
+  BUNYAN_LOG_LEVEL: 'error',
 }
 
 config.staging = {
@@ -23,6 +25,7 @@ config.staging = {
   NODE_ENV,
   PORT: 8080,
   CORS_ORIGINS: [/\.*/],
+  BUNYAN_LOG_LEVEL: 'info',
 }
 
 config.production = {
@@ -30,6 +33,7 @@ config.production = {
   NODE_ENV,
   PORT: 8080,
   CORS_ORIGINS: [/\.*/],
+  BUNYAN_LOG_LEVEL: 'info',
 }
 
 export default envOverride(Object.assign({}, config[APP_ENV]))

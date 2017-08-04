@@ -1,7 +1,7 @@
+const logger = require('logger.js').createLogger(__filename)
 import config from './config.js'
 import server from './server.js'
 import pkg    from '../package.json'
-import logger from './services/logger.js'
 
 /*
  * Main entry point to the app. Do synchronous initialization stuff here e.g.
