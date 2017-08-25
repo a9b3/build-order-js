@@ -1,5 +1,6 @@
 import bunyan from 'bunyan'
-import config from '../config.js'
+
+import config from 'config'
 
 /**
  * eg.

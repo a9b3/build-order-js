@@ -1,6 +1,6 @@
 const logger = require('services/logger').createLogger(__filename)
-import config from './config.js'
-import server from './server.js'
+import config from 'config'
+import server from 'express/server'
 import pkg    from '../package.json'
 
 /*

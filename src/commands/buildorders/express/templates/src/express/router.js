@@ -1,7 +1,9 @@
-import { Router } from 'express'
-import cors       from 'cors'
-import config     from './config.js'
-import index      from './controllers/index.js'
+import { Router }  from 'express'
+import cors        from 'cors'
+
+import config      from 'config'
+import index       from 'express/controllers/index'
+import {asyncWrap} from 'helpers/try-catch-middleware'
 
 const router = new Router()
 
@@ -11,6 +13,7 @@ router.use(cors({
     callback(!originIsInWhiteList && 'Cors Issue', originIsInWhiteList)
   },
 }))
-router.get(`/`, index)
+
+router.get(`/`, asyncWrap(index))
 
 export default router

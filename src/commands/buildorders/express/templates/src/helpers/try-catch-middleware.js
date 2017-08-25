@@ -34,6 +34,9 @@ export function tryCatchMiddleware(middleware) {
     }
   }
 }
+export function asyncWrap(...args) {
+  return tryCatchMiddleware(...args)
+}
 
 /**
  * Decorator for an async express middleware
