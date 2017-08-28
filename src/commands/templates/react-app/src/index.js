@@ -5,7 +5,7 @@ import React                    from 'react'
 import { render }               from 'react-dom'
 import { createBrowserHistory } from 'history'
 import { AppContainer }         from 'react-hot-loader'
-import Root                     from './root.js'
+import Root                     from 'components/root'
 
 const browserHistory = createBrowserHistory()
 

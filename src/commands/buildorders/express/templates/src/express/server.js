@@ -4,7 +4,7 @@ import helmet           from 'helmet'
 import morgan           from 'morgan'
 
 import config           from 'config'
-import lastErrorHandler from 'express/middlewares/error-handling'
+import lastErrorHandler from 'express/middlewares/errorHandling'
 import router           from 'express/router'
 
 class Server {
