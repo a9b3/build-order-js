@@ -3,7 +3,7 @@ import cors        from 'cors'
 
 import config      from 'config'
 import index       from 'express/controllers/index'
-import {asyncWrap} from 'helpers/tryCatchMiddleware'
+import {asyncWrap} from 'express/middlewares/tryCatchMiddleware'
 
 const router = new Router()
 

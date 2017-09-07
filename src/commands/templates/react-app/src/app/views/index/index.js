@@ -1,11 +1,9 @@
-import React      from 'react'
-import styles     from './index.scss'
-import CSSModules from 'react-css-modules'
+import styles from './styles.scss'
+import React  from 'react'
 
-@CSSModules(styles)
 export default class Index extends React.Component {
   render() {
-    return <div styleName='index'>
+    return <div className={styles.index}>
       Hello World!
     </div>
   }

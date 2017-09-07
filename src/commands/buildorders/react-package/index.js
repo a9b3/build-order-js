@@ -14,7 +14,6 @@ export default async function reactPackage({
       'react-addons-test-utils',
       'react',
       'prop-types',
-      'react-css-modules',
       'react-dom',
       'react-helmet',
       'react-router',
@@ -23,6 +22,7 @@ export default async function reactPackage({
       'html',
       'invariant',
       'esayemm-styles',
+      'classnames',
     ],
     dev: true,
   })
