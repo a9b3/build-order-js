@@ -32,6 +32,7 @@
     "index.js"
   ],
   "devDependencies": {
+    "babel-eslint": "8.0.2",
     "jbs-node": "0.1.2"
   },
   "babel": {

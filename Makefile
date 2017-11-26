@@ -15,29 +15,35 @@ help:
 	@echo "  deploy.major - Deploys to npm registry"
 	@echo ""
 
+.PHONY: deps
 deps:
 	@yarn
 
+.PHONY: test
 test:
 	@APP_ENV=test ./node_modules/mocha/bin/mocha \
 		--compilers js:babel-register \
 		--require babel-polyfill \
-		$$(find . -name '*.spec.js' ! -ipath '*node_modules*' ! -ipath '*$(BUILD_DIR)*')
+		$$(find . -name '*.spec.js' ! -ipath '*node_modules*' ! -ipath '*$(BUILD_DIR)*' ! -ipath '*templates*')
 
+.PHONY: test.watch
 test.watch:
 	@APP_ENV=test ./node_modules/mocha/bin/mocha \
 		--compilers js:babel-register \
 		--require babel-polyfill \
 		--watch \
-		$$(find . -name '*.spec.js' ! -ipath '*node_modules*' ! -ipath '*$(BUILD_DIR)*')
+		$$(find . -name '*.spec.js' ! -ipath '*node_modules*' ! -ipath '*$(BUILD_DIR)*' ! -ipath '*templates*')
 
+.PHONY: lint
 lint:
 	@./node_modules/eslint/bin/eslint.js .
 
+.PHONY: build
 build:
 	@rm -rf $(BUILD_DIR)
 	@./node_modules/jbs-node/bin.js build --input src --output $(BUILD_DIR)
 
+.PHONY: deploy.%
 deploy.%: test lint build
 	@npm version $*
 	@npm publish
