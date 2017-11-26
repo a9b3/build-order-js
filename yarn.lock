@@ -1320,8 +1320,8 @@ escope@^3.6.0:
     estraverse "^4.1.1"
 
 eslint-config-esayemm@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.npmjs.org/eslint-config-esayemm/-/eslint-config-esayemm-2.0.1.tgz#312ea0514945f156ffcb48e3a46118d0e363a8c6"
+  version "2.0.9"
+  resolved "https://registry.yarnpkg.com/eslint-config-esayemm/-/eslint-config-esayemm-2.0.9.tgz#48e8930ca63262008b3efac30a8487d7b0582ebd"
 
 eslint@^3.15.0:
   version "3.15.0"
