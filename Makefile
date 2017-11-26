@@ -7,6 +7,7 @@ help:
 	@echo ""
 	@echo "  deps         - Installs dependencies"
 	@echo "  lint         - Runs linter"
+	@echo "  lint.fix     - Runs linter with fix"
 	@echo "  test         - Runs tests"
 	@echo "  test.watch   - TDD"
 	@echo "  build        - Transpile source code"
@@ -37,6 +38,10 @@ test.watch:
 .PHONY: lint
 lint:
 	@./node_modules/eslint/bin/eslint.js .
+
+.PHONY: lint.fix
+lint.fix:
+	@./node_modules/eslint/bin/eslint.js . --fix
 
 .PHONY: build
 build:

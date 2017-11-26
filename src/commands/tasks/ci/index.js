@@ -10,14 +10,14 @@ export default async function ci({
 
   if (ciTarget === 'travis') {
     await taskApi.addFile({
-      src: path.resolve(__dirname, './templates/travis.yml'),
+      src : path.resolve(__dirname, './templates/travis.yml'),
       dest: '.travis.yml',
     })
   }
 
   if (ciTarget === 'circle') {
     await taskApi.addFile({
-      src: path.resolve(__dirname, './templates/circle.yml'),
+      src : path.resolve(__dirname, './templates/circle.yml'),
       dest: 'circle.yml',
     })
   }

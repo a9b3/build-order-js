@@ -16,7 +16,7 @@ export default async function bootstrap({
   })
 
   await taskApi.addFile({
-    dest: '.gitignore',
+    dest       : '.gitignore',
     fileContent: [
       'node_modules/',
       '*.log',
@@ -26,16 +26,16 @@ export default async function bootstrap({
 
   await taskApi.templateFile({
     dest: 'package.json',
-    src: path.resolve(__dirname, './templates/package.json.tpl'),
+    src : path.resolve(__dirname, './templates/package.json.tpl'),
     args: {
       name,
     },
   })
 
   await taskApi.addFile({
-    dest: 'readme.md',
+    dest       : 'readme.md',
     fileContent: [
       '# Readme',
-    ].join('\n')
+    ].join('\n'),
   })
 }

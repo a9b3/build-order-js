@@ -37,12 +37,12 @@ export default async function express({
 
   await taskApi.addToPackageJson({
     json: {
-      main: `./build/index.js`,
+      main   : `./build/index.js`,
       scripts: {
-        build: './node_modules/jbs-node/bin.js build --input src --output build',
+        build : './node_modules/jbs-node/bin.js build --input src --output build',
         deploy: 'npm run build && echo add deployment script here',
-        start: 'NODE_PATH=./src nodemon index.js | ./node_modules/bunyan/bin/bunyan --output short',
-        serve: 'NODE_PATH=./build node ./build',
+        start : 'NODE_PATH=./src nodemon index.js | ./node_modules/bunyan/bin/bunyan --output short',
+        serve : 'NODE_PATH=./build node ./build',
       },
       babel: {
         presets: ['./node_modules/jbs-node/configs/babel-preset-jbs-node.js'],
@@ -51,17 +51,17 @@ export default async function express({
   })
 
   await taskApi.addFile({
-    src: path.resolve(__dirname, './templates/index.js'),
+    src : path.resolve(__dirname, './templates/index.js'),
     dest: 'index.js',
   })
 
   await taskApi.copyDirectory({
-    src: path.resolve(__dirname, './templates/src'),
+    src : path.resolve(__dirname, './templates/src'),
     dest: './src',
   })
 
   await taskApi.copyDirectory({
-    src: path.resolve(__dirname, './templates/test'),
+    src : path.resolve(__dirname, './templates/test'),
     dest: './test',
   })
 

@@ -33,7 +33,7 @@ export function buildorders({ flags, args }) {
     flags,
     args,
     defaultDir: config.defaultBuildOrdersDir,
-    name: 'BUILD ORDER',
+    name      : 'BUILD ORDER',
   })
 }
 

@@ -35,13 +35,13 @@ export default async function reactApp({
 
   await taskApi.addToPackageJson({
     json: {
-      main: `./build/index.js`,
+      main   : `./build/index.js`,
       scripts: {
-        build: 'BABEL_REACT=true NODE_PATH=./src ./node_modules/jbs-fe/bin.js build --app-index ./src/app/index.js',
-        start: 'BABEL_REACT=true NODE_PATH=./src ./node_modules/jbs-fe/bin.js dev --app-index ./src/app/index.js',
-        test: `BABEL_REACT=true NODE_PATH=./src ./node_modules/jbs-fe/bin.js test --single-run`,
+        build       : 'BABEL_REACT=true NODE_PATH=./src ./node_modules/jbs-fe/bin.js build --app-index ./src/app/index.js',
+        start       : 'BABEL_REACT=true NODE_PATH=./src ./node_modules/jbs-fe/bin.js dev --app-index ./src/app/index.js',
+        test        : `BABEL_REACT=true NODE_PATH=./src ./node_modules/jbs-fe/bin.js test --single-run`,
         'test:watch': `BABEL_REACT=true NODE_PATH=./src ./node_modules/jbs-fe/bin.js test`,
-        deploy: 'npm run build && echo add deployment script here'
+        deploy      : 'npm run build && echo add deployment script here',
       },
       babel: {
         presets: ['./node_modules/jbs-fe/configs/babel-preset-jbs-fe.js'],
@@ -50,7 +50,7 @@ export default async function reactApp({
   })
 
   await taskApi.copyDirectory({
-    src: path.resolve(__dirname, '../../templates/react-app/src'),
+    src : path.resolve(__dirname, '../../templates/react-app/src'),
     dest: './src',
   })
 

@@ -54,7 +54,7 @@ export default async function eslint({
     dest: '.eslintrc',
     json: {
       "extends": [
-        extend
+        extend,
       ],
     },
   })

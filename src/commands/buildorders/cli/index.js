@@ -27,19 +27,19 @@ export default async function cli({
   await taskApi.addToPackageJson({
     json: {
       scripts: {
-        build: './node_modules/jbs-node/bin.js build --input src --output build',
-        prepublish: 'npm run build',
-        preversion: 'npm run lint && npm run test',
-        version: 'npm publish',
+        build      : './node_modules/jbs-node/bin.js build --input src --output build',
+        prepublish : 'npm run build',
+        preversion : 'npm run lint && npm run test',
+        version    : 'npm publish',
         postversion: 'git add . && git push && git push --tags',
       },
       babel: {
         presets: ['./node_modules/jbs-node/configs/babel-preset-jbs-node.js'],
       },
       preferGlobal: true,
-      bin: {
+      bin         : {
         [flags.name + '-dev']: './dev.entry.js',
-        [flags.name]: './entry.js',
+        [flags.name]         : './entry.js',
       },
       files: [
         'entry.js',
@@ -51,7 +51,7 @@ export default async function cli({
 
   // dev entry
   await taskApi.addFile({
-    dest: './dev.entry.js',
+    dest       : './dev.entry.js',
     fileContent: [
       `#!/usr/bin/env node`,
       `// use this for dev, production will use ./entry.js`,
@@ -66,7 +66,7 @@ export default async function cli({
 
   // build entry
   await taskApi.addFile({
-    dest: './entry.js',
+    dest       : './entry.js',
     fileContent: [
       `#!/usr/bin/env node`,
       `const path = require('path')`,

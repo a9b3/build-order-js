@@ -19,12 +19,12 @@ export default async function nodeApp({
 
   await taskApi.addToPackageJson({
     json: {
-      main: `./build/index.js`,
+      main   : `./build/index.js`,
       scripts: {
-        build: './node_modules/jbs-node/bin.js build --input src --output build',
-        prepublish: 'npm run build',
-        preversion: 'npm run lint && npm run test',
-        version: 'npm publish',
+        build      : './node_modules/jbs-node/bin.js build --input src --output build',
+        prepublish : 'npm run build',
+        preversion : 'npm run lint && npm run test',
+        version    : 'npm publish',
         postversion: 'git add . && git push && git push --tags',
       },
       babel: {
@@ -40,7 +40,7 @@ export default async function nodeApp({
   await taskApi.shell({ command: `touch src/index.js` })
 
   await taskApi.addFile({
-    dest: './index.js',
+    dest       : './index.js',
     fileContent: [
       `// use this for dev`,
       `require('babel-register')`,
