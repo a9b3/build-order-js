@@ -3,7 +3,7 @@ import chalk            from 'chalk'
 import invariant        from 'invariant'
 import path             from 'path'
 import _                from 'lodash'
-import npmClientAdapter from 'services/npm-client-adapter'
+import npmClientAdapter from 'npmClientAdapter'
 import * as helper      from 'services/helper'
 import showHeader       from 'taskAPI/decorators/showHeader'
 

@@ -2,7 +2,7 @@ import CommanderShepard from 'commander-shepard'
 import chalk            from 'chalk'
 import * as commands    from 'commands/index'
 import * as helper      from 'services/helper'
-import npmClientAdapter from 'services/npm-client-adapter'
+import npmClientAdapter from 'npmClientAdapter'
 
 async function initialize() {
   await helper.areCommandsInstalled([['yarn', 'npm'], 'git'])
