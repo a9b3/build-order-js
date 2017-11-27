@@ -1,4 +1,4 @@
-import taskApi    from 'services/task-api'
+import taskAPI    from 'taskAPI'
 import * as tasks from '../../tasks'
 
 export default async function cli({
@@ -8,13 +8,13 @@ export default async function cli({
   await tasks.mocha()
   await tasks.eslint({ extend: 'eslint-config-esayemm' })
 
-  await taskApi.addPackages({
+  await taskAPI.addPackages({
     packages: [
       'app-module-path',
     ],
   })
 
-  await taskApi.addPackages({
+  await taskAPI.addPackages({
     packages: [
       'jbs-node',
       'babel-register',
@@ -24,7 +24,7 @@ export default async function cli({
   })
 
   // package json
-  await taskApi.addToPackageJson({
+  await taskAPI.addToPackageJson({
     json: {
       scripts: {
         build      : './node_modules/jbs-node/bin.js build --input src --output build',
@@ -50,7 +50,7 @@ export default async function cli({
   })
 
   // dev entry
-  await taskApi.addFile({
+  await taskAPI.addFile({
     dest       : './dev.entry.js',
     fileContent: [
       `#!/usr/bin/env node`,
@@ -62,10 +62,10 @@ export default async function cli({
       `require('./src')`,
     ].join('\n'),
   })
-  await taskApi.shell({ command: `chmod 0755 ./dev.entry.js` })
+  await taskAPI.shell({ command: `chmod 0755 ./dev.entry.js` })
 
   // build entry
-  await taskApi.addFile({
+  await taskAPI.addFile({
     dest       : './entry.js',
     fileContent: [
       `#!/usr/bin/env node`,
@@ -74,12 +74,12 @@ export default async function cli({
       `require('./build')`,
     ].join('\n'),
   })
-  await taskApi.shell({ command: `chmod 0755 ./entry.js` })
+  await taskAPI.shell({ command: `chmod 0755 ./entry.js` })
 
-  await taskApi.shell({ command: `mkdir src` })
-  await taskApi.shell({ command: `touch src/index.js` })
+  await taskAPI.shell({ command: `mkdir src` })
+  await taskAPI.shell({ command: `touch src/index.js` })
 
   if (flags.git) {
-    await taskApi.gitInit()
+    await taskAPI.gitInit()
   }
 }

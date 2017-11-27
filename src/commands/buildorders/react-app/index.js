@@ -1,6 +1,6 @@
 import path       from 'path'
 import * as tasks from '../../tasks'
-import taskApi    from 'services/task-api'
+import taskAPI    from 'taskAPI'
 
 export default async function reactApp({
   flags,
@@ -9,7 +9,7 @@ export default async function reactApp({
   await tasks.eslint({ extend: 'eslint-config-esayemm/lib/react' })
   await tasks.ci()
 
-  await taskApi.addPackages({
+  await taskAPI.addPackages({
     packages: [
       'react-addons-test-utils',
       'react',
@@ -26,14 +26,14 @@ export default async function reactApp({
     ],
   })
 
-  await taskApi.addPackages({
+  await taskAPI.addPackages({
     packages: [
       'jbs-fe',
     ],
     dev: true,
   })
 
-  await taskApi.addToPackageJson({
+  await taskAPI.addToPackageJson({
     json: {
       main   : `./build/index.js`,
       scripts: {
@@ -49,12 +49,12 @@ export default async function reactApp({
     },
   })
 
-  await taskApi.copyDirectory({
+  await taskAPI.copyDirectory({
     src : path.resolve(__dirname, '../../templates/react-app/src'),
     dest: './src',
   })
 
   if (flags.git) {
-    await taskApi.gitInit()
+    await taskAPI.gitInit()
   }
 }

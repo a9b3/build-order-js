@@ -1,6 +1,6 @@
 import path       from 'path'
 import * as tasks from '../../tasks'
-import taskApi    from 'services/task-api'
+import taskAPI    from 'taskAPI'
 
 export default async function express({
   flags,
@@ -11,7 +11,7 @@ export default async function express({
   await tasks.ci()
   await tasks.docker()
 
-  await taskApi.addPackages({
+  await taskAPI.addPackages({
     packages: [
       'jbs-node',
       'babel-register',
@@ -21,7 +21,7 @@ export default async function express({
     dev: true,
   })
 
-  await taskApi.addPackages({
+  await taskAPI.addPackages({
     packages: [
       'express',
       'body-parser',
@@ -35,7 +35,7 @@ export default async function express({
     ],
   })
 
-  await taskApi.addToPackageJson({
+  await taskAPI.addToPackageJson({
     json: {
       main   : `./build/index.js`,
       scripts: {
@@ -50,22 +50,22 @@ export default async function express({
     },
   })
 
-  await taskApi.addFile({
+  await taskAPI.addFile({
     src : path.resolve(__dirname, './templates/index.js'),
     dest: 'index.js',
   })
 
-  await taskApi.copyDirectory({
+  await taskAPI.copyDirectory({
     src : path.resolve(__dirname, './templates/src'),
     dest: './src',
   })
 
-  await taskApi.copyDirectory({
+  await taskAPI.copyDirectory({
     src : path.resolve(__dirname, './templates/test'),
     dest: './test',
   })
 
   if (flags.git) {
-    await taskApi.gitInit()
+    await taskAPI.gitInit()
   }
 }

@@ -1,5 +1,5 @@
 import * as tasks from '../../tasks'
-import taskApi    from 'services/task-api'
+import taskAPI    from 'taskAPI'
 
 export default async function nodeApp({
   flags,
@@ -8,7 +8,7 @@ export default async function nodeApp({
   await tasks.mocha()
   await tasks.eslint({ extend: 'eslint-config-esayemm' })
 
-  await taskApi.addPackages({
+  await taskAPI.addPackages({
     packages: [
       'jbs-node',
       'babel-register',
@@ -17,7 +17,7 @@ export default async function nodeApp({
     dev: true,
   })
 
-  await taskApi.addToPackageJson({
+  await taskAPI.addToPackageJson({
     json: {
       main   : `./build/index.js`,
       scripts: {
@@ -36,10 +36,10 @@ export default async function nodeApp({
     },
   })
 
-  await taskApi.shell({ command: `mkdir src` })
-  await taskApi.shell({ command: `touch src/index.js` })
+  await taskAPI.shell({ command: `mkdir src` })
+  await taskAPI.shell({ command: `touch src/index.js` })
 
-  await taskApi.addFile({
+  await taskAPI.addFile({
     dest       : './index.js',
     fileContent: [
       `// use this for dev`,
@@ -50,6 +50,6 @@ export default async function nodeApp({
   })
 
   if (flags.git) {
-    await taskApi.gitInit()
+    await taskAPI.gitInit()
   }
 }

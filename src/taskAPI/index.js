@@ -5,20 +5,19 @@ import path             from 'path'
 import _                from 'lodash'
 import npmClientAdapter from 'services/npm-client-adapter'
 import * as helper      from 'services/helper'
+import showHeader       from 'taskAPI/decorators/showHeader'
 
-const taskApi = {
-
+class TaskAPI {
   /**
    * @param {Object} opts
-   * @param {String} command          - shell command to run *note* that interactive
+   * @param {String} command - shell command to run *note* that interactive
    * commands isn't working right now
    */
   @showHeader('Shell')
   async shell({ command } = {}) {
     console.log(chalk.yellow(`\n  Running command ${command}\n`))
-
     await helper.execPromise(command, { log: true })
-  },
+  }
 
   /**
    * @param {Object} opts
@@ -28,7 +27,7 @@ const taskApi = {
   async gitInit({ initMessage = `ಠ_ಠ` } = {}) {
     await helper.execPromise('git add .', { log: true })
     await helper.execPromise(`git commit -m '${initMessage}'`, { log: true })
-  },
+  }
 
   /**
    * @param {Object} opts
@@ -43,7 +42,7 @@ const taskApi = {
     console.log(``)
 
     await npmClientAdapter.add(packages, { dev })
-  },
+  }
 
   /**
    * @param {Object} opts
@@ -59,7 +58,7 @@ const taskApi = {
     }
 
     await helper.mergeToJsonFile({ json, dest })
-  },
+  }
 
   /**
    * @param {Object} opts
@@ -74,7 +73,7 @@ const taskApi = {
     }
 
     await helper.mergeToJsonFile({ json, dest: packageJsonFilePath })
-  },
+  }
 
   /**
    * @param {Object} opts
@@ -92,7 +91,7 @@ const taskApi = {
     console.log(chalk.yellow(`\n  Making dir -> ${dest}\n`))
 
     fs.mkdirSync(dest)
-  },
+  }
 
   /**
    * @param {Object} opts
@@ -120,7 +119,7 @@ const taskApi = {
     console.log(chalk.yellow(helper.leftPad(fileContent, ' ', 2)))
 
     fs.writeFileSync(dest, fileContent, { encoding: 'utf8' })
-  },
+  }
 
   /**
    * @param {Object} opts
@@ -140,7 +139,7 @@ const taskApi = {
     console.log(chalk.yellow(`\n  Copying dir -> ${dest}\n`))
 
     helper.copy(src, dest, { overwrite })
-  },
+  }
 
   /**
    * @param {Object} opts
@@ -167,29 +166,7 @@ const taskApi = {
     console.log(chalk.yellow(paddedRendered))
 
     fs.writeFileSync(dest, rendered, { encoding: 'utf8' })
-  },
-
-}
-
-/*
- * @decorator
- * if function is called with { showHeader: true, ... }
- * call taskApiLogHeader with given message
- */
-function showHeader(message = '') {
-  return (target, key, descriptor) => {
-    const fn = descriptor.value
-    const newFn = async(...args) => {
-      if ((args[0] || {}).showHeader) {
-        helper.taskApiLogHeader('TASK', message)
-      }
-      const res = await fn.call(target, ...args)
-      return res
-    }
-
-    descriptor.value = newFn
-    return descriptor
   }
 }
 
-export default taskApi
+export default new TaskAPI()

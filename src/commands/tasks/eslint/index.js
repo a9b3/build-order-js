@@ -1,5 +1,5 @@
 import invariant from 'invariant'
-import taskApi   from 'services/task-api'
+import taskAPI   from 'taskAPI'
 
 /**
  * extend: 'eslint-config-esayemm/lib/react',
@@ -14,7 +14,7 @@ export default async function eslint({
   /*
    * npm packages
    */
-  await taskApi.addPackages({
+  await taskAPI.addPackages({
     packages: [
       // required if using certain babel enabled features
       // eslint-config-esayemm sets the parser config
@@ -30,7 +30,7 @@ export default async function eslint({
   /*
    * package.json
    */
-  await taskApi.addToPackageJson({
+  await taskAPI.addToPackageJson({
     json: {
       scripts: {
         'lint': './node_modules/eslint/bin/eslint.js .',
@@ -41,7 +41,7 @@ export default async function eslint({
   /*
    * eslint files
    */
-  await taskApi.addFile({
+  await taskAPI.addFile({
     fileContent: [
       'build/',
       'lib/',
@@ -50,7 +50,7 @@ export default async function eslint({
     dest: '.eslintignore',
   })
 
-  await taskApi.addToJsonFile({
+  await taskAPI.addToJsonFile({
     dest: '.eslintrc',
     json: {
       "extends": [

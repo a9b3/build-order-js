@@ -3,7 +3,7 @@ import path        from 'path'
 import invariant   from 'invariant'
 import chalk       from 'chalk'
 import * as helper from 'services/helper'
-import taskApi     from 'services/task-api'
+import taskAPI     from 'taskAPI'
 import config      from 'config'
 import fs          from 'fs'
 
@@ -55,7 +55,7 @@ async function commandRunner({ flags, args, defaultDir, name }) {
 
   const projectRootPath = await helper.getProjectRootPath()
   await helper.mapAsync(handlers, async (fn, i) => {
-    helper.taskApiLogHeader(name, args[i])
+    helper.taskAPILogHeader(name, args[i])
     console.log(``)
 
     // callsite for task functions
@@ -65,10 +65,10 @@ async function commandRunner({ flags, args, defaultDir, name }) {
         cwd,
         projectRootPath,
       },
-      taskApi,
+      taskAPI,
     })
 
-    helper.taskApiLogHeader(`END ${name}`, args[i])
+    helper.taskAPILogHeader(`END ${name}`, args[i])
     console.log(``)
   })
 

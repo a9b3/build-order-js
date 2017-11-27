@@ -1,9 +1,9 @@
 import path    from 'path'
-import taskApi from 'services/task-api'
+import taskAPI from 'taskAPI'
 
 export default async function mocha() {
 
-  await taskApi.addPackages({
+  await taskAPI.addPackages({
     packages: [
       'babel-register',
       'babel-polyfill',
@@ -13,7 +13,7 @@ export default async function mocha() {
     dev: true,
   })
 
-  await taskApi.addToPackageJson({
+  await taskAPI.addToPackageJson({
     json: {
       scripts: {
         'test'      : `APP_ENV=test ./node_modules/mocha/bin/mocha --compilers js:babel-register --require babel-polyfill $(find . -name '*.spec.js' ! -ipath '*node_modules*' ! -ipath '*dist*')`,
@@ -22,7 +22,7 @@ export default async function mocha() {
     },
   })
 
-  await taskApi.copyDirectory({
+  await taskAPI.copyDirectory({
     src : path.resolve(__dirname, './templates/mocha/test'),
     dest: './test',
   })

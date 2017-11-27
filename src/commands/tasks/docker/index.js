@@ -1,8 +1,8 @@
 import path      from 'path'
-import taskApi   from 'services/task-api'
+import taskAPI   from 'taskAPI'
 
 export default async function docker() {
-  await taskApi.templateFile({
+  await taskAPI.templateFile({
     src : path.resolve(__dirname, './templates/Dockerfile'),
     dest: 'Dockerfile',
   })

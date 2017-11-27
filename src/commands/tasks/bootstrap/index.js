@@ -1,5 +1,5 @@
 import path    from 'path'
-import taskApi from 'services/task-api'
+import taskAPI from 'taskAPI'
 
 /*
  * 1. git init
@@ -11,11 +11,11 @@ import taskApi from 'services/task-api'
 export default async function bootstrap({
   name = 'changeMe',
 }) {
-  await taskApi.shell({
+  await taskAPI.shell({
     command: 'git init',
   })
 
-  await taskApi.addFile({
+  await taskAPI.addFile({
     dest       : '.gitignore',
     fileContent: [
       'node_modules/',
@@ -24,7 +24,7 @@ export default async function bootstrap({
     ].join('\n'),
   })
 
-  await taskApi.templateFile({
+  await taskAPI.templateFile({
     dest: 'package.json',
     src : path.resolve(__dirname, './templates/package.json.tpl'),
     args: {
@@ -32,7 +32,7 @@ export default async function bootstrap({
     },
   })
 
-  await taskApi.addFile({
+  await taskAPI.addFile({
     dest       : 'readme.md',
     fileContent: [
       '# Readme',
