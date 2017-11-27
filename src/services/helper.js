@@ -29,19 +29,6 @@ export function execPromise(execCommand, opts = {}) {
 }
 
 /**
- * @param {String] filePath
- * @returns {Boolean} whether file exists
- */
-export function fileExists(filePath) {
-  try {
-    fs.accessSync(filePath, fs.F_OK)
-    return true
-  } catch (e) {
-    return false
-  }
-}
-
-/**
  * returns project root based on where .git is located in the ancestor nodes
  *
  * @returns {String} project root dir

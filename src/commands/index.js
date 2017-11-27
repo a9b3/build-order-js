@@ -96,9 +96,9 @@ function extractHandlers({
     const cwdFilePath = path.resolve(cwd, name)
     const defaultFilePath = path.resolve(defaultDir, name)
 
-    const handlerPath = path.extname(name) !== '' && helper.fileExists(cwdFilePath)
+    const handlerPath = path.extname(name) !== '' && fs.existsSync(cwdFilePath)
       ? cwdFilePath
-      : helper.fileExists(defaultFilePath)
+      : fs.existsSync(defaultFilePath)
         ? defaultFilePath
         : null
     invariant(handlerPath, `${name} is not a file or a default`)

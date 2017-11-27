@@ -53,7 +53,7 @@ class TaskAPI {
   @showHeader('Add JSON File')
   @helper.relativeDest
   async addToJsonFile({ json, dest } = {}) {
-    if (!helper.fileExists(dest)) {
+    if (!fs.existsSync(dest)) {
       fs.writeFileSync(dest, '{}', { encoding: 'utf8' })
     }
 
@@ -68,7 +68,7 @@ class TaskAPI {
   async addToPackageJson({ json } = {}) {
     const projectRootPath = await helper.getProjectRootPath()
     const packageJsonFilePath = path.resolve(projectRootPath, 'package.json')
-    if (!helper.fileExists(packageJsonFilePath)) {
+    if (!fs.existsSync(packageJsonFilePath)) {
       fs.writeFileSync(packageJsonFilePath, '{}', { encoding: 'utf8' })
     }
 
@@ -83,7 +83,7 @@ class TaskAPI {
   @helper.relativeDest
   addDirectory({ dest } = {}) {
     // dir already exists early return
-    if (helper.fileExists(dest)) {
+    if (fs.existsSync(dest)) {
       console.log(chalk.gray(`\n  Directory already exists ${dest}\n`))
       return
     }
@@ -104,13 +104,13 @@ class TaskAPI {
   @showHeader('Add File')
   @helper.relativeDest
   async addFile({ src, fileContent, dest, overwrite } = {}) {
-    invariant(typeof fileContent === 'string' || helper.fileExists(src), `Must provide either 'fileContent':String or 'src':filepath`)
+    invariant(typeof fileContent === 'string' || fs.existsSync(src), `Must provide either 'fileContent':String or 'src':filepath`)
 
     fileContent = [null, undefined].indexOf(fileContent) === -1
       ? fileContent
       : fs.readFileSync(src, { encoding: 'utf8' })
 
-    if (helper.fileExists(dest) && !overwrite) {
+    if (fs.existsSync(dest) && !overwrite) {
       console.log(chalk.gray(`\n  File already exists ${dest}\n`))
       return
     }
@@ -131,7 +131,7 @@ class TaskAPI {
   @helper.relativeDest
   async copyDirectory({ src, dest, overwrite } = {}) {
     // dir already exists early return
-    if (helper.fileExists(dest) && !overwrite) {
+    if (fs.existsSync(dest) && !overwrite) {
       console.log(chalk.gray(`\n  Directory already exists ${dest}\n`))
       return
     }
@@ -151,7 +151,7 @@ class TaskAPI {
   @showHeader('Template File')
   @helper.relativeDest
   async templateFile({ src, args = {}, dest, overwrite } = {}) {
-    if (helper.fileExists(dest) && !overwrite) {
+    if (fs.existsSync(dest) && !overwrite) {
       console.log(chalk.gray(`\n  File already exists ${dest}\n`))
       return
     }
