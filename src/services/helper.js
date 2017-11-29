@@ -1,6 +1,6 @@
-import fs        from 'fs-extra'
 import chalk     from 'chalk'
 import { exec }  from 'child_process'
+import fs        from 'fs-extra'
 import path      from 'path'
 
 /*

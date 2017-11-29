@@ -1,9 +1,9 @@
-import fs               from 'fs'
 import chalk            from 'chalk'
+import fs               from 'fs'
 import invariant        from 'invariant'
-import path             from 'path'
 import _                from 'lodash'
 import npmClientAdapter from 'npmClientAdapter'
+import path             from 'path'
 import * as helper      from 'services/helper'
 import showHeader       from 'taskAPI/decorators/showHeader'
 

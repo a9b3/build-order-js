@@ -1,5 +1,5 @@
-import taskAPI    from 'taskAPI'
 import * as tasks from '../../tasks'
+import taskAPI    from 'taskAPI'
 
 export default async function cli({
   flags,

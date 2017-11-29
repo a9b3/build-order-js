@@ -1,5 +1,5 @@
-import path       from 'path'
 import * as tasks from '../../tasks'
+import path       from 'path'
 import taskAPI    from 'taskAPI'
 
 export default async function express({

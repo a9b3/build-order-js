@@ -1,11 +1,11 @@
-import process     from 'process'
-import path        from 'path'
-import invariant   from 'invariant'
 import chalk       from 'chalk'
-import * as helper from 'services/helper'
-import taskAPI     from 'taskAPI'
 import config      from 'config'
 import fs          from 'fs'
+import invariant   from 'invariant'
+import path        from 'path'
+import process     from 'process'
+import * as helper from 'services/helper'
+import taskAPI     from 'taskAPI'
 
 /*****************************************************************************
  * COMMANDS

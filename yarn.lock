@@ -1320,8 +1320,14 @@ escope@^3.6.0:
     estraverse "^4.1.1"
 
 eslint-config-esayemm@^2.0.1:
-  version "2.0.10"
-  resolved "https://registry.yarnpkg.com/eslint-config-esayemm/-/eslint-config-esayemm-2.0.10.tgz#e8542056b840c6554a084c318836b612561d514d"
+  version "2.0.11"
+  resolved "https://registry.yarnpkg.com/eslint-config-esayemm/-/eslint-config-esayemm-2.0.11.tgz#598ef20b46524b080aa67dd80dfabc9eb081af8b"
+  dependencies:
+    eslint-plugin-esayemm "0.0.2"
+
+eslint-plugin-esayemm@0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-esayemm/-/eslint-plugin-esayemm-0.0.2.tgz#50bd9c061a1f5b47c75f870886f3852de9183ce8"
 
 eslint@^3.15.0:
   version "3.15.0"
