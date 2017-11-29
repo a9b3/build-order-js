@@ -4,7 +4,7 @@ import fs          from 'fs'
 import invariant   from 'invariant'
 import path        from 'path'
 import process     from 'process'
-import * as helper from 'services/helper'
+import * as helper from 'helper'
 import taskAPI     from 'taskAPI'
 
 /*****************************************************************************

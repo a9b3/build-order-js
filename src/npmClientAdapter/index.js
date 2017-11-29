@@ -1,4 +1,4 @@
-import * as helper from 'services/helper'
+import * as helper from 'helper'
 
 const adapters = {
   npm: {

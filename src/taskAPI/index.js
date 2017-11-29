@@ -4,7 +4,7 @@ import invariant        from 'invariant'
 import _                from 'lodash'
 import npmClientAdapter from 'npmClientAdapter'
 import path             from 'path'
-import * as helper      from 'services/helper'
+import * as helper      from 'helper'
 import showHeader       from 'taskAPI/decorators/showHeader'
 
 class TaskAPI {
