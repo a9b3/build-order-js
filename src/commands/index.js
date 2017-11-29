@@ -1,10 +1,10 @@
 import chalk       from 'chalk'
 import config      from 'config'
 import fs          from 'fs'
+import * as helper from 'helper'
 import invariant   from 'invariant'
 import path        from 'path'
 import process     from 'process'
-import * as helper from 'helper'
 import taskAPI     from 'taskAPI'
 
 /*****************************************************************************
