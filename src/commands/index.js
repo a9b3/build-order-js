@@ -45,7 +45,6 @@ export function buildorders({ flags, args }) {
  * runs either buildorder or tasks
  */
 async function commandRunner({ flags, args, defaultDir, name }) {
-
   const cwd = process.cwd()
   const handlers = extractHandlers({
     cwd,
@@ -73,7 +72,6 @@ async function commandRunner({ flags, args, defaultDir, name }) {
   })
 
   console.log(chalk.green(`All done!`))
-
 }
 
 // names is an array of
