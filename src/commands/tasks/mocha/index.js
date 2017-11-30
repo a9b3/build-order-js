@@ -2,7 +2,6 @@ import path    from 'path'
 import taskAPI from 'taskAPI'
 
 export default async function mocha() {
-
   await taskAPI.addPackages({
     packages: [
       'babel-register',
@@ -21,10 +20,4 @@ export default async function mocha() {
       },
     },
   })
-
-  await taskAPI.copyDirectory({
-    src : path.resolve(__dirname, './templates/mocha/test'),
-    dest: './test',
-  })
-
 }

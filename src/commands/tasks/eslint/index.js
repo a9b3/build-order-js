@@ -1,19 +1,11 @@
 import invariant from 'invariant'
 import taskAPI   from 'taskAPI'
 
-/**
- * extend: 'eslint-config-esayemm/lib/react',
- *
- * else pass in 'eslint-config-esayemm'
- */
 export default async function eslint({
   extend,
 }) {
   invariant(typeof extend === 'string', `Must provide 'extend' field to eslint (what eslint preset to extend).`)
 
-  /*
-   * npm packages
-   */
   await taskAPI.addPackages({
     packages: [
       // required if using certain babel enabled features
@@ -27,9 +19,6 @@ export default async function eslint({
     dev: true,
   })
 
-  /*
-   * package.json
-   */
   await taskAPI.addToPackageJson({
     json: {
       scripts: {
@@ -38,9 +27,6 @@ export default async function eslint({
     },
   })
 
-  /*
-   * eslint files
-   */
   await taskAPI.addFile({
     fileContent: [
       'build/',
@@ -58,5 +44,4 @@ export default async function eslint({
       ],
     },
   })
-
 }

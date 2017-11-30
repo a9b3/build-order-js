@@ -1,15 +1,18 @@
-FROM mhart/alpine-node
-
-RUN npm install -g yarn
-
-COPY package.json /app/package.json
-COPY yarn.lock /app/yarn.lock
+# Use latest versionc which comes with yarn
+FROM mhart/alpine-node:9.2.0
 
 WORKDIR /app
-RUN yarn --pure-lockfile
-ADD . /app
 
+# Cache node_modules
+ADD package.json /app/package.json
+ADD yarn.lock /app/yarn.lock
+RUN yarn --pure-lockfile
+
+# Move source code
+ADD . /app
+# Build source code
 RUN yarn run build
 
 EXPOSE 8080
-CMD yarn run serve
+ENV APP_ENV "production"
+CMD ["yarn", "run", "serve"]

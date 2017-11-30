@@ -2,11 +2,7 @@ import path    from 'path'
 import taskAPI from 'taskAPI'
 
 /*
- * 1. git init
- * 2. .gitignore
- * 3. package.json
- * 4. readme.md
- * 5. config.js
+ * bootstrap adds boilerplate files
  */
 export default async function bootstrap({
   name = 'changeMe',
@@ -33,7 +29,7 @@ export default async function bootstrap({
   })
 
   await taskAPI.addFile({
-    dest       : 'readme.md',
+    dest       : 'README.md',
     fileContent: [
       '# Readme',
     ].join('\n'),
