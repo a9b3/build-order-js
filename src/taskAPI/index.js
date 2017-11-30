@@ -9,6 +9,8 @@ import showHeader       from 'taskAPI/decorators/showHeader'
 
 class TaskAPI {
   /**
+   * shell executes a shell command
+   *
    * @param {Object} opts
    * @param {String} command - shell command to run *note* that interactive
    * commands isn't working right now
@@ -20,6 +22,8 @@ class TaskAPI {
   }
 
   /**
+   * gitInit executes an initial commit
+   *
    * @param {Object} opts
    * @param {String} [initMessage] - git init message
    */
@@ -30,6 +34,8 @@ class TaskAPI {
   }
 
   /**
+   * addPackages adds an npm package using the npmAdapter
+   *
    * @param {Object} opts
    * @param {Array.<String>} packages - Npm packages to add
    * @param {Boolean} [dev]           - Use --save-dev or not
@@ -45,6 +51,8 @@ class TaskAPI {
   }
 
   /**
+   * addToJsonFile merges the given object to the json file
+   *
    * @param {Object} opts
    * @param {Object} json          - plain object to merge to dest file
    * @param {String} dest          - json file path to merge into or will be created if
@@ -61,6 +69,8 @@ class TaskAPI {
   }
 
   /**
+   * addToPackageJson merges object into package.json file
+   *
    * @param {Object} opts
    * @param {Object} json          - json to merge into package.json
    */
@@ -76,6 +86,8 @@ class TaskAPI {
   }
 
   /**
+   * addDirectory makes a directory
+   *
    * @param {Object} opts
    * @param {String} dest          - destination file path
    */
@@ -94,6 +106,8 @@ class TaskAPI {
   }
 
   /**
+   * addFile creates a file with the given content
+   *
    * @param {Object} opts
    * @param {String} src           - File path
    * @param {String} [fileContent] - Contents of file to add, you can provide
@@ -122,6 +136,8 @@ class TaskAPI {
   }
 
   /**
+   * copyDirectory copies directory
+   *
    * @param {Object} opts
    * @param {String} src           - File path
    * @param {String} dest          - Destination of file to add
@@ -142,6 +158,8 @@ class TaskAPI {
   }
 
   /**
+   * templateFile creates file from a given template
+   *
    * @param {Object} opts
    * @param {String} src           - File path to source handlebars template
    * @param {Object} args          - Arguments to pass into template
