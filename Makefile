@@ -49,7 +49,7 @@ build:
 	@./node_modules/jbs-node/bin.js build --input src --output $(BUILD_DIR)
 
 .PHONY: deploy.%
-deploy.%: test lint build
+deploy.%: lint build
 	@npm version $*
 	@npm publish
 	@git add . && git push && git push --tags
