@@ -17,7 +17,8 @@ function setupCommanderShepard() {
       {
         keys            : ['npm'],
         required        : false,
-        shortDescription: 'specify npm client to use [npm || yarn] defaults to npm',
+        shortDescription:
+          'specify npm client to use [npm || yarn] defaults to npm',
       },
       {
         keys            : ['git'],
@@ -49,5 +50,4 @@ async function main() {
   setupCommanderShepard()
 }
 
-main()
-.catch(e => console.log(chalk.red(e.message)))
+main().catch(e => console.log(chalk.red(e.message)))
