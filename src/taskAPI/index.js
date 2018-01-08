@@ -43,7 +43,11 @@ class TaskAPI {
   @showHeader('Add Package')
   async addPackages({ packages, dev } = {}) {
     const paddedPackagesStr = helper.leftPad(packages.join('\n'), ' ', 2)
-    console.log(chalk.yellow(`\n  Adding packages to ${dev ? 'devDependencies' : 'dependencies'}\n`))
+    console.log(
+      chalk.yellow(
+        `\n  Adding packages to ${dev ? 'devDependencies' : 'dependencies'}\n`,
+      ),
+    )
     console.log(chalk.yellow(paddedPackagesStr))
     console.log(``)
 
@@ -118,11 +122,15 @@ class TaskAPI {
   @showHeader('Add File')
   @helper.relativeDest
   async addFile({ src, fileContent, dest, overwrite } = {}) {
-    invariant(typeof fileContent === 'string' || fs.existsSync(src), `Must provide either 'fileContent':String or 'src':filepath`)
+    invariant(
+      typeof fileContent === 'string' || fs.existsSync(src),
+      `Must provide either 'fileContent':String or 'src':filepath`,
+    )
 
-    fileContent = [null, undefined].indexOf(fileContent) === -1
-      ? fileContent
-      : fs.readFileSync(src, { encoding: 'utf8' })
+    fileContent =
+      [null, undefined].indexOf(fileContent) === -1
+        ? fileContent
+        : fs.readFileSync(src, { encoding: 'utf8' })
 
     if (fs.existsSync(dest) && !overwrite) {
       console.log(chalk.gray(`\n  File already exists ${dest}\n`))
@@ -178,7 +186,9 @@ class TaskAPI {
     const rendered = compiled(args)
 
     console.log(chalk.yellow(`\n  From ${src} with args`))
-    console.log(chalk.yellow(helper.leftPad(JSON.stringify(args, null, '  '), ' ', 2)))
+    console.log(
+      chalk.yellow(helper.leftPad(JSON.stringify(args, null, '  '), ' ', 2)),
+    )
     console.log(chalk.yellow(`\n  Copying to -> ${dest}\n`))
     const paddedRendered = helper.leftPad(rendered, ' ', 2)
     console.log(chalk.yellow(paddedRendered))

@@ -2,9 +2,7 @@ import * as tasks from '../../tasks'
 import path       from 'path'
 import taskAPI    from 'taskAPI'
 
-export default async function express({
-  flags,
-}) {
+export default async function express({ flags }) {
   await tasks.bootstrap({ name: flags.name })
   await tasks.mocha()
   await tasks.eslint({ extend: 'eslint-config-esayemm' })
@@ -12,12 +10,7 @@ export default async function express({
   await tasks.docker()
 
   await taskAPI.addPackages({
-    packages: [
-      'jbs-node',
-      'babel-register',
-      'babel-polyfill',
-      'axios',
-    ],
+    packages: ['jbs-node', 'babel-register', 'babel-polyfill', 'axios'],
     dev: true,
   })
 
@@ -37,12 +30,14 @@ export default async function express({
 
   await taskAPI.addToPackageJson({
     json: {
-      main   : `./build/index.js`,
+      main: `./build/index.js`,
       scripts: {
-        build : './node_modules/jbs-node/bin.js build --input src --output build',
+        build:
+          './node_modules/jbs-node/bin.js build --input src --output build',
         deploy: 'npm run build && echo add deployment script here',
-        start : 'NODE_PATH=./src nodemon index.js | ./node_modules/bunyan/bin/bunyan --output short',
-        serve : 'NODE_PATH=./build node ./build',
+        start:
+          'NODE_PATH=./src nodemon index.js | ./node_modules/bunyan/bin/bunyan --output short',
+        serve: 'NODE_PATH=./build node ./build',
       },
       babel: {
         presets: ['./node_modules/jbs-node/configs/babel-preset-jbs-node.js'],
@@ -51,17 +46,17 @@ export default async function express({
   })
 
   await taskAPI.addFile({
-    src : path.resolve(__dirname, './templates/index.js'),
+    src: path.resolve(__dirname, './templates/index.js'),
     dest: 'index.js',
   })
 
   await taskAPI.copyDirectory({
-    src : path.resolve(__dirname, './templates/src'),
+    src: path.resolve(__dirname, './templates/src'),
     dest: './src',
   })
 
   await taskAPI.copyDirectory({
-    src : path.resolve(__dirname, './templates/test'),
+    src: path.resolve(__dirname, './templates/test'),
     dest: './test',
   })
 

@@ -1,11 +1,12 @@
-import * as helper from 'helper'
+import invariant from 'invariant'
+import execAsync from 'utils/execAsync'
 
 const adapters = {
   npm: {
     add(keys, { dev }) {
       keys = [].concat(keys)
       const options = dev ? '--save-dev' : '--save'
-      return helper.execPromise(`npm i ${keys.join(' ')} ${options}`, { log: true })
+      return execAsync(`npm i ${keys.join(' ')} ${options}`, { pipe: true })
     },
   },
 
@@ -13,7 +14,7 @@ const adapters = {
     add(keys, { dev }) {
       keys = [].concat(keys)
       const options = dev ? '--dev' : '--save'
-      return helper.execPromise(`yarn add ${keys.join(' ')} ${options}`, { log: true })
+      return execAsync(`yarn add ${keys.join(' ')} ${options}`, { pipe: true })
     },
   },
 }
@@ -22,9 +23,7 @@ class NpmClientAdapter {
   adapter = null
 
   setAdapter(key) {
-    if (!adapters[key]) {
-      throw new Error(`'${key}' is not a valid npm client use 'npm' or 'yarn'`)
-    }
+    invariant(adapters[key], `'${key}' must be one of ${Object.keys(adapters)}`)
     this.adapter = adapters[key]
   }
 

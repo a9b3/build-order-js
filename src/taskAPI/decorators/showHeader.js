@@ -8,7 +8,7 @@ import * as helper from 'helper'
 export default function showHeader(message = '') {
   return (target, key, descriptor) => {
     const fn = descriptor.value
-    const newFn = async(...args) => {
+    const newFn = async (...args) => {
       if ((args[0] || {}).showHeader) {
         helper.taskAPILogHeader('TASK', message)
       }

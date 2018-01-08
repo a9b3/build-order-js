@@ -2,9 +2,7 @@ import * as tasks from '../../tasks'
 import path       from 'path'
 import taskAPI    from 'taskAPI'
 
-export default async function reactApp({
-  flags,
-}) {
+export default async function reactApp({ flags }) {
   await tasks.bootstrap({ name: flags.name })
   await tasks.eslint({ extend: 'eslint-config-esayemm/lib/react' })
   await tasks.ci()
@@ -27,21 +25,21 @@ export default async function reactApp({
   })
 
   await taskAPI.addPackages({
-    packages: [
-      'jbs-fe',
-    ],
+    packages: ['jbs-fe'],
     dev: true,
   })
 
   await taskAPI.addToPackageJson({
     json: {
-      main   : `./build/index.js`,
+      main: `./build/index.js`,
       scripts: {
-        build       : 'BABEL_REACT=true NODE_PATH=./src ./node_modules/jbs-fe/bin.js build --app-index ./src/app/index.js',
-        start       : 'BABEL_REACT=true NODE_PATH=./src ./node_modules/jbs-fe/bin.js dev --app-index ./src/app/index.js',
-        test        : `BABEL_REACT=true NODE_PATH=./src ./node_modules/jbs-fe/bin.js test --single-run`,
+        build:
+          'BABEL_REACT=true NODE_PATH=./src ./node_modules/jbs-fe/bin.js build --app-index ./src/app/index.js',
+        start:
+          'BABEL_REACT=true NODE_PATH=./src ./node_modules/jbs-fe/bin.js dev --app-index ./src/app/index.js',
+        test: `BABEL_REACT=true NODE_PATH=./src ./node_modules/jbs-fe/bin.js test --single-run`,
         'test:watch': `BABEL_REACT=true NODE_PATH=./src ./node_modules/jbs-fe/bin.js test`,
-        deploy      : 'npm run build && echo add deployment script here',
+        deploy: 'npm run build && echo add deployment script here',
       },
       babel: {
         presets: ['./node_modules/jbs-fe/configs/babel-preset-jbs-fe.js'],
@@ -50,7 +48,7 @@ export default async function reactApp({
   })
 
   await taskAPI.copyDirectory({
-    src : path.resolve(__dirname, '../../templates/react-app/src'),
+    src: path.resolve(__dirname, '../../templates/react-app/src'),
     dest: './src',
   })
 

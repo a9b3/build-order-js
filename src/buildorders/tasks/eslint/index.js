@@ -1,10 +1,11 @@
 import invariant from 'invariant'
 import taskAPI   from 'taskAPI'
 
-export default async function eslint({
-  extend,
-}) {
-  invariant(typeof extend === 'string', `Must provide 'extend' field to eslint (what eslint preset to extend).`)
+export default async function eslint({ extend }) {
+  invariant(
+    typeof extend === 'string',
+    `Must provide 'extend' field to eslint (what eslint preset to extend).`,
+  )
 
   await taskAPI.addPackages({
     packages: [
@@ -22,26 +23,20 @@ export default async function eslint({
   await taskAPI.addToPackageJson({
     json: {
       scripts: {
-        'lint': './node_modules/eslint/bin/eslint.js .',
+        lint: './node_modules/eslint/bin/eslint.js .',
       },
     },
   })
 
   await taskAPI.addFile({
-    fileContent: [
-      'build/',
-      'lib/',
-      'node_modules/',
-    ].join('\n'),
+    fileContent: ['build/', 'lib/', 'node_modules/'].join('\n'),
     dest: '.eslintignore',
   })
 
   await taskAPI.addToJsonFile({
     dest: '.eslintrc',
     json: {
-      "extends": [
-        extend,
-      ],
+      extends: [extend],
     },
   })
 }

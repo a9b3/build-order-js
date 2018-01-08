@@ -1,25 +1,17 @@
 import * as tasks from '../../tasks'
 import taskAPI    from 'taskAPI'
 
-export default async function cli({
-  flags,
-}) {
+export default async function cli({ flags }) {
   await tasks.bootstrap({ name: flags.name })
   await tasks.mocha()
   await tasks.eslint({ extend: 'eslint-config-esayemm' })
 
   await taskAPI.addPackages({
-    packages: [
-      'app-module-path',
-    ],
+    packages: ['app-module-path'],
   })
 
   await taskAPI.addPackages({
-    packages: [
-      'jbs-node',
-      'babel-register',
-      'babel-polyfill',
-    ],
+    packages: ['jbs-node', 'babel-register', 'babel-polyfill'],
     dev: true,
   })
 
@@ -27,31 +19,28 @@ export default async function cli({
   await taskAPI.addToPackageJson({
     json: {
       scripts: {
-        build      : './node_modules/jbs-node/bin.js build --input src --output build',
-        prepublish : 'npm run build',
-        preversion : 'npm run lint && npm run test',
-        version    : 'npm publish',
+        build:
+          './node_modules/jbs-node/bin.js build --input src --output build',
+        prepublish: 'npm run build',
+        preversion: 'npm run lint && npm run test',
+        version: 'npm publish',
         postversion: 'git add . && git push && git push --tags',
       },
       babel: {
         presets: ['./node_modules/jbs-node/configs/babel-preset-jbs-node.js'],
       },
       preferGlobal: true,
-      bin         : {
+      bin: {
         [flags.name + '-dev']: './dev.entry.js',
-        [flags.name]         : './entry.js',
+        [flags.name]: './entry.js',
       },
-      files: [
-        'entry.js',
-        'dev.entry.js',
-        'build/',
-      ],
+      files: ['entry.js', 'dev.entry.js', 'build/'],
     },
   })
 
   // dev entry
   await taskAPI.addFile({
-    dest       : './dev.entry.js',
+    dest: './dev.entry.js',
     fileContent: [
       `#!/usr/bin/env node`,
       `// use this for dev, production will use ./entry.js`,
@@ -66,7 +55,7 @@ export default async function cli({
 
   // build entry
   await taskAPI.addFile({
-    dest       : './entry.js',
+    dest: './entry.js',
     fileContent: [
       `#!/usr/bin/env node`,
       `const path = require('path')`,

@@ -1,7 +1,7 @@
-import chalk     from 'chalk'
-import { exec }  from 'child_process'
-import fs        from 'fs-extra'
-import path      from 'path'
+import chalk    from 'chalk'
+import { exec } from 'child_process'
+import fs       from 'fs-extra'
+import path     from 'path'
 
 /*
  * const text = await execPromise('echo hi')
@@ -86,7 +86,8 @@ export async function areCommandsInstalled(commands) {
 
 function _deepMergeJson(a, b, c, opts = {}) {
   if (a.constructor === Object) {
-    for (let key in b) { // eslint-disable-line
+    for (const key in b) {
+      // eslint-disable-line
       if (!c[key]) {
         c[key] = b[key]
       } else {
@@ -123,11 +124,14 @@ export function requireJson(filepath) {
 
 export function padString(str, char, limit) {
   const diff = limit - str.length
-  return str + ' ' + char.repeat(diff-1)
+  return str + ' ' + char.repeat(diff - 1)
 }
 
 export function leftPad(str, char = '', leftPadAmt = 0) {
-  return str.split('\n').map(line => char.repeat(leftPadAmt) + line).join('\n')
+  return str
+    .split('\n')
+    .map(line => char.repeat(leftPadAmt) + line)
+    .join('\n')
 }
 
 export function taskAPILogHeader(header, taskName, color) {
@@ -225,13 +229,7 @@ export function copyFile(src, dest, opts = { encoding: 'utf8' }) {
  * @param {String} src - file path
  * @param {String} dest - file path
  */
-export function copy(
-  src,
-  dest,
-  {
-    overwrite = false,
-  } = {},
-) {
+export function copy(src, dest, { overwrite = false } = {}) {
   const stat = fs.lstatSync(src)
   if (stat.isDirectory()) {
     if (fs.existsSync(dest) && overwrite) {

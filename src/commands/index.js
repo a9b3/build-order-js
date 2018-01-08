@@ -17,8 +17,10 @@ import taskAPI     from 'taskAPI'
 export async function list() {
   const dir = config.defaultBuildOrdersDir
 
-  const names = (await flatWalk(dir, name => fs.lstatSync(path.resolve(dir, name)).isDirectory() && name))
-    .filter(a => a)
+  const names = (await flatWalk(
+    dir,
+    name => fs.lstatSync(path.resolve(dir, name)).isDirectory() && name,
+  )).filter(a => a)
 
   names.forEach(name => {
     console.log(name)
@@ -33,7 +35,7 @@ export function buildorders({ flags, args }) {
     flags,
     args,
     defaultDir: config.defaultBuildOrdersDir,
-    name      : 'BUILD ORDER',
+    name: 'BUILD ORDER',
   })
 }
 
@@ -85,24 +87,22 @@ async function commandRunner({ flags, args, defaultDir, name }) {
  * @param {String} cwd - return of process.cwd()
  * @param {String} defaultDir
  */
-function extractHandlers({
-  names,
-  cwd,
-  defaultDir,
-}) {
+function extractHandlers({ names, cwd, defaultDir }) {
   return names.map(name => {
     const cwdFilePath = path.resolve(cwd, name)
     const defaultFilePath = path.resolve(defaultDir, name)
 
-    const handlerPath = path.extname(name) !== '' && fs.existsSync(cwdFilePath)
-      ? cwdFilePath
-      : fs.existsSync(defaultFilePath)
-        ? defaultFilePath
-        : null
+    const handlerPath =
+      path.extname(name) !== '' && fs.existsSync(cwdFilePath)
+        ? cwdFilePath
+        : fs.existsSync(defaultFilePath) ? defaultFilePath : null
     invariant(handlerPath, `${name} is not a file or a default`)
 
     const handler = require(handlerPath).default || require(handlerPath)
-    invariant(handler || typeof handler === 'function', `${name} must export a function`)
+    invariant(
+      handler || typeof handler === 'function',
+      `${name} must export a function`,
+    )
     return handler
   })
 }
