@@ -1,7 +1,7 @@
 import chalk                    from 'chalk'
 import CommanderShepard         from 'commander-shepard'
 
-import * as commands            from 'commands/index'
+import { buildorders, list }    from 'commands'
 import npmClientAdapter         from 'npmClientAdapter'
 import { areCommandsInstalled } from 'utils/shellAliases'
 
@@ -10,10 +10,10 @@ async function initialize() {
 }
 
 function setupCommanderShepard() {
-  const c = new CommanderShepard({
+  const commander = new CommanderShepard({
     key: 'bojs',
     package: require('../package.json'),
-    longDescription: 'Set up your javascript project procedurally',
+    longDescription: 'set up your javascript project procedurally',
     flags: [
       {
         keys: ['npm'],
@@ -30,20 +30,18 @@ function setupCommanderShepard() {
     subcommands: [
       {
         key: 'buildorders',
-        shortDescription: 'apply build orders to the current project',
-        longDescription: 'Apply a set of tasks to the current project',
-        command: commands.buildorders,
+        shortDescription: 'apply buildorders to the current project',
+        command: buildorders,
       },
       {
         key: 'list',
         shortDescription: 'list the available buildorders',
-        longDescription: 'list the available buildorders',
-        command: commands.list,
+        command: list,
       },
     ],
   })
-  npmClientAdapter.setAdapter(c.flags.npm || 'npm')
-  c.execute()
+  npmClientAdapter.setAdapter(commander.flags.npm || 'npm')
+  commander.execute()
 }
 
 async function main() {

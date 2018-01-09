@@ -11,5 +11,5 @@ export function padString(str, char, limit) {
 }
 
 export function taskAPILogHeader(header, taskName) {
-  return padString(`${header}: [${taskName}]`, '*', 80)
+  return console.log(padString(`${header}: [${taskName}]`, '*', 80), '\n')
 }
