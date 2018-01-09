@@ -56,23 +56,25 @@ async function commandRunner({ flags, args, defaultDir, name }) {
   })
 
   const projectRootPath = await getProjectRootPath()
-  await helper.mapAsync(handlers, async (fn, i) => {
-    helper.taskAPILogHeader(name, args[i])
-    console.log(``)
+  Promise.all(
+    handlers.map(async (fn, i) => {
+      helper.taskAPILogHeader(name, args[i])
+      console.log(``)
 
-    // callsite for task functions
-    await fn({
-      flags,
-      env: {
-        cwd,
-        projectRootPath,
-      },
-      taskAPI,
-    })
+      // callsite for task functions
+      await fn({
+        flags,
+        env: {
+          cwd,
+          projectRootPath,
+        },
+        taskAPI,
+      })
 
-    helper.taskAPILogHeader(`END ${name}`, args[i])
-    console.log(``)
-  })
+      helper.taskAPILogHeader(`END ${name}`, args[i])
+      console.log(``)
+    }),
+  )
 
   console.log(chalk.green(`All done!`))
 }
