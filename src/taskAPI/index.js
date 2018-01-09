@@ -1,11 +1,13 @@
-import chalk            from 'chalk'
-import fs               from 'fs'
-import * as helper      from 'helper'
-import invariant        from 'invariant'
-import _                from 'lodash'
-import npmClientAdapter from 'npmClientAdapter'
-import path             from 'path'
-import showHeader       from 'taskAPI/decorators/showHeader'
+import chalk                  from 'chalk'
+import fs                     from 'fs'
+import * as helper            from 'helper'
+import invariant              from 'invariant'
+import _                      from 'lodash'
+import npmClientAdapter       from 'npmClientAdapter'
+import path                   from 'path'
+import showHeader             from 'taskAPI/decorators/showHeader'
+import execAsync              from 'utils/execAsync'
+import { getProjectRootPath } from 'utils/shellAliases'
 
 class TaskAPI {
   /**
@@ -18,7 +20,7 @@ class TaskAPI {
   @showHeader('Shell')
   async shell({ command } = {}) {
     console.log(chalk.yellow(`\n  Running command ${command}\n`))
-    await helper.execPromise(command, { log: true })
+    await execAsync(command, { log: true })
   }
 
   /**
@@ -29,8 +31,8 @@ class TaskAPI {
    */
   @showHeader('Git Init')
   async gitInit({ initMessage = `ಠ_ಠ` } = {}) {
-    await helper.execPromise('git add .', { log: true })
-    await helper.execPromise(`git commit -m '${initMessage}'`, { log: true })
+    await execAsync('git add .', { log: true })
+    await execAsync(`git commit -m '${initMessage}'`, { log: true })
   }
 
   /**
@@ -80,7 +82,7 @@ class TaskAPI {
    */
   @showHeader('Add to package.json')
   async addToPackageJson({ json } = {}) {
-    const projectRootPath = await helper.getProjectRootPath()
+    const projectRootPath = await getProjectRootPath()
     const packageJsonFilePath = path.resolve(projectRootPath, 'package.json')
     if (!fs.existsSync(packageJsonFilePath)) {
       fs.writeFileSync(packageJsonFilePath, '{}', { encoding: 'utf8' })

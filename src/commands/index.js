@@ -1,11 +1,12 @@
-import chalk       from 'chalk'
-import config      from 'config'
-import fs          from 'fs'
-import * as helper from 'helper'
-import invariant   from 'invariant'
-import path        from 'path'
-import process     from 'process'
-import taskAPI     from 'taskAPI'
+import chalk                  from 'chalk'
+import config                 from 'config'
+import fs                     from 'fs'
+import * as helper            from 'helper'
+import invariant              from 'invariant'
+import path                   from 'path'
+import process                from 'process'
+import taskAPI                from 'taskAPI'
+import { getProjectRootPath } from 'utils/shellAliases'
 
 /*****************************************************************************
  * COMMANDS
@@ -54,7 +55,7 @@ async function commandRunner({ flags, args, defaultDir, name }) {
     defaultDir,
   })
 
-  const projectRootPath = await helper.getProjectRootPath()
+  const projectRootPath = await getProjectRootPath()
   await helper.mapAsync(handlers, async (fn, i) => {
     helper.taskAPILogHeader(name, args[i])
     console.log(``)

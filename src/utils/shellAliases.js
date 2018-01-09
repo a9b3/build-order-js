@@ -34,3 +34,17 @@ export async function areCommandsInstalled(commands) {
     }
   }
 }
+
+/**
+ * returns project root based on where .git is located in the ancestor nodes
+ *
+ * @returns {String} project root dir
+ */
+export async function getProjectRootPath() {
+  try {
+    const { stdout } = await execAsync('git rev-parse --show-toplevel')
+    return stdout.trim()
+  } catch (e) {
+    return ''
+  }
+}
