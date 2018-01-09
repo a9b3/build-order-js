@@ -1,4 +1,4 @@
-import * as helper from 'helper'
+import { taskAPILogHeader } from 'utils/stringFormatter'
 
 /*
  * @decorator
@@ -10,7 +10,7 @@ export default function showHeader(message = '') {
     const fn = descriptor.value
     const newFn = async (...args) => {
       if ((args[0] || {}).showHeader) {
-        helper.taskAPILogHeader('TASK', message)
+        taskAPILogHeader('TASK', message)
       }
       const res = await fn.call(target, ...args)
       return res

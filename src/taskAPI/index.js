@@ -1,13 +1,14 @@
-import chalk                  from 'chalk'
-import fs                     from 'fs'
-import * as helper            from 'helper'
-import invariant              from 'invariant'
-import _                      from 'lodash'
-import npmClientAdapter       from 'npmClientAdapter'
-import path                   from 'path'
-import showHeader             from 'taskAPI/decorators/showHeader'
-import execAsync              from 'utils/execAsync'
-import { getProjectRootPath } from 'utils/shellAliases'
+import chalk                       from 'chalk'
+import fs                          from 'fs-extra'
+import invariant                   from 'invariant'
+import _                           from 'lodash'
+import npmClientAdapter            from 'npmClientAdapter'
+import path                        from 'path'
+import showHeader                  from 'taskAPI/decorators/showHeader'
+import execAsync                   from 'utils/execAsync'
+import { relativeFromProjectRoot } from 'utils/fsUtils'
+import { getProjectRootPath }      from 'utils/shellAliases'
+import { leftPad }                 from 'utils/stringFormatter'
 
 class TaskAPI {
   /**
@@ -44,7 +45,7 @@ class TaskAPI {
    */
   @showHeader('Add Package')
   async addPackages({ packages, dev } = {}) {
-    const paddedPackagesStr = helper.leftPad(packages.join('\n'), ' ', 2)
+    const paddedPackagesStr = leftPad(packages.join('\n'), ' ', 2)
     console.log(
       chalk.yellow(
         `\n  Adding packages to ${dev ? 'devDependencies' : 'dependencies'}\n`,
@@ -65,13 +66,15 @@ class TaskAPI {
    * does not exists
    */
   @showHeader('Add JSON File')
-  @helper.relativeDest
   async addToJsonFile({ json, dest } = {}) {
+    dest = await relativeFromProjectRoot(dest)
     if (!fs.existsSync(dest)) {
       fs.writeFileSync(dest, '{}', { encoding: 'utf8' })
     }
-
-    await helper.mergeToJsonFile({ json, dest })
+    fs.writeFileSync(
+      dest,
+      JSON.stringify(_.merge(require(dest), json), null, '  '),
+    )
   }
 
   /**
@@ -83,12 +86,10 @@ class TaskAPI {
   @showHeader('Add to package.json')
   async addToPackageJson({ json } = {}) {
     const projectRootPath = await getProjectRootPath()
-    const packageJsonFilePath = path.resolve(projectRootPath, 'package.json')
-    if (!fs.existsSync(packageJsonFilePath)) {
-      fs.writeFileSync(packageJsonFilePath, '{}', { encoding: 'utf8' })
-    }
-
-    await helper.mergeToJsonFile({ json, dest: packageJsonFilePath })
+    this.addToJsonFile({
+      json,
+      dest: path.resolve(projectRootPath, 'package.json'),
+    })
   }
 
   /**
@@ -98,8 +99,8 @@ class TaskAPI {
    * @param {String} dest          - destination file path
    */
   @showHeader('Add Directory')
-  @helper.relativeDest
-  addDirectory({ dest } = {}) {
+  async addDirectory({ dest } = {}) {
+    dest = await relativeFromProjectRoot(dest)
     // dir already exists early return
     if (fs.existsSync(dest)) {
       console.log(chalk.gray(`\n  Directory already exists ${dest}\n`))
@@ -122,8 +123,8 @@ class TaskAPI {
    * @param {Boolean} [overwrite]   - overwrite file if doesn't exist
    */
   @showHeader('Add File')
-  @helper.relativeDest
   async addFile({ src, fileContent, dest, overwrite } = {}) {
+    dest = await relativeFromProjectRoot(dest)
     invariant(
       typeof fileContent === 'string' || fs.existsSync(src),
       `Must provide either 'fileContent':String or 'src':filepath`,
@@ -140,7 +141,7 @@ class TaskAPI {
     }
 
     console.log(chalk.yellow(`\n  Adding into file -> ${dest}\n`))
-    console.log(chalk.yellow(helper.leftPad(fileContent, ' ', 2)))
+    console.log(chalk.yellow(leftPad(fileContent, ' ', 2)))
 
     fs.writeFileSync(dest, fileContent, { encoding: 'utf8' })
   }
@@ -154,8 +155,8 @@ class TaskAPI {
    * @param {Boolean} [overwrite]   - overwrite file if doesn't exist
    */
   @showHeader('Copy Directory')
-  @helper.relativeDest
   async copyDirectory({ src, dest, overwrite } = {}) {
+    dest = await relativeFromProjectRoot(dest)
     // dir already exists early return
     if (fs.existsSync(dest) && !overwrite) {
       console.log(chalk.gray(`\n  Directory already exists ${dest}\n`))
@@ -164,7 +165,7 @@ class TaskAPI {
 
     console.log(chalk.yellow(`\n  Copying dir -> ${dest}\n`))
 
-    helper.copy(src, dest, { overwrite })
+    fs.copy(src, dest, { overwrite })
   }
 
   /**
@@ -177,8 +178,8 @@ class TaskAPI {
    * @param {Boolean} [overwrite]   - overwrite file if doesn't exist
    */
   @showHeader('Template File')
-  @helper.relativeDest
   async templateFile({ src, args = {}, dest, overwrite } = {}) {
+    dest = await relativeFromProjectRoot(dest)
     if (fs.existsSync(dest) && !overwrite) {
       console.log(chalk.gray(`\n  File already exists ${dest}\n`))
       return
@@ -188,11 +189,9 @@ class TaskAPI {
     const rendered = compiled(args)
 
     console.log(chalk.yellow(`\n  From ${src} with args`))
-    console.log(
-      chalk.yellow(helper.leftPad(JSON.stringify(args, null, '  '), ' ', 2)),
-    )
+    console.log(chalk.yellow(leftPad(JSON.stringify(args, null, '  '), ' ', 2)))
     console.log(chalk.yellow(`\n  Copying to -> ${dest}\n`))
-    const paddedRendered = helper.leftPad(rendered, ' ', 2)
+    const paddedRendered = leftPad(rendered, ' ', 2)
     console.log(chalk.yellow(paddedRendered))
 
     fs.writeFileSync(dest, rendered, { encoding: 'utf8' })
