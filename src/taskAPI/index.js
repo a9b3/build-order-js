@@ -2,8 +2,9 @@ import chalk                       from 'chalk'
 import fs                          from 'fs-extra'
 import invariant                   from 'invariant'
 import _                           from 'lodash'
-import npmClientAdapter            from 'npmClientAdapter'
 import path                        from 'path'
+
+import npmClientAdapter            from 'npmClientAdapter'
 import showHeader                  from 'taskAPI/decorators/showHeader'
 import execAsync                   from 'utils/execAsync'
 import { relativeFromProjectRoot } from 'utils/fsUtils'
@@ -14,9 +15,8 @@ class TaskAPI {
   /**
    * shell executes a shell command
    *
-   * @param {Object} opts
-   * @param {String} command - shell command to run *note* that interactive
-   * commands isn't working right now
+   * @param {string} command - shell command to run (interactive commands
+   * doesn't work)
    */
   @showHeader('Shell')
   async shell({ command } = {}) {
@@ -53,7 +53,6 @@ class TaskAPI {
     )
     console.log(chalk.yellow(paddedPackagesStr))
     console.log(``)
-
     await npmClientAdapter.add(packages, { dev })
   }
 
@@ -106,9 +105,7 @@ class TaskAPI {
       console.log(chalk.gray(`\n  Directory already exists ${dest}\n`))
       return
     }
-
     console.log(chalk.yellow(`\n  Making dir -> ${dest}\n`))
-
     fs.mkdirSync(dest)
   }
 
@@ -129,20 +126,16 @@ class TaskAPI {
       typeof fileContent === 'string' || fs.existsSync(src),
       `Must provide either 'fileContent':String or 'src':filepath`,
     )
-
     fileContent =
       [null, undefined].indexOf(fileContent) === -1
         ? fileContent
         : fs.readFileSync(src, { encoding: 'utf8' })
-
     if (fs.existsSync(dest) && !overwrite) {
       console.log(chalk.gray(`\n  File already exists ${dest}\n`))
       return
     }
-
     console.log(chalk.yellow(`\n  Adding into file -> ${dest}\n`))
     console.log(chalk.yellow(leftPad(fileContent, ' ', 2)))
-
     fs.writeFileSync(dest, fileContent, { encoding: 'utf8' })
   }
 
@@ -162,9 +155,7 @@ class TaskAPI {
       console.log(chalk.gray(`\n  Directory already exists ${dest}\n`))
       return
     }
-
     console.log(chalk.yellow(`\n  Copying dir -> ${dest}\n`))
-
     fs.copy(src, dest, { overwrite })
   }
 
@@ -184,16 +175,13 @@ class TaskAPI {
       console.log(chalk.gray(`\n  File already exists ${dest}\n`))
       return
     }
-
     const compiled = _.template(fs.readFileSync(src, { encoding: 'utf8' }))
     const rendered = compiled(args)
-
     console.log(chalk.yellow(`\n  From ${src} with args`))
     console.log(chalk.yellow(leftPad(JSON.stringify(args, null, '  '), ' ', 2)))
     console.log(chalk.yellow(`\n  Copying to -> ${dest}\n`))
     const paddedRendered = leftPad(rendered, ' ', 2)
     console.log(chalk.yellow(paddedRendered))
-
     fs.writeFileSync(dest, rendered, { encoding: 'utf8' })
   }
 }

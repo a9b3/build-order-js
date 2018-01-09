@@ -24,11 +24,9 @@ export async function isCommandInstalled(command) {
 export async function areCommandsInstalled(commands) {
   for (let i = 0; i < commands.length; i++) {
     const commandsToCheck = [].concat(commands[i])
-
     const hasTheseCommands = (await Promise.all(
       commandsToCheck.map(isCommandInstalled),
     )).some(Boolean)
-
     if (!hasTheseCommands) {
       throw new Error(`Missing dependencies '${checkForThese}'`)
     }

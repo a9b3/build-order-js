@@ -1,9 +1,10 @@
 import chalk                  from 'chalk'
-import config                 from 'config'
 import fs                     from 'fs'
 import invariant              from 'invariant'
 import path                   from 'path'
 import process                from 'process'
+
+import config                 from 'config'
 import taskAPI                from 'taskAPI'
 import { getProjectRootPath } from 'utils/shellAliases'
 import { taskAPILogHeader }   from 'utils/stringFormatter'

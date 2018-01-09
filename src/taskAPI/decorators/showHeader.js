@@ -15,7 +15,6 @@ export default function showHeader(message = '') {
       const res = await fn.call(target, ...args)
       return res
     }
-
     descriptor.value = newFn
     return descriptor
   }

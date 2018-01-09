@@ -1,5 +1,6 @@
 import chalk                    from 'chalk'
 import CommanderShepard         from 'commander-shepard'
+
 import * as commands            from 'commands/index'
 import npmClientAdapter         from 'npmClientAdapter'
 import { areCommandsInstalled } from 'utils/shellAliases'
