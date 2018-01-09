@@ -16,7 +16,7 @@ import { getProjectRootPath } from 'utils/shellAliases'
  * list folders for 'buildorders'
  */
 export async function list() {
-  const dir = config.defaultBuildOrdersDir
+  const dir = config.DEFAULT_BUILD_ORDERS_DIR
 
   const names = (await flatWalk(
     dir,
@@ -35,7 +35,7 @@ export function buildorders({ flags, args }) {
   return commandRunner({
     flags,
     args,
-    defaultDir: config.defaultBuildOrdersDir,
+    defaultDir: config.DEFAULT_BUILD_ORDERS_DIR,
     name: 'BUILD ORDER',
   })
 }

@@ -1,6 +1,9 @@
 import path from 'path'
 
 export default {
-  defaultTaskDir: path.resolve(__dirname, './buildorders/tasks'),
-  defaultBuildOrdersDir: path.resolve(__dirname, './buildorders/buildorders'),
+  DEFAULT_TASK_DIR: path.resolve(__dirname, './buildorders/tasks'),
+  DEFAULT_BUILD_ORDERS_DIR: path.resolve(
+    __dirname,
+    './buildorders/buildorders',
+  ),
 }
