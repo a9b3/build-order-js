@@ -1,7 +1,7 @@
 import { exec } from 'child_process'
 import process  from 'process'
 
-export default function execAsync(command, { pipe = false }) {
+export default function execAsync(command, { pipe = false } = {}) {
   return new Promise((resolve, reject) => {
     const child = exec(command, (err, stdout, stderr) => {
       if (err) {
