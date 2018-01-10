@@ -10,6 +10,7 @@ import execAsync                   from 'utils/execAsync'
 import { relativeFromProjectRoot } from 'utils/fsUtils'
 import { getProjectRootPath }      from 'utils/shellAliases'
 import { leftPad }                 from 'utils/stringFormatter'
+import { taskAPILogHeader }        from 'utils/stringFormatter'
 
 class TaskAPI {
   /**
@@ -18,8 +19,8 @@ class TaskAPI {
    * @param {string} command - shell command to run (interactive commands
    * doesn't work)
    */
-  @showHeader('Shell')
   async shell({ command } = {}) {
+    taskAPILogHeader('TASK' 'Shell')
     console.log(chalk.yellow(`\n  Running command ${command}\n`))
     await execAsync(command, { log: true })
   }
@@ -30,8 +31,8 @@ class TaskAPI {
    * @param {Object} opts
    * @param {String} [initMessage] - git init message
    */
-  @showHeader('Git Init')
   async gitInit({ initMessage = `ಠ_ಠ` } = {}) {
+    taskAPILogHeader('TASK' 'Git Init')
     await execAsync('git add .', { log: true })
     await execAsync(`git commit -m '${initMessage}'`, { log: true })
   }
@@ -43,8 +44,8 @@ class TaskAPI {
    * @param {Array.<String>} packages - Npm packages to add
    * @param {Boolean} [dev]           - Use --save-dev or not
    */
-  @showHeader('Add Package')
   async addPackages({ packages, dev } = {}) {
+    taskAPILogHeader('TASK' 'Add Package')
     const paddedPackagesStr = leftPad(packages.join('\n'), ' ', 2)
     console.log(
       chalk.yellow(
@@ -64,8 +65,8 @@ class TaskAPI {
    * @param {String} dest          - json file path to merge into or will be created if
    * does not exists
    */
-  @showHeader('Add JSON File')
   async addToJsonFile({ json, dest } = {}) {
+    taskAPILogHeader('TASK' 'Add JSON File')
     dest = await relativeFromProjectRoot(dest)
     if (!fs.existsSync(dest)) {
       fs.writeFileSync(dest, '{}', { encoding: 'utf8' })
@@ -84,6 +85,7 @@ class TaskAPI {
    */
   @showHeader('Add to package.json')
   async addToPackageJson({ json } = {}) {
+    taskAPILogHeader('TASK' 'Add to package.json')
     const projectRootPath = await getProjectRootPath()
     this.addToJsonFile({
       json,

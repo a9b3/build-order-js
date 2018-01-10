@@ -1,13 +1,13 @@
-import chalk from 'chalk'
-import fs from 'fs'
-import invariant from 'invariant'
-import path from 'path'
-import process from 'process'
+import chalk                  from 'chalk'
+import fs                     from 'fs'
+import invariant              from 'invariant'
+import path                   from 'path'
+import process                from 'process'
 
-import config from 'config'
-import taskAPI from 'taskAPI'
+import config                 from 'config'
+import taskAPI                from 'taskAPI'
 import { getProjectRootPath } from 'utils/shellAliases'
-import { taskAPILogHeader } from 'utils/stringFormatter'
+import { taskAPILogHeader }   from 'utils/stringFormatter'
 
 /*
  * list prints name of all the buildorders
@@ -27,9 +27,9 @@ export async function list() {
 /*
  * buildorders executes a buildorder
  */
-export async function buildorders({ flags, args }) {
+export async function buildorders({ flags, commands }) {
+  const name = commands[0]
   const taskHeader = 'BUILD ORDER'
-  const name = args[0]
   taskAPILogHeader(taskHeader, name)
   const handler = _requireHandlerRelative({ name })
   await handler({

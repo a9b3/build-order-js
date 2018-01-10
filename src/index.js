@@ -1,5 +1,5 @@
 import chalk                    from 'chalk'
-import CommanderShepard         from 'commander-shepard'
+import { Commander, Command }   from 'commander-shepard'
 
 import { buildorders, list }    from 'commands'
 import npmClientAdapter         from 'npmClientAdapter'
@@ -10,9 +10,9 @@ async function initialize() {
 }
 
 function setupCommanderShepard() {
-  const commander = new CommanderShepard({
+  const commander = new Commander({
     key: 'bojs',
-    package: require('../package.json'),
+    packageJson: require('../package.json'),
     longDescription: 'set up your javascript project procedurally',
     flags: [
       {
@@ -27,26 +27,28 @@ function setupCommanderShepard() {
         shortDescription: 'initialize empty git repo',
       },
     ],
-    subcommands: [
-      {
-        key: 'buildorders',
-        shortDescription: 'apply buildorders to the current project',
-        command: buildorders,
-      },
-      {
-        key: 'list',
-        shortDescription: 'list the available buildorders',
-        command: list,
-      },
-    ],
   })
+  commander.use(
+    'buildorders',
+    new Command({
+      handler: buildorders,
+      shortDescription: 'apply buildorders to the current project',
+    }),
+  )
+  commander.use(
+    'list',
+    new Command({
+      handler: list,
+      shortDescription: 'list the available buildorders',
+    }),
+  )
   npmClientAdapter.setAdapter(commander.flags.npm || 'npm')
-  commander.execute()
+  return commander.start()
 }
 
 async function main() {
   await initialize()
-  setupCommanderShepard()
+  await setupCommanderShepard()
 }
 
 main().catch(e => console.log(chalk.red(e.message)))
