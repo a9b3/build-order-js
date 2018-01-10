@@ -5,10 +5,9 @@ export default async function cli({ flags }) {
   await tasks.bootstrap({ name: flags.name })
   await tasks.mocha()
   await tasks.eslint({ extend: 'eslint-config-esayemm' })
-  await taskAPI.addPackages({ packages: ['app-module-path'] })
   await taskAPI.addPackages({
-    packages: ['jbs-node', 'babel-register', 'babel-polyfill'],
-    dev: true,
+    packages: ['app-module-path'],
+    devPackages: ['jbs-node', 'babel-register', 'babel-polyfill'],
   })
   // package json
   await taskAPI.addToPackageJson({

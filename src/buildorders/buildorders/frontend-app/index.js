@@ -6,12 +6,7 @@ export default async function frontendApp({ flags }) {
   await tasks.bootstrap({ name: flags.name })
   await tasks.eslint({ extend: 'eslint-config-esayemm' })
   await tasks.ci()
-
-  await taskAPI.addPackages({
-    packages: ['jbs-fe'],
-    dev: true,
-  })
-
+  await taskAPI.addPackages({ packages: ['jbs-fe'], dev: true })
   await taskAPI.addToPackageJson({
     json: {
       main: `./build/index.js`,
@@ -27,12 +22,10 @@ export default async function frontendApp({ flags }) {
       },
     },
   })
-
   await taskAPI.copyDirectory({
     src: path.resolve(__dirname, '../../templates/frontend-app/src'),
     dest: './src',
   })
-
   if (flags.git) {
     await taskAPI.gitInit()
   }

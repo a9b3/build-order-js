@@ -2,8 +2,7 @@ import taskAPI from 'taskAPI'
 
 export default async function mocha() {
   await taskAPI.addPackages({
-    packages: ['babel-register', 'babel-polyfill', 'mocha', 'expect'],
-    dev: true,
+    devPackages: ['babel-register', 'babel-polyfill', 'mocha', 'expect'],
   })
   await taskAPI.addToPackageJson({
     json: {

@@ -5,9 +5,8 @@ import taskAPI    from 'taskAPI'
 export default async function reactPackage({ flags }) {
   await tasks.bootstrap({ name: flags.name })
   await tasks.eslint({ extend: 'eslint-config-esayemm/lib/react' })
-
   await taskAPI.addPackages({
-    packages: [
+    devPackages: [
       'jbs-fe',
       'react-addons-test-utils',
       'react',
@@ -22,9 +21,7 @@ export default async function reactPackage({ flags }) {
       'esayemm-styles',
       'classnames',
     ],
-    dev: true,
   })
-
   await taskAPI.addToPackageJson({
     json: {
       main: `./build/index.js`,
@@ -47,15 +44,12 @@ export default async function reactPackage({ flags }) {
       files: ['build/'],
     },
   })
-
   await taskAPI.shell({ command: `mkdir src` })
   await taskAPI.shell({ command: `touch src/index.js` })
-
   await taskAPI.copyDirectory({
     src: path.resolve(__dirname, '../../templates/react-app/src'),
     dest: './example',
   })
-
   if (flags.git) {
     await taskAPI.gitInit()
   }

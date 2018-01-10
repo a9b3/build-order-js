@@ -5,12 +5,9 @@ export default async function nodeApp({ flags }) {
   await tasks.bootstrap({ name: flags.name })
   await tasks.mocha()
   await tasks.eslint({ extend: 'eslint-config-esayemm' })
-
   await taskAPI.addPackages({
-    packages: ['jbs-node', 'babel-register', 'babel-polyfill'],
-    dev: true,
+    devPackages: ['jbs-node', 'babel-register', 'babel-polyfill'],
   })
-
   await taskAPI.addToPackageJson({
     json: {
       main: `./build/index.js`,
@@ -28,10 +25,8 @@ export default async function nodeApp({ flags }) {
       files: ['build/'],
     },
   })
-
   await taskAPI.shell({ command: `mkdir src` })
   await taskAPI.shell({ command: `touch src/index.js` })
-
   await taskAPI.addFile({
     dest: './index.js',
     fileContent: [
@@ -41,7 +36,6 @@ export default async function nodeApp({ flags }) {
       `require('./src')`,
     ].join('\n'),
   })
-
   if (flags.git) {
     await taskAPI.gitInit()
   }

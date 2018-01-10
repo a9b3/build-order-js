@@ -7,8 +7,7 @@ export default async function eslint({ extend = '' } = {}) {
   // always use array so you can spread it
   extend = [].concat(extend)
   await taskAPI.addPackages({
-    packages: ['eslint', ...extend],
-    dev: true,
+    devPackages: ['eslint', ...extend],
   })
   await taskAPI.addToPackageJson({
     json: { scripts: { lint: './node_modules/eslint/bin/eslint.js .' } },

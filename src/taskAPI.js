@@ -40,21 +40,28 @@ class TaskAPI {
   /**
    * addPackages adds an npm package using the npmAdapter
    *
-   * @param {Object} opts
-   * @param {Array.<String>} packages - Npm packages to add
-   * @param {Boolean} [dev]           - Use --save-dev or not
+   * @param {array.<string>} packages - npm packages to install
+   * @param {array.<string>} devPackages - npm dev packages to install
    */
-  async addPackages({ packages, dev } = {}) {
+  async addPackages({ devPackages = [], packages = [] } = {}) {
     taskAPILogHeader('TASK', 'Add Package')
-    const paddedPackagesStr = leftPad(packages.join('\n'), ' ', 2)
+    this._printPackages(devPackages, true)
+    this._printPackages(packages)
+    await npmClientAdapter.add(packages, { dev: false })
+    await npmClientAdapter.add(devPackages, { dev: true })
+  }
+
+  _printPackages(packages = [], dev) {
     console.log(
       chalk.yellow(
         `\n  Adding packages to ${dev ? 'devDependencies' : 'dependencies'}\n`,
       ),
     )
-    console.log(chalk.yellow(paddedPackagesStr))
-    console.log(``)
-    await npmClientAdapter.add(packages, { dev })
+    const paddedPackagesStr = leftPad(packages.join('\n'), ' ', 2)
+    if (packages.length) {
+      console.log(chalk.yellow(paddedPackagesStr))
+      console.log(``)
+    }
   }
 
   /**
