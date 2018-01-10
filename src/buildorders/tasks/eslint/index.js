@@ -6,7 +6,6 @@ export default async function eslint({ extend }) {
     typeof extend === 'string',
     `Must provide 'extend' field to eslint (what eslint preset to extend).`,
   )
-
   await taskAPI.addPackages({
     packages: [
       // required if using certain babel enabled features
@@ -19,24 +18,15 @@ export default async function eslint({ extend }) {
     ],
     dev: true,
   })
-
   await taskAPI.addToPackageJson({
-    json: {
-      scripts: {
-        lint: './node_modules/eslint/bin/eslint.js .',
-      },
-    },
+    json: { scripts: { lint: './node_modules/eslint/bin/eslint.js .' } },
   })
-
   await taskAPI.addFile({
     fileContent: ['build/', 'lib/', 'node_modules/'].join('\n'),
     dest: '.eslintignore',
   })
-
   await taskAPI.addToJsonFile({
     dest: '.eslintrc',
-    json: {
-      extends: [extend],
-    },
+    json: { extends: [extend] },
   })
 }

@@ -1,20 +1,15 @@
-import * as tasks from '../../tasks'
+import * as tasks from 'buildorders/tasks'
 import taskAPI    from 'taskAPI'
 
 export default async function cli({ flags }) {
   await tasks.bootstrap({ name: flags.name })
   await tasks.mocha()
   await tasks.eslint({ extend: 'eslint-config-esayemm' })
-
-  await taskAPI.addPackages({
-    packages: ['app-module-path'],
-  })
-
+  await taskAPI.addPackages({ packages: ['app-module-path'] })
   await taskAPI.addPackages({
     packages: ['jbs-node', 'babel-register', 'babel-polyfill'],
     dev: true,
   })
-
   // package json
   await taskAPI.addToPackageJson({
     json: {
@@ -37,7 +32,6 @@ export default async function cli({ flags }) {
       files: ['entry.js', 'dev.entry.js', 'build/'],
     },
   })
-
   // dev entry
   await taskAPI.addFile({
     dest: './dev.entry.js',
@@ -52,7 +46,6 @@ export default async function cli({ flags }) {
     ].join('\n'),
   })
   await taskAPI.shell({ command: `chmod 0755 ./dev.entry.js` })
-
   // build entry
   await taskAPI.addFile({
     dest: './entry.js',
@@ -64,10 +57,8 @@ export default async function cli({ flags }) {
     ].join('\n'),
   })
   await taskAPI.shell({ command: `chmod 0755 ./entry.js` })
-
   await taskAPI.shell({ command: `mkdir src` })
   await taskAPI.shell({ command: `touch src/index.js` })
-
   if (flags.git) {
     await taskAPI.gitInit()
   }

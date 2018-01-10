@@ -2,6 +2,7 @@ import invariant from 'invariant'
 import path      from 'path'
 import taskAPI   from 'taskAPI'
 
+// ci creates files for ci integration
 export default async function ci({ ciTarget = 'travis' } = {}) {
   switch (ciTarget) {
     case 'travis':
