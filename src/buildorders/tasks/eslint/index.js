@@ -1,21 +1,13 @@
-import invariant from 'invariant'
-import taskAPI   from 'taskAPI'
+import taskAPI from 'taskAPI'
 
-export default async function eslint({ extend }) {
-  invariant(
-    typeof extend === 'string',
-    `Must provide 'extend' field to eslint (what eslint preset to extend).`,
-  )
+/**
+ * @param {string || array.<string>} extend - eg. eslint-config-x
+ */
+export default async function eslint({ extend = '' } = {}) {
+  // always use array so you can spread it
+  extend = [].concat(extend)
   await taskAPI.addPackages({
-    packages: [
-      // required if using certain babel enabled features
-      // eslint-config-esayemm sets the parser config
-      // https://github.com/babel/babel-eslint
-      'babel-eslint',
-      'eslint',
-      'eslint-config-esayemm',
-      'eslint-plugin-react',
-    ],
+    packages: ['eslint', ...extend],
     dev: true,
   })
   await taskAPI.addToPackageJson({
@@ -27,6 +19,6 @@ export default async function eslint({ extend }) {
   })
   await taskAPI.addToJsonFile({
     dest: '.eslintrc',
-    json: { extends: [extend] },
+    json: { extends: extend },
   })
 }
