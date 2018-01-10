@@ -9,7 +9,7 @@ export default async function frontendApp({ flags }) {
     extend: 'eslint-config-esayemm',
   })
   await tasks.ci()
-  await taskAPI.addPackages({ packages: ['jbs-fe'], dev: true })
+  await taskAPI.addPackages({ devPackages: ['jbs-fe'] })
   await taskAPI.addToPackageJson({
     json: {
       main: `./build/index.js`,
