@@ -6,8 +6,8 @@ import process                from 'process'
 
 import config                 from 'config'
 import taskAPI                from 'taskAPI'
+import { taskAPILogHeader }   from 'utils/logger'
 import { getProjectRootPath } from 'utils/shellAliases'
-import { taskAPILogHeader }   from 'utils/stringFormatter'
 
 /*
  * list prints name of all the buildorders

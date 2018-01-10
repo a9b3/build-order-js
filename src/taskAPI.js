@@ -1,14 +1,15 @@
-import chalk                         from 'chalk'
-import fs                            from 'fs-extra'
-import invariant                     from 'invariant'
-import _                             from 'lodash'
-import path                          from 'path'
+import chalk                       from 'chalk'
+import fs                          from 'fs-extra'
+import invariant                   from 'invariant'
+import _                           from 'lodash'
+import path                        from 'path'
 
-import npmClientAdapter              from 'npmClientAdapter'
-import execAsync                     from 'utils/execAsync'
-import { relativeFromProjectRoot }   from 'utils/fsUtils'
-import { getProjectRootPath }        from 'utils/shellAliases'
-import { leftPad, taskAPILogHeader } from 'utils/stringFormatter'
+import npmClientAdapter            from 'npmClientAdapter'
+import execAsync                   from 'utils/execAsync'
+import { relativeFromProjectRoot } from 'utils/fsUtils'
+import { taskAPILogHeader }        from 'utils/logger'
+import { getProjectRootPath }      from 'utils/shellAliases'
+import { leftPad }                 from 'utils/stringFormatter'
 
 class TaskAPI {
   /**

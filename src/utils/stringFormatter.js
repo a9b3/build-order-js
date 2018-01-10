@@ -9,7 +9,3 @@ export function padString(str, char, limit) {
   const diff = limit - str.length
   return str + ' ' + char.repeat(diff - 1)
 }
-
-export function taskAPILogHeader(header, taskName) {
-  return console.log(padString(`${header}: [${taskName}]`, '*', 80), '\n')
-}
