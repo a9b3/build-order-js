@@ -51,4 +51,4 @@ async function main() {
   await setupCommanderShepard()
 }
 
-main().catch(e => console.log(chalk.red(e.message)))
+main().catch(e => console.log(chalk.red(e.message, e.stack)))
