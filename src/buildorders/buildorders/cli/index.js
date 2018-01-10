@@ -4,7 +4,10 @@ import taskAPI    from 'taskAPI'
 export default async function cli({ flags }) {
   await tasks.bootstrap({ name: flags.name })
   await tasks.mocha()
-  await tasks.eslint({ extend: 'eslint-config-esayemm' })
+  await tasks.eslint({
+    packages: 'eslint-config-esayemm',
+    extend: 'eslint-config-esayemm',
+  })
   await taskAPI.addPackages({
     packages: ['app-module-path'],
     devPackages: ['jbs-node', 'babel-register', 'babel-polyfill'],
@@ -14,7 +17,7 @@ export default async function cli({ flags }) {
     json: {
       scripts: {
         build:
-          './node_modules/jbs-node/bin.js build --input src --output build',
+          'rm -rf build && ./node_modules/jbs-node/bin.js build --input src --output build',
         prepublish: 'npm run build',
         preversion: 'npm run lint && npm run test',
         version: 'npm publish',
@@ -31,7 +34,6 @@ export default async function cli({ flags }) {
       files: ['entry.js', 'dev.entry.js', 'build/'],
     },
   })
-  // dev entry
   await taskAPI.addFile({
     dest: './dev.entry.js',
     fileContent: [
@@ -43,9 +45,8 @@ export default async function cli({ flags }) {
       `require('babel-polyfill')`,
       `require('./src')`,
     ].join('\n'),
+    chmod: '0755',
   })
-  await taskAPI.shell({ command: `chmod 0755 ./dev.entry.js` })
-  // build entry
   await taskAPI.addFile({
     dest: './entry.js',
     fileContent: [
@@ -54,8 +55,8 @@ export default async function cli({ flags }) {
       `require('app-module-path').addPath(path.resolve(__dirname, './build'))`,
       `require('./build')`,
     ].join('\n'),
+    chmod: '0755',
   })
-  await taskAPI.shell({ command: `chmod 0755 ./entry.js` })
   await taskAPI.shell({ command: `mkdir src` })
   await taskAPI.shell({ command: `touch src/index.js` })
   if (flags.git) {

@@ -131,7 +131,7 @@ class TaskAPI {
    * @param {String} dest          - Destination of file to add
    * @param {Boolean} [overwrite]   - overwrite file if doesn't exist
    */
-  async addFile({ src, fileContent, dest, overwrite } = {}) {
+  async addFile({ src, fileContent, dest, overwrite, chmod } = {}) {
     taskAPILogHeader('TASK', 'Add File')
     dest = await relativeFromProjectRoot(dest)
     invariant(
@@ -149,6 +149,9 @@ class TaskAPI {
     console.log(chalk.yellow(`\n  Adding into file -> ${dest}\n`))
     console.log(chalk.yellow(leftPad(fileContent, ' ', 2)))
     fs.writeFileSync(dest, fileContent, { encoding: 'utf8' })
+    if (chmod) {
+      await this.shell({ command: `chmod ${chmod} ${dest}` })
+    }
   }
 
   /**

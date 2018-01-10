@@ -5,20 +5,23 @@ import taskAPI    from 'taskAPI'
 export default async function express({ flags }) {
   await tasks.bootstrap({ name: flags.name })
   await tasks.mocha()
-  await tasks.eslint({ extend: 'eslint-config-esayemm' })
+  await tasks.eslint({
+    packages: 'eslint-config-esayemm',
+    extend: 'eslint-config-esayemm',
+  })
   await tasks.ci()
   await tasks.docker()
   await taskAPI.addPackages({
     devPackages: ['jbs-node', 'babel-register', 'babel-polyfill', 'axios'],
     packages: [
-      'express',
-      'body-parser',
-      'cors',
-      'babel-register',
       'babel-polyfill',
+      'babel-register',
+      'body-parser',
       'bunyan',
-      'js-functions',
+      'cors',
+      'express',
       'helmet',
+      'js-functions',
       'morgan',
     ],
   })

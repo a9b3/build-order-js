@@ -4,7 +4,10 @@ import taskAPI    from 'taskAPI'
 
 export default async function frontendApp({ flags }) {
   await tasks.bootstrap({ name: flags.name })
-  await tasks.eslint({ extend: 'eslint-config-esayemm' })
+  await tasks.eslint({
+    packages: 'eslint-config-esayemm',
+    extend: 'eslint-config-esayemm',
+  })
   await tasks.ci()
   await taskAPI.addPackages({ packages: ['jbs-fe'], dev: true })
   await taskAPI.addToPackageJson({

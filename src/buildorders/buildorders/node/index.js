@@ -4,7 +4,10 @@ import taskAPI    from 'taskAPI'
 export default async function nodeApp({ flags }) {
   await tasks.bootstrap({ name: flags.name })
   await tasks.mocha()
-  await tasks.eslint({ extend: 'eslint-config-esayemm' })
+  await tasks.eslint({
+    packages: 'eslint-config-esayemm',
+    extend: 'eslint-config-esayemm',
+  })
   await taskAPI.addPackages({
     devPackages: ['jbs-node', 'babel-register', 'babel-polyfill'],
   })
