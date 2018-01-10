@@ -1,6 +1,6 @@
 import * as tasks from '../../tasks'
-import path from 'path'
-import taskAPI from 'taskAPI'
+import path       from 'path'
+import taskAPI    from 'taskAPI'
 
 export default async function reactApp({ flags }) {
   await tasks.bootstrap({ name: flags.name })

@@ -45,10 +45,14 @@ class TaskAPI {
    */
   async addPackages({ devPackages = [], packages = [] } = {}) {
     taskAPILogHeader('TASK', 'Add Package')
-    this._printPackages(devPackages, true)
-    this._printPackages(packages)
-    await npmClientAdapter.add(packages, { dev: false })
-    await npmClientAdapter.add(devPackages, { dev: true })
+    if (devPackages.length) {
+      this._printPackages(devPackages, true)
+      await npmClientAdapter.add(devPackages, { dev: true })
+    }
+    if (packages.length) {
+      this._printPackages(packages)
+      await npmClientAdapter.add(packages, { dev: false })
+    }
   }
 
   _printPackages(packages = [], dev) {
