@@ -7,7 +7,7 @@ export default async function reactApp({ flags }) {
   await tasks.storybook()
   await tasks.eslint({
     packages: 'eslint-config-esayemm',
-    extend: 'eslint-config-esayemm/lib/react',
+    extend: 'eslint-config-esayemm/react',
   })
   await tasks.ci()
   await taskAPI.addPackages({
