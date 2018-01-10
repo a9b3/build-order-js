@@ -8,6 +8,7 @@ import npmClientAdapter            from 'npmClientAdapter'
 import execAsync                   from 'utils/execAsync'
 import { relativeFromProjectRoot } from 'utils/fsUtils'
 import { taskAPILogHeader }        from 'utils/logger'
+import noCacheRequire              from 'utils/noCacheRequire'
 import { getProjectRootPath }      from 'utils/shellAliases'
 import { leftPad }                 from 'utils/stringFormatter'
 
@@ -72,7 +73,7 @@ class TaskAPI {
     }
     fs.writeFileSync(
       dest,
-      JSON.stringify(_.merge(require(dest), json), null, '  '),
+      JSON.stringify(_.merge(noCacheRequire(dest), json), null, '  '),
     )
   }
 
@@ -85,7 +86,7 @@ class TaskAPI {
   async addToPackageJson({ json } = {}) {
     taskAPILogHeader('TASK', 'Add to package.json')
     const projectRootPath = await getProjectRootPath()
-    this.addToJsonFile({
+    await this.addToJsonFile({
       json,
       dest: path.resolve(projectRootPath, 'package.json'),
     })

@@ -42,7 +42,7 @@ function setupCommanderShepard() {
       shortDescription: 'list the available buildorders',
     }),
   )
-  npmClientAdapter.setAdapter(commander.flags.npm || 'npm')
+  npmClientAdapter.setAdapter(commander.runtimeData.flags.npm || 'npm')
   return commander.start()
 }
 

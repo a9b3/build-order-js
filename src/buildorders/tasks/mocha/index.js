@@ -5,7 +5,6 @@ export default async function mocha() {
     packages: ['babel-register', 'babel-polyfill', 'mocha', 'expect'],
     dev: true,
   })
-
   await taskAPI.addToPackageJson({
     json: {
       scripts: {
