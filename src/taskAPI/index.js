@@ -1,16 +1,14 @@
-import chalk                       from 'chalk'
-import fs                          from 'fs-extra'
-import invariant                   from 'invariant'
-import _                           from 'lodash'
-import path                        from 'path'
+import chalk                         from 'chalk'
+import fs                            from 'fs-extra'
+import invariant                     from 'invariant'
+import _                             from 'lodash'
+import path                          from 'path'
 
-import npmClientAdapter            from 'npmClientAdapter'
-import showHeader                  from 'taskAPI/decorators/showHeader'
-import execAsync                   from 'utils/execAsync'
-import { relativeFromProjectRoot } from 'utils/fsUtils'
-import { getProjectRootPath }      from 'utils/shellAliases'
-import { leftPad }                 from 'utils/stringFormatter'
-import { taskAPILogHeader }        from 'utils/stringFormatter'
+import npmClientAdapter              from 'npmClientAdapter'
+import execAsync                     from 'utils/execAsync'
+import { relativeFromProjectRoot }   from 'utils/fsUtils'
+import { getProjectRootPath }        from 'utils/shellAliases'
+import { leftPad, taskAPILogHeader } from 'utils/stringFormatter'
 
 class TaskAPI {
   /**
@@ -20,7 +18,7 @@ class TaskAPI {
    * doesn't work)
    */
   async shell({ command } = {}) {
-    taskAPILogHeader('TASK' 'Shell')
+    taskAPILogHeader('TASK', 'Shell')
     console.log(chalk.yellow(`\n  Running command ${command}\n`))
     await execAsync(command, { log: true })
   }
@@ -32,7 +30,7 @@ class TaskAPI {
    * @param {String} [initMessage] - git init message
    */
   async gitInit({ initMessage = `ಠ_ಠ` } = {}) {
-    taskAPILogHeader('TASK' 'Git Init')
+    taskAPILogHeader('TASK', 'Git Init')
     await execAsync('git add .', { log: true })
     await execAsync(`git commit -m '${initMessage}'`, { log: true })
   }
@@ -45,7 +43,7 @@ class TaskAPI {
    * @param {Boolean} [dev]           - Use --save-dev or not
    */
   async addPackages({ packages, dev } = {}) {
-    taskAPILogHeader('TASK' 'Add Package')
+    taskAPILogHeader('TASK', 'Add Package')
     const paddedPackagesStr = leftPad(packages.join('\n'), ' ', 2)
     console.log(
       chalk.yellow(
@@ -66,7 +64,7 @@ class TaskAPI {
    * does not exists
    */
   async addToJsonFile({ json, dest } = {}) {
-    taskAPILogHeader('TASK' 'Add JSON File')
+    taskAPILogHeader('TASK', 'Add JSON File')
     dest = await relativeFromProjectRoot(dest)
     if (!fs.existsSync(dest)) {
       fs.writeFileSync(dest, '{}', { encoding: 'utf8' })
@@ -83,9 +81,8 @@ class TaskAPI {
    * @param {Object} opts
    * @param {Object} json          - json to merge into package.json
    */
-  @showHeader('Add to package.json')
   async addToPackageJson({ json } = {}) {
-    taskAPILogHeader('TASK' 'Add to package.json')
+    taskAPILogHeader('TASK', 'Add to package.json')
     const projectRootPath = await getProjectRootPath()
     this.addToJsonFile({
       json,
@@ -99,8 +96,8 @@ class TaskAPI {
    * @param {Object} opts
    * @param {String} dest          - destination file path
    */
-  @showHeader('Add Directory')
   async addDirectory({ dest } = {}) {
+    taskAPILogHeader('TASK', 'Add Directory')
     dest = await relativeFromProjectRoot(dest)
     // dir already exists early return
     if (fs.existsSync(dest)) {
@@ -121,8 +118,8 @@ class TaskAPI {
    * @param {String} dest          - Destination of file to add
    * @param {Boolean} [overwrite]   - overwrite file if doesn't exist
    */
-  @showHeader('Add File')
   async addFile({ src, fileContent, dest, overwrite } = {}) {
+    taskAPILogHeader('TASK', 'Add File')
     dest = await relativeFromProjectRoot(dest)
     invariant(
       typeof fileContent === 'string' || fs.existsSync(src),
@@ -149,8 +146,8 @@ class TaskAPI {
    * @param {String} dest          - Destination of file to add
    * @param {Boolean} [overwrite]   - overwrite file if doesn't exist
    */
-  @showHeader('Copy Directory')
   async copyDirectory({ src, dest, overwrite } = {}) {
+    taskAPILogHeader('TASK', 'Copy Directory')
     dest = await relativeFromProjectRoot(dest)
     // dir already exists early return
     if (fs.existsSync(dest) && !overwrite) {
@@ -170,8 +167,8 @@ class TaskAPI {
    * @param {String} dest          - Destination file path
    * @param {Boolean} [overwrite]   - overwrite file if doesn't exist
    */
-  @showHeader('Template File')
   async templateFile({ src, args = {}, dest, overwrite } = {}) {
+    taskAPILogHeader('TASK', 'Template File')
     dest = await relativeFromProjectRoot(dest)
     if (fs.existsSync(dest) && !overwrite) {
       console.log(chalk.gray(`\n  File already exists ${dest}\n`))
