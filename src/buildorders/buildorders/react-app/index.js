@@ -5,6 +5,7 @@ import taskAPI    from 'taskAPI'
 export default async function reactApp({ flags }) {
   await tasks.bootstrap({ name: flags.name })
   await tasks.storybook()
+  await tasks.prettier()
   await tasks.eslint({
     packages: 'eslint-config-esayemm',
     extend: 'eslint-config-esayemm/react',
