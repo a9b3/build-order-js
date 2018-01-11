@@ -35,7 +35,7 @@ export default async function frontendPackage({ flags }) {
   })
   await taskAPI.shell({ command: `mkdir src` })
   await taskAPI.shell({ command: `touch src/index.js` })
-  await taskAPI.copyDirectory({
+  await taskAPI.copy({
     src: path.resolve(__dirname, '../../templates/frontend-app/src'),
     dest: './example',
   })

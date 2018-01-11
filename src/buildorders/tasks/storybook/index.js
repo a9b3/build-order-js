@@ -12,7 +12,7 @@ export default async function storybook() {
       },
     },
   })
-  await taskAPI.copyDirectory({
+  await taskAPI.copy({
     src: path.resolve(__dirname, './templates'),
     dest: '.storybook',
   })

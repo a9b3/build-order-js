@@ -44,7 +44,7 @@ export default async function reactApp({ flags }) {
       },
     },
   })
-  await taskAPI.copyDirectory({
+  await taskAPI.copy({
     src: path.resolve(__dirname, '../../templates/react-app/src'),
     dest: './src',
   })

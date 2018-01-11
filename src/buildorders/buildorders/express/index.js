@@ -45,11 +45,11 @@ export default async function express({ flags }) {
     src: path.resolve(__dirname, './templates/index.js'),
     dest: 'index.js',
   })
-  await taskAPI.copyDirectory({
+  await taskAPI.copy({
     src: path.resolve(__dirname, './templates/src'),
     dest: './src',
   })
-  await taskAPI.copyDirectory({
+  await taskAPI.copy({
     src: path.resolve(__dirname, './templates/test'),
     dest: './test',
   })

@@ -25,7 +25,7 @@ export default async function frontendApp({ flags }) {
       },
     },
   })
-  await taskAPI.copyDirectory({
+  await taskAPI.copy({
     src: path.resolve(__dirname, '../../templates/frontend-app/src'),
     dest: './src',
   })

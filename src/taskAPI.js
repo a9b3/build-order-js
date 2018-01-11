@@ -155,23 +155,23 @@ class TaskAPI {
   }
 
   /**
-   * copyDirectory copies directory
+   * copy copies directory
    *
    * @param {Object} opts
    * @param {String} src           - File path
    * @param {String} dest          - Destination of file to add
    * @param {Boolean} [overwrite]   - overwrite file if doesn't exist
    */
-  async copyDirectory({ src, dest, overwrite } = {}) {
+  async copy({ src, dest, overwrite } = {}) {
     taskAPILogHeader('TASK', 'Copy Directory')
     dest = await relativeFromProjectRoot(dest)
     // dir already exists early return
     if (fs.existsSync(dest) && !overwrite) {
-      console.log(chalk.gray(`\n  Directory already exists ${dest}\n`))
+      console.log(chalk.gray(`\n  Already exists ${dest}\n`))
       return
     }
-    console.log(chalk.yellow(`\n  Copying dir -> ${dest}\n`))
-    fs.copy(src, dest, { overwrite })
+    console.log(chalk.yellow(`\n  Copying file -> ${dest}\n`))
+    fs.copySync(src, dest, { overwrite })
   }
 
   /**
