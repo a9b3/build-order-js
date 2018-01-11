@@ -8,18 +8,26 @@ CLI to procedurally generate boilerplate projects.
 npm i -g build-order-js
 ```
 
+```sh
+yarn global add build-order-js
+```
+
 ## Usage
 
-### List available boilerplates.
+#### List all buildorders
 
 ```sh
 bojs list
 ```
 
-### Use a boilerplate.
+#### Execute a buildorder
+
+Make sure to run this command inside the project folder.
 
 Ex.
 
 ```sh
+mkdir project
+cd project
 bojs buildorders react-app --git --npm yarn
 ```
