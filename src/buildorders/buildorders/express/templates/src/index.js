@@ -1,4 +1,4 @@
-const logger = require('logger').createLogger(__filename)
+import logger from 'logger'
 import config from 'config'
 import server from 'express/server'
 import pkg    from '../package.json'

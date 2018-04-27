@@ -1,19 +1,12 @@
-import { Router }  from 'express'
-import cors        from 'cors'
+import { Router }                from 'express'
 
-import config      from 'config'
-import index       from 'express/controllers/index'
-import {asyncWrap} from 'express/middlewares/tryCatchMiddleware'
+import index                     from 'express/controllers/index'
+import { asyncMiddleware, cors } from 'express/middlewares'
 
 const router = new Router()
 
-router.use(cors({
-  origin: (origin, callback) => {
-    const originIsInWhiteList = config.CORS_ORIGINS.some(re => re.test(origin))
-    callback(!originIsInWhiteList && 'Cors Issue', originIsInWhiteList)
-  },
-}))
+router.use(cors)
 
-router.get(`/`, asyncWrap(index))
+router.get(`/`, asyncMiddleware(index))
 
 export default router
