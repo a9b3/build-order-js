@@ -8,12 +8,12 @@ export default async function storybook() {
   await taskAPI.addToPackageJson({
     json: {
       scripts: {
-        storybook: `NODE_PATH=./src ./node_modules/@storybook/react/bin/index.js -p 9002 -c .storybook`,
+        storybook: `NODE_PATH=./src ./node_modules/@storybook/react/bin/index.js -p 9002 -c storybook`,
       },
     },
   })
   await taskAPI.copy({
     src: path.resolve(__dirname, './templates'),
-    dest: '.storybook',
+    dest: 'storybook',
   })
 }
