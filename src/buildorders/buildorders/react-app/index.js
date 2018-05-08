@@ -49,6 +49,7 @@ export default async function reactApp({ flags }) {
     src: path.resolve(__dirname, '../../templates/react-app/src'),
     dest: './src',
   })
+  await tasks.makefiles({ type: 'FRONTEND' })
   if (flags.git) {
     await taskAPI.gitInit()
   }

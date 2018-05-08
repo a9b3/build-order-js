@@ -1,6 +1,6 @@
 import * as tasks from '../../tasks'
-import path       from 'path'
-import taskAPI    from 'taskAPI'
+import path from 'path'
+import taskAPI from 'taskAPI'
 
 export default async function express({ flags }) {
   await tasks.bootstrap({ name: flags.name })
@@ -54,6 +54,7 @@ export default async function express({ flags }) {
     src: path.resolve(__dirname, './templates/test'),
     dest: './test',
   })
+  await tasks.makefiles({ type: 'BACKEND' })
   if (flags.git) {
     await taskAPI.gitInit()
   }
