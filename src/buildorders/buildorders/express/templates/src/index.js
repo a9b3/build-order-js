@@ -1,6 +1,6 @@
 import logger from 'logger'
 import config from 'config'
-import server from 'express/server'
+import app    from 'express/app'
 import pkg    from '../package.json'
 
 /*
@@ -12,12 +12,12 @@ async function main() {
   logger.info(`${pkg.name || 'name'} - ${pkg.version || 'version'}`)
   logger.info(``, config)
 
-  await server.listen(config.PORT)
+  await app.listen(config.PORT)
   logger.info(`listening on port ${config.PORT}...`)
 }
 
 // Start it up
-main().catch((err) => {
+main().catch(err => {
   logger.error(err)
   process.exit()
 })

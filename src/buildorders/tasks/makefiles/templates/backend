@@ -1,5 +1,6 @@
-NODE_PATH                  := ./src
-BUILD_DIR                  := ./build
+PORT ?= 8080
+NODE_PATH := ./src
+BUILD_DIR := ./build
 
 all: help
 
@@ -8,7 +9,7 @@ help:
 	@echo "  deps                 - Installs dependencies"
 	@echo "  db.start             - Starts the development dbs"
 	@echo "  db.stop              - Stops the development dbs"
-	@echo "  dev                  - Runs development server"
+	@echo "  dev                  - Runs development server       PORT ?= ${PORT}"
 	@echo "  lint                 - Runs linter"
 	@echo "  test                 - Runs tests"
 	@echo "  test.watch           - TDD"
@@ -25,7 +26,7 @@ db.stop:
 	@docker-compose -f docker-compose.yml down --remove-orphans
 
 dev: deps db.start
-	@NODE_PATH=$(NODE_PATH) nodemon index.js | ./node_modules/bunyan/bin/bunyan --output short
+	@NODE_PATH=$(NODE_PATH) PORT=${PORT} nodemon index.js | ./node_modules/bunyan/bin/bunyan --output short
 
 lint:
 	@./node_modules/eslint/bin/eslint.js .

@@ -7,7 +7,7 @@ export default {
   // Defaults
   APP_ENV,
   NODE_ENV,
-  PORT: 8010,
+  PORT: process.env.PORT,
   CORS_ORIGINS: [/\.*/],
   BUNYAN_LOG_LEVEL: 'info',
   LOG_NAME: 'app',
