@@ -1,5 +1,4 @@
-# Build Order JS
-
+<h1 align="center">Build Order JS</h1>
 <p align="center" style="font-size: 1.2rem;">CLI to procedurally generate boilerplate projects.</p>
 
 ```sh
