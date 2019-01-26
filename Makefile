@@ -11,6 +11,7 @@ help:
 	@echo "  test         - Runs tests"
 	@echo "  test.watch   - TDD"
 	@echo "  build        - Transpile source code"
+	@echo ""
 	@echo "  deploy.patch - Deploys to npm registry"
 	@echo "  deploy.minor - Deploys to npm registry"
 	@echo "  deploy.major - Deploys to npm registry"
@@ -46,7 +47,10 @@ lint.fix:
 .PHONY: build
 build:
 	@rm -rf $(BUILD_DIR)
-	@./node_modules/jbs-node/bin.js build --input src --output $(BUILD_DIR)
+	@./node_modules/jbs-node/bin.js \
+		build \
+		--input src \
+		--output $(BUILD_DIR)
 
 .PHONY: deploy.%
 deploy.%: lint build
