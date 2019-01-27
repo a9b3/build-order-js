@@ -28,15 +28,15 @@
     "global": "4.3.2",
     "invariant": "^2.2.1",
     "jbs-node": "0.1.2",
-    "lodash": "4.16.6"
+    "lodash": "4.17.11"
   },
   "devDependencies": {
     "eslint": "4.15.0",
     "eslint-config-esayemm": "2.0.19",
     "expect": "^1.20.2",
     "mocha": "^3.2.0",
-    "prettier": "1.9.2",
-    "release-it": "5.2.0"
+    "prettier": "1.16.1",
+    "release-it": "10.0.4"
   },
   "babel": {
     "presets": [
